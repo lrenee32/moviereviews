@@ -1,0 +1,35 @@
+@import '../../variables.scss';
+
+.card-container {
+  width: 25%;
+  padding: 0 10px;
+  .card {
+    position: relative;
+    height: 365px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    &:hover {
+      opacity: 50%;
+      cursor: pointer;
+    }
+  }
+  .content {
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .ratings {
+      display: flex;
+      .rating {
+        padding: 0 10px;
+        border-radius: 40px;
+        background-color: $primary-color;
+        &:first-child {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

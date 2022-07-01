@@ -1,0 +1,40 @@
+.hero-section {
+  display: flex;
+  height: 80vh;
+  div {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  > div {
+    &:first-child {
+      width: 65%;
+      margin-right: 2px;
+    }
+    &:nth-child(2) {
+      height: 100%;
+      width: 35%;
+      > div {
+        &:first-child {
+          height: 58%;
+        }
+        &:nth-child(2) {
+          display: flex;
+          height: 42%;
+          margin-top: 2px;
+          > div {
+            &:first-child {
+              height: 100%;
+              width: 50%;
+              margin-right: 2px;
+            }
+            &:nth-child(2) {
+              height: 100%;
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

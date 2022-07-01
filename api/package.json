@@ -1,0 +1,24 @@
+{
+  "name": "movie_reviews_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "deploy:latest": "claudia update --version latest  --set-env-from-json env.json"
+  },
+  "author": "Jacob Adcock",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.980.0",
+    "axios": "^0.21.0",
+    "claudia-api-builder": "^4.1.2",
+    "mysql2": "^2.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "path-parser": "^6.1.0"
+  }
+}

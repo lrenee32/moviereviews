@@ -1,0 +1,42 @@
+// COLORS
+$base-color: #0e0e0e;
+$primary-color: #E91E63;
+$secondary-color: #C21858;
+
+$base-color-text: #ffffff;
+$secondary-color-text: #333333;
+
+// FONTS
+@font-face {
+  font-family: 'Catamaran';
+  font-weight: 400;
+  src: url('../fonts/Catamaran/Catamaran-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Catamaran';
+  font-weight: 800;
+  src: url('../fonts/Catamaran/Catamaran-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Ghastly Panic';
+  src: url('../fonts/GhastlyPanic/Ghastly_Panic.ttf');
+}
+
+$base-font-size: 14px;
+$base-font-weight: 400;
+$base-font-family: 'Catamaran', sans-serif;
+
+$large-font-size: 35px;
+$large-font-weight: 800;
+
+$xl-font-size: 50px;
+$xl-font-weight: 800;
+
+$xxl-font-size: 75px;
+$xxl-font-weight: 800;
+
+// ETC
+
+$base-transition: .3s ease-in-out;
