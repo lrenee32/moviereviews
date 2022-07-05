@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const theme = createTheme(global);
+  const theme = createTheme(global(createTheme()));
   
   return (
     <ThemeProvider theme={theme}>

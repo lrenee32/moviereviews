@@ -53,7 +53,6 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
           bottom: '0',
           zIndex: '99',
           maxWidth: '600px',
-          padding: '50px 45px 45px 65px !important',
         }}
       >
         <Box marginBottom="10px">

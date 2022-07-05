@@ -23,7 +23,7 @@ export const Content: FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <Container sx={{ padding: '100px 0' }}>
+    <Container fixed sx={{ paddingY: '100px' }}>
       <Box>
         <Typography variant="h3" marginBottom="15px">Highlights Today</Typography>
         <Typography variant="h4" marginBottom="70px" sx={{ opacity: '.5' }}>Be sure not to miss these reviews today.</Typography>
@@ -31,7 +31,7 @@ export const Content: FunctionComponent<Props> = (props: Props) => {
       <Grid container spacing={2}>
         {featured.map((review: FeaturedReview) => {
           return (
-            <Grid key={review.ReviewId} item xs={12} sm={6} md={3}>
+            <Grid key={review.ReviewId} item xs={6} md={3}>
               <Card>
                 <CardActionArea href={`/review/${review.ReviewId}`}>
                   <CardMedia
