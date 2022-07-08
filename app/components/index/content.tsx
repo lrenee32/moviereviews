@@ -26,7 +26,7 @@ export const Content: FunctionComponent<Props> = (props: Props) => {
     <Container fixed sx={{ paddingY: '100px' }}>
       <Box>
         <Typography variant="h3" marginBottom="15px">Highlights Today</Typography>
-        <Typography variant="h4" marginBottom="70px" sx={{ opacity: '.5' }}>Be sure not to miss these reviews today.</Typography>
+        <Typography variant="h4" marginBottom="70px" sx={{ opacity: '.5' }}>Be sure not to miss these reviews.</Typography>
       </Box>
       <Grid container spacing={2}>
         {featured.map((review: FeaturedReview) => {

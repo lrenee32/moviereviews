@@ -38,12 +38,21 @@ export const global = (theme: Theme) => {
           root: {
             backgroundColor: '#242424',
             borderRadius: '10px',
-            '.MuiTableRow-root .MuiTableCell-head, .MuiTableRow-root .MuiTableCell-body': {
-              borderBottom: 'none',
-            },
-            '.MuiTableBody-root .MuiTableRow-root': {
-              '&:nth-child(odd)': {
+            border: '1px solid #696969',
+            borderCollapse: 'separate',
+            '.MuiTableBody-root > .MuiTableRow-root': {
+              '&:nth-of-type(odd)': {
                 backgroundColor: '#303030',
+              },
+            },
+            '.MuiTableRow-root': {
+              '> .MuiTableCell-head, > .MuiTableCell-body': {
+                borderBottom: '1px solid #696969',
+              },
+              '&:last-child': {
+                '> .MuiTableCell-body': {
+                  borderBottom: 'none',
+                },
               },
             },
           },

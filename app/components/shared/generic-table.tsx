@@ -26,6 +26,9 @@ export const GenericTable: FunctionComponent<Props> = (props: Props) => {
                 <TableCell key={index}>{capitalize(column.text)}</TableCell>
               );
             })}
+            {(actions && actions.length > 0) &&
+              <TableCell style={{width: '1px', whiteSpace: 'nowrap'}}/>
+            }
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,10 +40,9 @@ export const GenericTable: FunctionComponent<Props> = (props: Props) => {
                     <TableCell key={cIndex}>{row[column.text]}</TableCell>
                   );
                 })}
-                {(actions && actions.length > 0) && (
-                    <div>Actions</div>
-                  )
-                }
+                <TableCell style={{width: '1px', whiteSpace: 'nowrap'}}>
+                  {(actions && actions.length > 0) && actions}
+                </TableCell>
               </TableRow>
             );
           })}

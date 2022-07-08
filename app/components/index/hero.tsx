@@ -11,19 +11,19 @@ interface Props {
 export const Hero: FunctionComponent<Props> = (props: Props) => {
   const { featured } = props.reviews;
   const isXL = useMediaQuery((theme: Theme) => theme.breakpoints.up('xl'));
-  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const isSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   return (
     <Grid container height={'90vh'}>
-      <Grid item xs={12} sm={6} lg={8}>
+      <Grid item xs={12} md={6} xl={8}>
         <HeroCard
           review={featured[0]}
           headingVariant="h2"
           showDescription
         />
       </Grid>
-      {!isXS &&
-        <Grid item xs={0} sm={6} lg={4}>
+      {!isSM &&
+        <Grid item xs={0} md={6} xl={4}>
           <Grid item xs={12} height={'60%'}>
             <HeroCard
               review={featured[1]} 
