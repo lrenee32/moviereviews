@@ -9,15 +9,9 @@ const VARIABLES = {
 export const global = (theme: Theme) => {
   return {
     palette: {
+      mode: 'dark',
       primary: {
         main: VARIABLES.primaryColor,
-      },
-      background: {
-        default: VARIABLES.bgColor,
-        paper: VARIABLES.bgColor,
-      },
-      text: {
-        primary: VARIABLES.primaryTextColor,
       },
     },
     components: {

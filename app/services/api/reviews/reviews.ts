@@ -10,7 +10,7 @@ export const getReviews = (searchTerm: string) => {
   });
 };
 
-export const getReview = (id?: string) => {
+export const getReview = (id: string | string[] | undefined) => {
   return API({
     method: 'GET',
     path: `/review/${id}`,
