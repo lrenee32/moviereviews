@@ -14,6 +14,7 @@ export interface APIRequest extends FetchOptions {
 };
 
 export const API = async (request: APIRequest) => {
+  console.log(request.body);
   const url = new URL(baseUrl + request.path);
   if (request.params) {
     request.params.forEach((val, key) => url.searchParams.append(key, val));
@@ -21,7 +22,7 @@ export const API = async (request: APIRequest) => {
   return fetch(url, {
     method: request.method,
     headers: request.headers,
-    body: request.body,
+    body: JSON.stringify(request.body),
   })
     .then(res => res.json());
 };

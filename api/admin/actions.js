@@ -1,7 +1,7 @@
 'use strict';
 const app = require('../app');
 const AdminReviewUtils = require('./utils');
-const { searchAll, create, editById, deleteById } = new AdminReviewUtils();
+const { searchAll, searchById, create, editById, deleteById } = new AdminReviewUtils();
 
 class ReviewActions {
   async searchAll(request) {
@@ -16,6 +16,16 @@ class ReviewActions {
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
+  async searchById(request) {
+    const { reviewId } = request.pathParams;
+    
+    try {
+      return await searchById(reviewId);
+    } catch (err) {
+      console.warn(`Error getting review: ${err}`);
+      return new app.ApiResponse(err.message, {}, 500);
+    }
+  };
   async create(request) {
     const item = request.body;
     const { userId } = request.pathParams;
@@ -29,11 +39,11 @@ class ReviewActions {
     };
   };
   async editById(request) {
-    const { userId, id } = request.pathParams;
+    const { userId, reviewId } = request.pathParams;
     const item = request.body;
 
     try {
-      const res = await editById(userId, id, item);
+      const res = await editById(userId, reviewId, item);
       return res;
     } catch (err) {
       console.warn(`Error creating review: ${err}`);

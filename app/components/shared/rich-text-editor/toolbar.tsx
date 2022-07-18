@@ -22,37 +22,35 @@ export const Toolbar: FunctionComponent = () => {
           flexWrap: 'wrap',
         }}
       >
-        <Button format="bold">
+        <Button type="mark" format="bold">
           <FormatBoldIcon />
         </Button>
-        <Button format="italic">
+        <Button type="mark" format="italic">
           <FormatItalicIcon />
         </Button>
-        <Button format="underline">
+        <Button type="mark" format="underline">
           <FormatUnderlinedIcon />
         </Button>
-        <Button format="code">
+        <Button type="mark" format="code">
           <CodeIcon />
         </Button>
-        <Button format="heading-one">
+        <Button type="block" format="heading-one">
           <LooksOneIcon />
         </Button>
-        <Button format="heading-two">
+        <Button type="block" format="heading-two">
           <LooksTwoIcon />
         </Button>
-        <Button format="block-quote">
+        <Button type="block" format="block-quote">
           <FormatQuoteIcon />
         </Button>
-        <Button format="numbered-list">
+        <Button type="block" format="numbered-list">
           <FormatListNumberedIcon />
         </Button>
-        <Button format="bulleted-list">
+        <Button type="block" format="bulleted-list">
           <FormatListBulletedIcon />
         </Button>
       </Box>
-      <Box pt={2}>
-        <Divider />
-      </Box>
+      <Divider />
     </>
   );
 };

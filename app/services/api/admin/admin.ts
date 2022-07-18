@@ -1,7 +1,5 @@
+import { Review } from 'utils/types';
 import { API } from '../api-service';
-
-const TMDB_URL = process.env.VUE_APP_TMDB_URL;
-const TMBD_API_KEY = process.env.VUE_APP_TMDB_API_KEY;
 
 export const getReviews = (userId: string | string[] | undefined, searchTerm: string) => {
   return API({
@@ -10,6 +8,28 @@ export const getReviews = (userId: string | string[] | undefined, searchTerm: st
     params: new URLSearchParams({
       searchTerm,
     }),
+  });
+};
+
+export const getReview = (userId: string | string[] | undefined, reviewId: string | string[] | undefined) => {
+  return API({
+    method: 'GET',
+    path: `/admin/${userId}/review/${reviewId}`,
+  });
+};
+
+export const updateReview = (
+  userId: string | string[] | undefined,
+  reviewId: string | string[] | undefined,
+  body: Review,
+) => {
+  return API({
+    method: 'PUT',
+    path: `/admin/${userId}/review/edit/${reviewId}`,
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 };
 

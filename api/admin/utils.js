@@ -21,6 +21,21 @@ class ReviewUtils {
       return err || err.message;
     };
   };
+  async searchById(reviewId) {
+    try {
+      const params = {
+        TableName: 'movie-reviews_user-reviews',
+        KeyConditionExpression: 'ReviewId = :reviewId',
+        ExpressionAttributeValues: { 
+          ':reviewId': reviewId,
+        },
+      };
+      const res = await db.query(params);
+      return res.Items;
+    } catch (err) {
+      return err || err.message;
+    };
+  };
   async create(userId, item) {
     try {
       const params = {
@@ -43,13 +58,13 @@ class ReviewUtils {
       return err || err.message;
     };
   };
-  async editById(userId, id, item) {
+  async editById(userId, reviewId, item) {
     try {
       const params = {
         TableName: 'movie-reviews_user-reviews',
         Item: {
           UserId: userId,
-          ReviewId: id,
+          ReviewId: reviewId,
           Created: item.created,
           Title: item.title,
           Year: item.year,

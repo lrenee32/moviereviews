@@ -1,8 +1,8 @@
 'use strict';
 const axios = require('axios');
-// const Database = require('../shared/db');
+const Database = require('../shared/db');
 const { Reviews } = require('../tests/tests');
-// const db = new Database();
+const db = new Database();
 
 async function getFilmDetails(arr) {
   const baseUri = 'https://api.themoviedb.org/3/movie/'
@@ -61,18 +61,16 @@ class ReviewUtils {
 
   async searchById(id) {
     try {
-      // const params = {
-      //   TableName: 'movie-reviews_user-reviews',
-      //   KeyConditionExpression: 'UserId = :userId',
-      //   FilterExpression: 'contains(ReviewId, :reviewId)',
-      //   ExpressionAttributeValues: { 
-      //     ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-      //     ':reviewId': id,
-      //   },
-      // };
-      // const res = await db.query(params);
-      // return getFilmDetails(res.Items);
-      return Reviews.all.find(i => i.ReviewId === id);
+      const params = {
+        TableName: 'movie-reviews_user-reviews',
+        KeyConditionExpression: 'UserId = :userId AND ReviewId = :reviewId',
+        ExpressionAttributeValues: { 
+          ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
+          ':reviewId': id,
+        },
+      };
+      const res = await db.query(params);
+      return res.Items[0];
     } catch (err) {
       return err || err.message;
     };

@@ -1,11 +1,11 @@
-import React, { useCallback, useMemo } from "react";
+import { FunctionComponent, Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, Slate, useSlate } from "slate-react";
-import { createEditor, Editor, Transforms } from "slate";
+import { createEditor, Descendant, Editor, Transforms } from "slate";
 import { withHistory } from "slate-history";
 
 import Box from '@mui/material/Box';
-import Toolbar from './toolbar';
+import { Toolbar } from './toolbar';
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -14,7 +14,13 @@ const HOTKEYS = {
   "mod+`": "code"
 };
 
-export const RichTextEditor = ({ value, setValue }) => {
+interface Props {
+  value: Descendant[] | undefined,
+  setValue: Dispatch<SetStateAction<Descendant[]>>,
+}
+
+export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
+  const { value, setValue } = props;
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -29,7 +35,7 @@ export const RichTextEditor = ({ value, setValue }) => {
         }}
       >
         <Toolbar />
-        <Box p="10px" sx={{ '> :first-child > :first-child': { marginTop: '0' } }}>
+        <Box p="10px" sx={{ '> :first-of-type > :first-of-type': { marginTop: '0' } }}>
           <Editable
             renderElement={renderElement}
             renderLeaf={renderLeaf}

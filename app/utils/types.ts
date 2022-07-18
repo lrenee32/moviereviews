@@ -1,3 +1,5 @@
+import { Descendant } from 'slate';
+
 export interface Reviews {
   featured: Array<FeaturedReview>,
   all: Array<Review>,
@@ -7,7 +9,7 @@ export interface Review {
   Created: string,
   Details: ReviewDetails,
   Rating: string,
-  Review: string,
+  Review: Descendant[],
   ReviewId: string,
   TMDBId: number,
   Title: string,
