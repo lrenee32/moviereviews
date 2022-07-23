@@ -1,21 +1,21 @@
 'use strict';
 const app = require('../app');
 const AdminReviewUtils = require('./utils');
-const { searchAll, searchById, create, editById, deleteById } = new AdminReviewUtils();
+const { search, searchById, create, editById, deleteById } = new AdminReviewUtils();
 
 class ReviewActions {
-  async searchAll(request) {
+  async search(request) {
     const { searchTerm } = request.queryString;
-    const { userId } = request.pathParams;
 
     try {
-      const res = await searchAll(userId, searchTerm);
+      const res = await search(searchTerm);
       return res;
     } catch (err) {
       console.warn(`Error getting reviews: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
+
   async searchById(request) {
     const { reviewId } = request.pathParams;
     
@@ -26,6 +26,7 @@ class ReviewActions {
       return new app.ApiResponse(err.message, {}, 500);
     }
   };
+
   async create(request) {
     const item = request.body;
     const { userId } = request.pathParams;
@@ -38,6 +39,7 @@ class ReviewActions {
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
+
   async editById(request) {
     const { userId, reviewId } = request.pathParams;
     const item = request.body;
@@ -50,6 +52,7 @@ class ReviewActions {
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
+
   async deleteById(request) {
     const { userId, id } = request.pathParams;
 

@@ -3,8 +3,7 @@ import { useRouter } from 'next/router'
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { ReviewForm } from '../../../../../components/admin/form';
-import { Descendant } from 'slate';
-import { getReview, getReviews } from '../../../../../services/api/reviews/reviews';
+import { getReview, getReviews } from '../../../../../services/api/admin/admin';
 import { updateReview } from '../../../../../services/api/admin/admin';
 import { Reviews, Review } from '../../../../../utils/types';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
@@ -14,25 +13,25 @@ interface Props {
 };
 
 const CreateReview: FunctionComponent<Props> = (props: Props) => {
+  const router = useRouter();
   const { Title, Review, ReviewId, UserId } = props.review;
-  const initialValues: { title: string, input: Descendant[] } = {
+  const initialValues: { title: Review["Title"], input: Review["Review"] } = {
     title: Title,
-    input: JSON.parse(Review),
+    input: Review,
   };
-  const [title, setTitle] = useState<string>(initialValues.title);
-  const [input, setInput] = useState<Descendant[]>(initialValues.input);
+  const [title, setTitle] = useState<Review["Title"]>(initialValues.title);
+  const [input, setInput] = useState<Review["Review"]>(initialValues.input);
   const update: () => void = async () => {
     const body = {
-      UserId,
       Title: title,
       Review: input,
       Year: props.review.Year,
       TMDBId: props.review.TMDBId,
-      ReviewId,
       Rating: props.review.Rating,
       Created: props.review.Created,
     };
-    return updateReview(UserId, ReviewId, body);
+    return updateReview(UserId, ReviewId, body)
+      .then(() => router.push(`/admin/${UserId}`));
   };
   
   return (
@@ -44,15 +43,15 @@ const CreateReview: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const userId = context.params?.userId;
   const reviewId = context.params?.reviewId;
-  const review: Review = await getReview(reviewId);
-  console.log(review);
+  const review: Review = await getReview(userId, reviewId);
 
   return { props: { review } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const reviews: Reviews = await getReviews('');
+  const reviews: Reviews = await getReviews('a5c723d5-89ba-4554-a09d-ee3870be41a3', '');
 
   const paths = reviews.all.map((review) => ({
     params: { userId: 'a5c723d5-89ba-4554-a09d-ee3870be41a3', reviewId: review.ReviewId },

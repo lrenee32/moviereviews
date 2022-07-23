@@ -3,41 +3,55 @@ import { Reviews } from '../../../utils/types';
 import { getReviews } from '../../../services/api/admin/admin';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { GenericTable } from 'components/shared/generic-table';
+import MaterialTable, { MTableHeader } from 'material-table';
+import { serializeToText } from '../../../utils/utils';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
 
 interface Props {
-  reviews: Reviews[],
+  reviews: Reviews["all"],
 };
 
 const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const { reviews } = props;
+  reviews.map(review => {
+    if (typeof review.Review === 'object') {
+      review.Review = serializeToText(review.Review);
+    }
+  });
 
-  const updateReview = () => {
-    console.log('update');
-  };
-
-  const deleteReview = () => {
-    console.log('delete');
-  };
-
-  const columns = [
-    { text: 'Title' },
-    { text: 'Review' },
-  ];
-
-  const actions = [
-    <EditIcon key="update" onClick={() => updateReview()} />,
-    <DeleteIcon key="delete" onClick={() => deleteReview()} />
-  ];
+  const tableData = {
+    data: reviews,
+    columns: [
+      { title: 'Title', field: 'Title' },
+      { title: 'Review', field: 'Review' },
+    ],
+    actions: [
+      { icon: 'edit', onClick: (event, row) => alert(`You want to edit ${row.ReviewId}`)},
+      { icon: 'delete', iconProps: { color: 'error' }, onClick: (event, row) => alert(`You want to delete ${row.ReviewId}`)},
+    ],
+    options: {
+      actionsColumnIndex: -1,
+      searchFieldAlignment: 'right',
+      showTitle: false,
+      draggable: false,
+      headerStyle: { backgroundColor: 'inherit' }
+    },
+    style: {
+      borderRadius: '10px',
+    },
+  }
   
   return (
     <Container sx={{ marginY: '100px' }}>
       <Typography variant="h3" marginBottom={'30px'}>Manage Reviews</Typography>
       {(reviews && reviews.length > 0) && (
-        <GenericTable columns={columns} rows={reviews} actions={actions} />
+        <MaterialTable
+          columns={tableData.columns}
+          data={tableData.data}
+          actions={tableData.actions}
+          options={tableData.options}
+          style={tableData.style}
+        />
       )}
     </Container>
   );

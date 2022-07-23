@@ -9,7 +9,6 @@ interface Props {
 
 const ReviewDetails: FunctionComponent<Props> = (props: Props) => {
   const { review } = props;
-  console.log(review);
 
   return (
     <div>{ review.Title }</div>

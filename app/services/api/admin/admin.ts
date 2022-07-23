@@ -21,7 +21,7 @@ export const getReview = (userId: string | string[] | undefined, reviewId: strin
 export const updateReview = (
   userId: string | string[] | undefined,
   reviewId: string | string[] | undefined,
-  body: Review,
+  body: Partial<Review>,
 ) => {
   return API({
     method: 'PUT',

@@ -4,14 +4,14 @@ const Database = require('../shared/db');
 const db = new Database();
 
 class ReviewUtils {
-  async searchAll(userId, searchTerm) {
+  async search(searchTerm) {
     try {
       const params = {
         TableName: 'movie-reviews_user-reviews',
         KeyConditionExpression: 'UserId = :userId',
         FilterExpression: 'contains(Title, :title)',
         ExpressionAttributeValues: { 
-          ':userId': userId,
+          ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
           ':title': searchTerm,
         },
       };
@@ -21,21 +21,24 @@ class ReviewUtils {
       return err || err.message;
     };
   };
+
   async searchById(reviewId) {
     try {
       const params = {
         TableName: 'movie-reviews_user-reviews',
-        KeyConditionExpression: 'ReviewId = :reviewId',
+        KeyConditionExpression: 'UserId = :userId AND ReviewId = :reviewId',
         ExpressionAttributeValues: { 
+          ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
           ':reviewId': reviewId,
         },
       };
       const res = await db.query(params);
-      return res.Items;
+      return res.Items[0];
     } catch (err) {
       return err || err.message;
     };
   };
+
   async create(userId, item) {
     try {
       const params = {
@@ -58,6 +61,7 @@ class ReviewUtils {
       return err || err.message;
     };
   };
+
   async editById(userId, reviewId, item) {
     try {
       const params = {
@@ -65,12 +69,12 @@ class ReviewUtils {
         Item: {
           UserId: userId,
           ReviewId: reviewId,
-          Created: item.created,
-          Title: item.title,
-          Year: item.year,
-          TMDBId: item.tmdbId,
-          Rating: item.rating,
-          Review: item.review,
+          Created: item.Created,
+          Title: item.Title,
+          Year: item.Year,
+          TMDBId: item.TMDBId,
+          Rating: item.Rating,
+          Review: item.Review,
         },
       };
 
@@ -80,6 +84,7 @@ class ReviewUtils {
       return err || err.message;
     };
   };
+
   async deleteById(userId, id) {
     try {
       const params = {

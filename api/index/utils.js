@@ -1,7 +1,6 @@
 'use strict';
 const axios = require('axios');
 const Database = require('../shared/db');
-const { Reviews } = require('../tests/tests');
 const db = new Database();
 
 async function getFilmDetails(arr) {
@@ -40,26 +39,25 @@ async function getFilmDetails(arr) {
 }
 
 class ReviewUtils {
-  async search(searchTerm) {
+  async search(searchTerm, isAdmin) {
     try {
-      // const params = {
-      //   TableName: 'movie-reviews_user-reviews',
-      //   KeyConditionExpression: 'UserId = :userId',
-      //   FilterExpression: 'contains(Title, :title)',
-      //   ExpressionAttributeValues: { 
-      //     ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-      //     ':title': searchTerm,
-      //   },
-      // };
-      // const res = await db.query(params);
-      // return getFilmDetails(res.Items);
-      return Reviews;
+      const params = {
+        TableName: 'movie-reviews_user-reviews',
+        KeyConditionExpression: 'UserId = :userId',
+        FilterExpression: 'contains(Title, :title)',
+        ExpressionAttributeValues: { 
+          ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
+          ':title': searchTerm,
+        },
+      };
+      const res = await db.query(params);
+      return isAdmin ? res.Items : getFilmDetails(res.Items);
     } catch (err) {
       return err || err.message;
     };
   };
 
-  async searchById(id) {
+  async searchById(id, isAdmin) {
     try {
       const params = {
         TableName: 'movie-reviews_user-reviews',
@@ -70,7 +68,7 @@ class ReviewUtils {
         },
       };
       const res = await db.query(params);
-      return res.Items[0];
+      return isAdmin ? res.Items[0] : getFilmDetails(res.Items);
     } catch (err) {
       return err || err.message;
     };
