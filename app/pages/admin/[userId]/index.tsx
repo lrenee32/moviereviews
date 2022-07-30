@@ -1,23 +1,33 @@
 import { FunctionComponent } from 'react';
-import { Reviews } from '../../../utils/types';
+import { useRouter } from 'next/router';
+import { Review, Reviews } from '../../../utils/types';
 import { getReviews } from '../../../services/api/admin/admin';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import MaterialTable, { MTableHeader } from 'material-table';
+import MaterialTable from 'material-table';
+import { GenericModal } from '../../../components/shared/generic-modal';
 import { serializeToText } from '../../../utils/utils';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
 
+type ActionTypes = 'edit' | 'delete';
+
 interface Props {
+  userId: Review["UserId"],
   reviews: Reviews["all"],
 };
 
 const AdminProfile: FunctionComponent<Props> = (props: Props) => {
-  const { reviews } = props;
+  const router = useRouter();
+  const { userId, reviews } = props;
   reviews.map(review => {
     if (typeof review.Review === 'object') {
       review.Review = serializeToText(review.Review);
     }
   });
+
+  const actionEvent = (reviewId: Review["ReviewId"], action: ActionTypes) => {
+    return router.push(`${userId}/review/${action}/${reviewId}`);
+  };
 
   const tableData = {
     data: reviews,
@@ -26,8 +36,8 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       { title: 'Review', field: 'Review' },
     ],
     actions: [
-      { icon: 'edit', onClick: (event, row) => alert(`You want to edit ${row.ReviewId}`)},
-      { icon: 'delete', iconProps: { color: 'error' }, onClick: (event, row) => alert(`You want to delete ${row.ReviewId}`)},
+      { icon: 'edit', onClick: (event, row) => actionEvent(row.ReviewId, 'edit')},
+      { icon: 'delete', iconProps: { color: 'error' }, onClick: (event, row) => actionEvent(row.ReviewId, 'delete')},
     ],
     options: {
       actionsColumnIndex: -1,
@@ -53,6 +63,11 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
           style={tableData.style}
         />
       )}
+      <GenericModal
+        header="Confirmation"
+        contentText="Do you want to delete?"
+        confirmation={{ text: 'Confirm' }}
+      />
     </Container>
   );
 };
@@ -61,7 +76,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const userId = context.params?.userId;
   const reviews: Reviews = await getReviews(userId, '');
 
-  return { props: { reviews } };
+  return { props: { userId, reviews } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

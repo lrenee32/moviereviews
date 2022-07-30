@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const reviews: Reviews = await getReviews('a5c723d5-89ba-4554-a09d-ee3870be41a3', '');
 
-  const paths = reviews.all.map((review) => ({
+  const paths = reviews.map((review) => ({
     params: { userId: 'a5c723d5-89ba-4554-a09d-ee3870be41a3', reviewId: review.ReviewId },
   }));
 
