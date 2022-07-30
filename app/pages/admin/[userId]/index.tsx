@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { Review, Reviews } from '../../../utils/types';
-import { getReviews } from '../../../services/api/admin/admin';
+import { deleteReview, getReviews } from '../../../services/api/admin/admin';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import MaterialTable from 'material-table';
-import { GenericModal } from '../../../components/shared/generic-modal';
+import GenericModal from '../../../components/shared/generic-modal';
 import { serializeToText } from '../../../utils/utils';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
 
@@ -18,6 +18,8 @@ interface Props {
 
 const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const router = useRouter();
+  const modalRef = useRef<HTMLDivElement>();
+  const [selected, setSelected] = useState<string | null>(null);
   const { userId, reviews } = props;
   reviews.map(review => {
     if (typeof review.Review === 'object') {
@@ -25,7 +27,17 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     }
   });
 
+  const useDeleteReview = () => {
+    if (selected) {
+      return deleteReview(userId, selected);
+    }
+  };
+
   const actionEvent = (reviewId: Review["ReviewId"], action: ActionTypes) => {
+    if (action === 'delete' && modalRef.current) {
+      setSelected(reviewId);
+      return modalRef.current.toggleModal(true);
+    }
     return router.push(`${userId}/review/${action}/${reviewId}`);
   };
 
@@ -64,9 +76,10 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         />
       )}
       <GenericModal
+        ref={modalRef}
         header="Confirmation"
-        contentText="Do you want to delete?"
-        confirmation={{ text: 'Confirm' }}
+        contentText="Are you sure you want to delete the review?"
+        confirmation={{ text: 'Confirm', action: useDeleteReview }}
       />
     </Container>
   );

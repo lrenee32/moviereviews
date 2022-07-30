@@ -13,20 +13,21 @@ interface Props {
   actions: {
     titleAction: Dispatch<SetStateAction<string>>,
     inputAction: Dispatch<SetStateAction<Descendant[]>>,
+    cancelAction: () => void,
     formAction: () => void,
   },
 };
 
 export const ReviewForm: FunctionComponent<Props> = (props: Props) => {
   const { title, input } = props.values;
-  const { titleAction, inputAction, formAction } = props.actions;
+  const { titleAction, inputAction, cancelAction, formAction } = props.actions;
 
   return (
     <>
       <TextField fullWidth label="Title" id="title" sx={{ marginBottom: '30px' }} value={title} onChange={(e) => titleAction(e.target.value)} />
       <RichTextEditor value={input} setValue={inputAction} />
       <Box>
-        <Button sx={{ backgroundColor: 'grey' }} variant="contained">Cancel</Button>
+        <Button onClick={cancelAction} sx={{ backgroundColor: 'grey' }} variant="contained">Cancel</Button>
         <Button onClick={formAction} variant="outlined">Confirm</Button>
       </Box>
     </>

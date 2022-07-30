@@ -18,6 +18,20 @@ export const getReview = (userId: string | string[] | undefined, reviewId: strin
   });
 };
 
+export const createReview = (
+  userId: string | string[] | undefined,
+  body: Partial<Review>,
+) => {
+  return API({
+    method: 'POST',
+    path: `/admin/${userId}/review/create`,
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
 export const updateReview = (
   userId: string | string[] | undefined,
   reviewId: string | string[] | undefined,
@@ -30,6 +44,16 @@ export const updateReview = (
     headers: {
       'Content-Type': 'application/json',
     },
+  });
+};
+
+export const deleteReview = (
+  userId: string | string[] | undefined,
+  reviewId: string | string[] | undefined,
+) => {
+  return API({
+    method: 'DELETE',
+    path: `/admin/${userId}/review/delete/${reviewId}`,
   });
 };
 

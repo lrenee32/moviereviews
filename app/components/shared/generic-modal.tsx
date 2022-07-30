@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, forwardRef, useImperativeHandle, Ref } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,9 +15,17 @@ interface Props {
   },
 }
 
-export const GenericModal: FunctionComponent<Props> = (props: Props) => {
+const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Props, ref: Ref) => {
   const { header, contentText, confirmation } = props;
   const [open, setOpen] = useState(false);
+
+  const toggleModal = (state: boolean) => {
+    return setOpen(state);
+  };
+
+  useImperativeHandle(ref, () => ({
+    toggleModal: toggleModal,
+  }));
 
   return (
     <Dialog
@@ -34,11 +42,14 @@ export const GenericModal: FunctionComponent<Props> = (props: Props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button>Cancel</Button>
-        <Button autoFocus>
+        <Button onClick={() => toggleModal(false)}>Cancel</Button>
+        <Button onClick={() => confirmation.action} autoFocus>
           {confirmation.text}
         </Button>
       </DialogActions>
     </Dialog>
   );
-};
+});
+GenericModal.displayName = "GenericModal";
+
+export default GenericModal;

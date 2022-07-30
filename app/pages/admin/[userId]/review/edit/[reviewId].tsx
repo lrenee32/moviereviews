@@ -21,6 +21,11 @@ const CreateReview: FunctionComponent<Props> = (props: Props) => {
   };
   const [title, setTitle] = useState<Review["Title"]>(initialValues.title);
   const [input, setInput] = useState<Review["Review"]>(initialValues.input);
+
+  const routeToAdmin: () => void = () => {
+    return router.push(`/admin/${UserId}`);
+  };
+  
   const update: () => void = async () => {
     const body = {
       Title: title,
@@ -31,13 +36,13 @@ const CreateReview: FunctionComponent<Props> = (props: Props) => {
       Created: props.review.Created,
     };
     return updateReview(UserId, ReviewId, body)
-      .then(() => router.push(`/admin/${UserId}`));
+      .then(() => routeToAdmin);
   };
   
   return (
     <Container sx={{ marginY: '100px' }}>
       <Typography variant="h3" marginBottom="30px">Edit Review</Typography>
-      <ReviewForm actions={{ titleAction: setTitle, inputAction: setInput, formAction: update }} values={{ title, input }} />
+      <ReviewForm actions={{ titleAction: setTitle, inputAction: setInput, cancelAction: routeToAdmin, formAction: update }} values={{ title, input }} />
     </Container>
   );
 };
