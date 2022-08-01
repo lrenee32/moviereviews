@@ -11,7 +11,7 @@ interface Props {
   contentText: string,
   confirmation: {
     text: string,
-    action?: () => void,
+    action: () => void,
   },
 }
 
@@ -43,7 +43,7 @@ const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Pr
       </DialogContent>
       <DialogActions>
         <Button onClick={() => toggleModal(false)}>Cancel</Button>
-        <Button onClick={() => confirmation.action} autoFocus>
+        <Button onClick={() => confirmation.action()} autoFocus>
           {confirmation.text}
         </Button>
       </DialogActions>

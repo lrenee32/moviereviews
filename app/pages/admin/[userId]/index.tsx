@@ -19,7 +19,7 @@ interface Props {
 const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const router = useRouter();
   const modalRef = useRef<HTMLDivElement>();
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Review | null>(null);
   const { userId, reviews } = props;
   reviews.map(review => {
     if (typeof review.Review === 'object') {
@@ -29,16 +29,20 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
 
   const useDeleteReview = () => {
     if (selected) {
-      return deleteReview(userId, selected);
+      return deleteReview(userId, selected.ReviewId)
+      .then(async () => {
+        await getReviews(userId, '');
+        modalRef?.current?.toggleModal(false);
+      });
     }
   };
 
-  const actionEvent = (reviewId: Review["ReviewId"], action: ActionTypes) => {
+  const actionEvent = (review: Review, action: ActionTypes) => {
     if (action === 'delete' && modalRef.current) {
-      setSelected(reviewId);
+      setSelected(review);
       return modalRef.current.toggleModal(true);
     }
-    return router.push(`${userId}/review/${action}/${reviewId}`);
+    return router.push(`${userId}/review/${action}/${review.ReviewId}`);
   };
 
   const tableData = {
@@ -48,8 +52,8 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       { title: 'Review', field: 'Review' },
     ],
     actions: [
-      { icon: 'edit', onClick: (event, row) => actionEvent(row.ReviewId, 'edit')},
-      { icon: 'delete', iconProps: { color: 'error' }, onClick: (event, row) => actionEvent(row.ReviewId, 'delete')},
+      { icon: 'edit', onClick: (_event, row: Review) => actionEvent(row, 'edit')},
+      { icon: 'delete', iconProps: { color: 'error' }, onClick: (_event, row: Review) => actionEvent(row, 'delete')},
     ],
     options: {
       actionsColumnIndex: -1,
@@ -78,7 +82,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       <GenericModal
         ref={modalRef}
         header="Confirmation"
-        contentText="Are you sure you want to delete the review?"
+        contentText={`Are you sure you want to delete "${selected?.Title}"?`}
         confirmation={{ text: 'Confirm', action: useDeleteReview }}
       />
     </Container>

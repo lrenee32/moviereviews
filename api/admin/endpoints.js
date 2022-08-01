@@ -19,7 +19,7 @@ module.exports = (api) => {
     return editById(request);
   });
 
-  api.delete('/admin/:userId/review/:reviewId', request => {
+  api.delete('/admin/:userId/review/delete/:reviewId', request => {
     return deleteById(request);
   });
 };

@@ -54,10 +54,10 @@ class ReviewActions {
   };
 
   async deleteById(request) {
-    const { userId, id } = request.pathParams;
+    const { userId, reviewId } = request.pathParams;
 
     try {
-      const res = await deleteById(userId, id);
+      const res = await deleteById(userId, reviewId);
       return res;
     } catch (err) {
       console.warn(`Error creating review: ${err}`);
