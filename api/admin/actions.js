@@ -1,69 +1,83 @@
 'use strict';
 const app = require('../app');
-const AdminReviewUtils = require('./utils');
-const { search, searchById, create, editById, deleteById } = new AdminReviewUtils();
+const AdminEntryUtils = require('./utils');
+const { search, searchById, create, editById, deleteById } = new AdminEntryUtils();
 
-class ReviewActions {
+class EntryActions {
   async search(request) {
-    const { searchTerm } = request.queryString;
+    const { SearchTerm } = request.queryString;
 
     try {
-      const res = await search(searchTerm);
+      const res = await search(SearchTerm);
       return res;
     } catch (err) {
-      console.warn(`Error getting reviews: ${err}`);
+      console.warn(`Error getting entries: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
 
   async searchById(request) {
-    const { reviewId } = request.pathParams;
+    const { EntryId } = request.pathParams;
     
     try {
-      return await searchById(reviewId);
+      return await searchById(EntryId);
     } catch (err) {
-      console.warn(`Error getting review: ${err}`);
+      console.warn(`Error getting entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     }
   };
 
   async create(request) {
-    const item = request.body;
-    const { userId } = request.pathParams;
+    const Item = request.body;
+    const { UserId } = request.pathParams;
 
     try {
-      const res = await create(userId, item);
+      const res = await create(UserId, Item);
       return res;
     } catch (err) {
-      console.warn(`Error creating review: ${err}`);
+      console.warn(`Error creating entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
 
   async editById(request) {
-    const { userId, reviewId } = request.pathParams;
-    const item = request.body;
+    const { UserId, EntryId } = request.pathParams;
+    const Item = request.body;
 
     try {
-      const res = await editById(userId, reviewId, item);
+      const res = await editById(UserId, EntryId, Item);
       return res;
     } catch (err) {
-      console.warn(`Error creating review: ${err}`);
+      console.warn(`Error creating entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
 
   async deleteById(request) {
-    const { userId, reviewId } = request.pathParams;
+    const { UserId, EntryId } = request.pathParams;
 
     try {
-      const res = await deleteById(userId, reviewId);
+      const res = await deleteById(UserId, EntryId);
       return res;
     } catch (err) {
-      console.warn(`Error creating review: ${err}`);
+      console.warn(`Error creating entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
+
+  async revalidate(request) {
+    const { UserId } = request.pathParams;
+    
+    try {
+      if (UserId === 'a5c723d5-89ba-4554-a09d-ee3870be41a3') {
+        await app.ApiResponse.revalidate(`http://localhost:3000/admin/${UserId}`);
+        return { revalidated: true };
+      }
+    } catch (err) {
+      console.warn(`Error revalidating: ${err}`);
+      return new app.ApiResponse(err.message, {}, 500);
+    }
+  };
 };
 
-module.exports = ReviewActions;
+module.exports = EntryActions;

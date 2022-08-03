@@ -1,6 +1,10 @@
 import escapeHTML from 'escape-html';
 import { Text, Node } from 'slate';
 
+export const toTitleCase = (str: string) => {
+  return str.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+}
+
 export const serializeToText = (nodes) => {
   return nodes.map(n => Node.string(n)).join('\n');
 };

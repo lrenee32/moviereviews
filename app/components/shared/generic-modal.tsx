@@ -1,14 +1,17 @@
-import { FunctionComponent, useState, forwardRef, useImperativeHandle, Ref } from 'react';
+import { FunctionComponent, useState, forwardRef, useImperativeHandle, Ref, ReactNode } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
 interface Props {
   header: string,
-  contentText: string,
+  content: ReactNode,
+  cancel: {
+    text: string,
+    action: () => void,
+  },
   confirmation: {
     text: string,
     action: () => void,
@@ -16,7 +19,7 @@ interface Props {
 }
 
 const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Props, ref: Ref) => {
-  const { header, contentText, confirmation } = props;
+  const { header, content, cancel, confirmation } = props;
   const [open, setOpen] = useState(false);
 
   const toggleModal = (state: boolean) => {
@@ -37,12 +40,10 @@ const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Pr
         {header}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {contentText}
-        </DialogContentText>
+        {content}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => toggleModal(false)}>Cancel</Button>
+        <Button onClick={() => cancel.action()}>{cancel.text}</Button>
         <Button onClick={() => confirmation.action()} autoFocus>
           {confirmation.text}
         </Button>

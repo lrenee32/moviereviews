@@ -1,17 +1,26 @@
 import { FunctionComponent } from 'react';
-import { getReviews, getReview } from '../../services/api/reviews/reviews';
-import { Reviews, Review } from '../../utils/types';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { ReadOnly } from 'components/shared/rich-text-editor/readonly';
+import { getReviews, getReview } from 'services/api/reviews/reviews';
+import { Entries, Entry, Review } from 'utils/types';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
 
 interface Props {
-  review: Review,
+  review: Entry<Review>,
 };
 
 const ReviewDetails: FunctionComponent<Props> = (props: Props) => {
   const { review } = props;
 
   return (
-    <div>{ review.Title }</div>
+    <Container fixed sx={{ paddingY: '100px' }}>
+      <Box>
+        <Typography variant="h2" marginBottom="15px">{review.Title}</Typography>
+      </Box>
+      <ReadOnly value={review.Content} />
+    </Container>
   );
 };
 
@@ -23,10 +32,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const reviews: Reviews = await getReviews('');
+  const reviews: Entries<Review> = await getReviews('');
 
-  const paths = reviews.all.map((review) => ({
-    params: { id: review.ReviewId },
+  const paths = reviews.All.map((review) => ({
+    params: { id: review.EntryId },
   }));
 
   return { paths, fallback: 'blocking' };

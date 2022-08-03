@@ -3,33 +3,41 @@ const { v4: uuidv4 } = require('uuid');
 const Database = require('../shared/db');
 const db = new Database();
 
-class ReviewUtils {
-  async search(searchTerm) {
+function sortEntries(arr) {
+  return arr.sort((a, b) => {
+    const dateA = new Date(a.Created);
+    const dateB = new Date(b.Created);
+    return dateA < dateB ? 1 : dateA > dateB ? -1 : 0;
+  });
+};
+
+class EntryUtils {
+  async search(SearchTerm) {
     try {
       const params = {
-        TableName: 'movie-reviews_user-reviews',
-        KeyConditionExpression: 'UserId = :userId',
-        FilterExpression: 'contains(Title, :title)',
+        TableName: 'movie-reviews_reviews',
+        KeyConditionExpression: 'UserId = :UserId',
+        FilterExpression: 'contains(Title, :Title)',
         ExpressionAttributeValues: { 
-          ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-          ':title': searchTerm,
+          ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
+          ':Title': SearchTerm,
         },
       };
       const res = await db.query(params);
-      return res.Items;
+      return sortEntries(res.Items);
     } catch (err) {
       return err || err.message;
     };
   };
 
-  async searchById(reviewId) {
+  async searchById(EntryId) {
     try {
       const params = {
-        TableName: 'movie-reviews_user-reviews',
-        KeyConditionExpression: 'UserId = :userId AND ReviewId = :reviewId',
+        TableName: 'movie-reviews_reviews',
+        KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
         ExpressionAttributeValues: { 
-          ':userId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-          ':reviewId': reviewId,
+          ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
+          ':EntryId': EntryId,
         },
       };
       const res = await db.query(params);
@@ -39,19 +47,18 @@ class ReviewUtils {
     };
   };
 
-  async create(userId, item) {
+  async create(UserId, Item) {
     try {
       const params = {
-        TableName: 'movie-reviews_user-reviews',
+        TableName: 'movie-reviews_reviews',
         Item: {
-          UserId: userId,
-          ReviewId: uuidv4(),
-          Created: new Date().toISOString().split('T')[0],
-          Title: item.title,
-          Year: item.year,
-          TMDBId: item.tmdbId,
-          Rating: item.rating,
-          Review: item.review,
+          EntryId: uuidv4(),
+          UserId: UserId,
+          Title: Item.Title,
+          Content: Item.Content,
+          Details: Item.Details,
+          Created: Date.now(),
+          Tags: Item.Tags,
         },
       };
 
@@ -62,19 +69,18 @@ class ReviewUtils {
     };
   };
 
-  async editById(userId, reviewId, item) {
+  async editById(UserId, EntryId, Item) {
     try {
       const params = {
-        TableName: 'movie-reviews_user-reviews',
+        TableName: 'movie-reviews_reviews',
         Item: {
-          UserId: userId,
-          ReviewId: reviewId,
-          Created: item.Created,
-          Title: item.Title,
-          Year: item.Year,
-          TMDBId: item.TMDBId,
-          Rating: item.Rating,
-          Review: item.Review,
+          EntryId: EntryId,
+          UserId: UserId,
+          Title: Item.Title,
+          Content: Item.Content,
+          Details: Item.Details,
+          Created: Item.Created,
+          Tags: Item.Tags,
         },
       };
 
@@ -85,11 +91,11 @@ class ReviewUtils {
     };
   };
 
-  async deleteById(userId, id) {
+  async deleteById(UserId, EntryId) {
     try {
       const params = {
-        TableName: 'movie-reviews_user-reviews',
-        Key: { "UserId": userId, "ReviewId": id },
+        TableName: 'movie-reviews_reviews',
+        Key: { "UserId": UserId, "EntryId": EntryId },
       };
       await db.delete(params);
       return params.Key;
@@ -99,4 +105,4 @@ class ReviewUtils {
   };
 }
 
-module.exports = ReviewUtils;
+module.exports = EntryUtils;

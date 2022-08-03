@@ -1,30 +1,30 @@
-import { Review } from 'utils/types';
+import { Entry, Review } from 'utils/types';
 import { API } from '../api-service';
 
-export const getReviews = (userId: string | string[] | undefined, searchTerm: string) => {
+export const getEntries = (userId: Entry<Review>["UserId"], SearchTerm: string) => {
   return API({
     method: 'GET',
-    path: `/admin/${userId}/reviews`,
+    path: `/admin/${userId}/entries`,
     params: new URLSearchParams({
-      searchTerm,
+      SearchTerm,
     }),
   });
 };
 
-export const getReview = (userId: string | string[] | undefined, reviewId: string | string[] | undefined) => {
+export const getEntry = (userId: Entry<Review>["UserId"], entryId: Entry<Review>["EntryId"]) => {
   return API({
     method: 'GET',
-    path: `/admin/${userId}/review/${reviewId}`,
+    path: `/admin/${userId}/entry/${entryId}`,
   });
 };
 
-export const createReview = (
-  userId: string | string[] | undefined,
-  body: Partial<Review>,
+export const createEntry = (
+  userId: Entry<Review>["UserId"],
+  body: Partial<Entry<Partial<Review>>>,
 ) => {
   return API({
     method: 'POST',
-    path: `/admin/${userId}/review/create`,
+    path: `/admin/${userId}/entry/create`,
     body,
     headers: {
       'Content-Type': 'application/json',
@@ -32,14 +32,14 @@ export const createReview = (
   });
 };
 
-export const updateReview = (
-  userId: string | string[] | undefined,
-  reviewId: string | string[] | undefined,
-  body: Partial<Review>,
+export const editEntry = (
+  userId: Entry<Review>["UserId"],
+  entryId: Entry<Review>["EntryId"],
+  body: Partial<Entry<Review>>,
 ) => {
   return API({
     method: 'PUT',
-    path: `/admin/${userId}/review/edit/${reviewId}`,
+    path: `/admin/${userId}/entry/edit/${entryId}`,
     body,
     headers: {
       'Content-Type': 'application/json',
@@ -47,35 +47,27 @@ export const updateReview = (
   });
 };
 
-export const deleteReview = (
-  userId: string | string[] | undefined,
-  reviewId: string | string[] | undefined,
+export const deleteEntry = (
+  userId: Entry<Review>["UserId"],
+  entryId: Entry<Review>["EntryId"],
 ) => {
   return API({
     method: 'DELETE',
-    path: `/admin/${userId}/review/delete/${reviewId}`,
+    path: `/admin/${userId}/entry/delete/${entryId}`,
   });
 };
 
-// export default {
-//   getReviews(searchTerm) {
-//     return API.get(baseUri, { searchTerm })
-//       .then(res => res.map(i => format(i)));
-//   },
-//   createReview(params) {
-//     return API.post(baseUri, params)
-//       .then(res => format(res));
-//   },
-//   editReview(id, params) {
-//     return API.put(`${baseUri}/${id}`, params)
-//       .then(res => format(res));
-//   },
-//   deleteReview(id) {
-//     return API.delete(`${baseUri}/${id}`);
-//   },
-//   searchSuggestions(params) {
-//     params.api_key = TMBD_API_KEY;
-//     return axios.get(`${TMDB_URL}/search/movie`, { params })
-//       .then(res => res.data);
-//   },
-// };
+export const searchSuggestions = (searchTerm: string) => {
+  return fetch('https://api.themoviedb.org/3/search/movie?api_key=51d3b35a03189901a4907665233f6831&query=' + searchTerm)
+    .then(res => res.json())
+    .then(json => json.results)
+};
+
+export const revalidate = (
+  userId: Entry<Review>["UserId"]
+) => {
+  return API({
+    method: 'GET',
+    path: `/admin/${userId}/revalidate`,
+  });
+};

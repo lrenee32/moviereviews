@@ -1,59 +1,135 @@
 import { FunctionComponent, useState, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { Review, Reviews } from '../../../utils/types';
-import { deleteReview, getReviews } from '../../../services/api/admin/admin';
+import { GetStaticProps, GetStaticPaths } from 'next/types';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import DialogContentText from '@mui/material/DialogContentText';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box';
 import MaterialTable from 'material-table';
-import GenericModal from '../../../components/shared/generic-modal';
-import { serializeToText } from '../../../utils/utils';
-import { GetStaticProps, GetStaticPaths } from 'next/types';
+import GenericModal from 'components/shared/generic-modal';
+import { AutocompleteSearch } from 'components/shared/autocomplete-search';
+import { Tags } from 'components/shared/tags';
+import { RichTextEditor } from 'components/shared/rich-text-editor/rich-text-editor';
+import { Entry, Entries, Review } from 'utils/types';
+import { serializeToText, toTitleCase } from 'utils/utils';
+import { createEntry, editEntry, deleteEntry, getEntries, searchSuggestions, revalidate } from 'services/api/admin/admin';
 
-type ActionTypes = 'edit' | 'delete';
+type ActionTypes = 'create' | 'edit' | 'delete';
 
 interface Props {
-  userId: Review["UserId"],
-  reviews: Reviews["all"],
+  userId: Entry<Review>["UserId"],
+  entries: Entries<Review>["All"],
 };
 
 const AdminProfile: FunctionComponent<Props> = (props: Props) => {
-  const router = useRouter();
   const modalRef = useRef<HTMLDivElement>();
-  const [selected, setSelected] = useState<Review | null>(null);
-  const { userId, reviews } = props;
-  reviews.map(review => {
-    if (typeof review.Review === 'object') {
-      review.Review = serializeToText(review.Review);
-    }
-  });
+  const { userId, entries } = props;
 
-  const useDeleteReview = () => {
-    if (selected) {
-      return deleteReview(userId, selected.ReviewId)
-      .then(async () => {
-        await getReviews(userId, '');
-        modalRef?.current?.toggleModal(false);
-      });
-    }
+  const initialValues: {
+    action: ActionTypes,
+    entryId: Entry<Review>["EntryId"],
+    title: Entry<Review>["Title"],
+    imageURL: Review["FeaturedImage"],
+    content: Entry<Review>["Content"],
+    details: Partial<Entry<Review>["Details"]>,
+    userRating: Review["UserRating"],
+    tags: Entry<Review>["Tags"],
+    created: Entry<Review>["Created"],
+  } = {
+    action: 'create',
+    entryId: '',
+    title: '',
+    imageURL: '',
+    content: [{type: 'paragraph', children: [{text: ''}]}],
+    details: null,
+    userRating: 0,
+    tags: [],
+    created: 0,
+  };
+  
+  const [action, setAction] = useState<ActionTypes>(initialValues.action);
+  const [entryId, setEntryId] = useState<Entry<Review>["EntryId"]>(initialValues.entryId);
+  const [title, setTitle] = useState<Entry<Review>["Title"]>(initialValues.title);
+  const [imageURL, setImageURL] = useState<Review["FeaturedImage"]>(initialValues.imageURL);
+  const [content, setContent] = useState<Entry<Review>["Content"]>(initialValues.content);
+  const [details, setDetails] = useState<Partial<Entry<Review>["Details"]>>(initialValues.details);
+  const [userRating, setUserRating] = useState<Review["UserRating"]>(initialValues.userRating)
+  const [tags, setTags] = useState<Entry<Review>["Tags"]>(initialValues.tags);
+  const [created, setCreated] = useState<Entry<Review>["Created"]>(initialValues.created);
+  
+  if (entries && entries.length > 0) {
+    entries.map(entry => {
+      if (typeof entry.Content === 'object') {
+        entry.ContentText = serializeToText(entry.Content);
+      }
+    });
+  }
+
+  const reset = () => {
+    setAction(initialValues.action);
+    setTitle(initialValues.title);
+    setImageURL(initialValues.imageURL);
+    setContent(initialValues.content);
+    setDetails(initialValues.details);
+    setUserRating(initialValues.userRating);
+    setTags(initialValues.tags);
   };
 
-  const actionEvent = (review: Review, action: ActionTypes) => {
-    if (action === 'delete' && modalRef.current) {
-      setSelected(review);
-      return modalRef.current.toggleModal(true);
+  const actionEvent = (entry: Entry<Review> | null, action: ActionTypes) => {
+    setAction(action);
+    if ((action === 'edit' || action === 'delete') && entry) {
+      setEntryId(entry.EntryId);
+      setTitle(entry.Title);
+      setImageURL(entry.Details!.FeaturedImage);
+      setContent(entry.Content);
+      setDetails(entry.Details);
+      setUserRating(entry.Details!.UserRating);
+      setTags(entry.Tags);
+      setCreated(entry.Created);
     }
-    return router.push(`${userId}/review/${action}/${review.ReviewId}`);
+    return modalRef?.current?.toggleModal(true);
+  };
+
+  const cancelEvent = () => {
+    reset();
+    return modalRef?.current?.toggleModal(false);
+  };
+
+  const confirmEvent = () => {
+    const body: Partial<Entry<Partial<Review>>> = {
+      Title: title,
+      Content: content,
+      Details: {...details, UserRating: userRating, FeaturedImage: imageURL},
+      Tags: tags,
+    };
+    switch(action) {
+      case 'create':
+        return createEntry(userId, body).then(() => {
+          return revalidate(userId).then(() => cancelEvent());
+        });
+      case 'edit':
+        const json: Partial<Entry<Partial<Review>>> = {...body, EntryId: entryId, Created: created};
+        return editEntry(userId, entryId, json).then(() => {
+          return revalidate(userId).then(() => cancelEvent());
+        });
+      case 'delete':
+        return deleteEntry(userId, entryId).then(() => {
+          return revalidate(userId).then(() => cancelEvent());
+        });
+    }
   };
 
   const tableData = {
-    data: reviews,
+    data: entries,
     columns: [
       { title: 'Title', field: 'Title' },
-      { title: 'Review', field: 'Review' },
+      { title: 'Content', field: 'ContentText' },
     ],
     actions: [
-      { icon: 'edit', onClick: (_event, row: Review) => actionEvent(row, 'edit')},
-      { icon: 'delete', iconProps: { color: 'error' }, onClick: (_event, row: Review) => actionEvent(row, 'delete')},
+      { icon: 'edit', onClick: (_event, row: Entry<Review>) => actionEvent(row, 'edit')},
+      { icon: 'delete', iconProps: { color: 'error' }, onClick: (_event, row: Entry<Review>) => actionEvent(row, 'delete')},
     ],
     options: {
       actionsColumnIndex: -1,
@@ -65,35 +141,126 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     style: {
       borderRadius: '10px',
     },
-  }
+  };
+
+  const generateModalContent = (action: ActionTypes) => {
+    switch(action) {
+      case 'create':
+      case 'edit':
+        return (
+          <>
+            <TextField
+              fullWidth
+              label="Title"
+              id="title"
+              sx={{ marginBottom: '30px', marginTop: '5px' }}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              label="Image URL"
+              id="image-url"
+              sx={{ marginBottom: '30px' }}
+              value={imageURL}
+              onChange={(e) => setImageURL(e.target.value)}
+            />
+            {action === 'create' &&
+            <AutocompleteSearch
+              optionsSearch={searchSuggestions}
+              selectionEvent={(e) => setDetails({
+                TMDBRating: e.vote_average,
+                FilmTitle: e.title,
+                FilmYear: e.release_date,
+                FilmOverview: e.overview,
+                FilmPoster: e.poster_path,
+              })}
+            />
+            }
+            <Box
+              sx={{
+                position: 'relative',
+                border: '1px solid rgba(255,255,255,0.23)',
+                borderRadius: '4px',
+                marginBottom: '30px',
+                padding: '16.5px 14px',
+                '&:hover': {
+                  borderColor: '#FFFFFF',
+                },
+                '&:active, &:active > div:first-of-type': {
+                  borderColor: '#E91E73',
+                  color: '#E91E73',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  position: 'absolute',
+                  transform: 'scale(0.75)',
+                  top: '-12px',
+                  left: '0',
+                  padding: '0 7.5px',
+                  backgroundColor: '#121212',
+                  backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
+                }}
+              >
+                Rating
+              </Box>
+              <Rating
+                name="rating-create"
+                getLabelText={() => 'Rating'}
+                value={userRating}
+                max={10}
+                precision={0.5}
+                onChange={(_e, value) => setUserRating(value!)}
+              />
+            </Box>
+            <RichTextEditor value={content} setValue={setContent} />
+            <Tags selectionEvent={(e) => setTags(e)} tags={tags} max={5} />
+          </>
+        )
+      case 'delete':
+        return (
+          <DialogContentText>
+            {`Are you sure you want to delete the entry "${title}"?`}
+          </DialogContentText>
+        );
+      default:
+        break;
+    }
+  };
   
   return (
-    <Container sx={{ marginY: '100px' }}>
-      <Typography variant="h3" marginBottom={'30px'}>Manage Reviews</Typography>
-      {(reviews && reviews.length > 0) && (
-        <MaterialTable
-          columns={tableData.columns}
-          data={tableData.data}
-          actions={tableData.actions}
-          options={tableData.options}
-          style={tableData.style}
-        />
-      )}
+    <>
+      <Container sx={{ marginY: '100px' }}>
+        <Typography variant="h3" marginBottom={'30px'}>Manage Entries</Typography>
+        <Button onClick={() => actionEvent(null, 'create')} variant="outlined">Create Entry</Button>
+        {(entries && entries.length > 0) && (
+          <MaterialTable
+            columns={tableData.columns}
+            data={tableData.data}
+            actions={tableData.actions}
+            options={tableData.options}
+            style={tableData.style}
+          />
+        )}
+      </Container>
       <GenericModal
         ref={modalRef}
-        header="Confirmation"
-        contentText={`Are you sure you want to delete "${selected?.Title}"?`}
-        confirmation={{ text: 'Confirm', action: useDeleteReview }}
+        header={`${toTitleCase(action)} Entry`}
+        content={generateModalContent(action)}
+        cancel={{ text: 'Cancel', action: cancelEvent}}
+        confirmation={{ text: 'Confirm', action: confirmEvent }}
       />
-    </Container>
+    </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const userId = context.params?.userId;
-  const reviews: Reviews = await getReviews(userId, '');
+  const userId: Entry<Review>["UserId"] = context.params?.userId;
+  const entries: Entries<Review> = await getEntries(userId, '');
 
-  return { props: { userId, reviews } };
+  return { props: { userId, entries } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

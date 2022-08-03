@@ -26,12 +26,14 @@ export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   return (
-    <Box border="1px solid rgba(255, 255, 255, 0.23)" borderRadius="4px">
+    <Box border="1px solid rgba(255, 255, 255, 0.23)" borderRadius="4px" marginBottom="30px">
       <Slate
         editor={editor}
         value={value}
-        onChange={value => {
-          setValue(value);
+        onChange={v => {
+          if (v !== value) {
+            setValue(v);
+          }
         }}
       >
         <Toolbar />

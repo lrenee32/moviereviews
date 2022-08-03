@@ -5,10 +5,10 @@ const { search, searchById } = new ReviewUtils();
 
 class ReviewActions {
   async search(request) {
-    const { searchTerm } = request.queryString;
+    const { SearchTerm } = request.queryString;
 
     try {
-      const res = await search(searchTerm);
+      const res = await search(SearchTerm);
       return res;
     } catch (err) {
       console.warn(`Error getting reviews: ${err}`);
@@ -17,10 +17,10 @@ class ReviewActions {
   };
 
   async searchById(request) {
-    const { id } = request.pathParams;
+    const { ReviewId } = request.pathParams;
     
     try {
-      return await searchById(id);
+      return await searchById(ReviewId);
     } catch (err) {
       console.warn(`Error getting review: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);

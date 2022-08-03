@@ -7,7 +7,7 @@ module.exports = (api) => {
     return search(request);
   });
 
-  api.get('/review/:id', request => {
+  api.get('/review/:ReviewId', request => {
     return searchById(request);
   });
 };

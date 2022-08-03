@@ -1,40 +1,78 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent, useState, useEffect, useMemo } from 'react';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import { Review } from 'utils/types';
+import throttle from 'lodash/throttle';
 
 interface Props {
-  url: string,
-  onChangeAction: () => void,
+  optionsSearch: (searchTerm: string) => Promise<any>,
+  selectionEvent: (e) => void,
 };
 
 export const AutocompleteSearch: FunctionComponent<Props> = (props: Props) => {
-  const { url, onChangeAction } = props;
-  const [results, setResults] = useState([]);
+  const { optionsSearch, selectionEvent } = props;
+  const [value, setValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState([]);
+
+  const fetchOptions = useMemo(
+    () => {
+      return throttle(
+        async () => {
+          console.log('hit');
+          const res = await optionsSearch(inputValue);
+          setOptions(res);
+        },
+        2000,
+      );
+    },
+    [inputValue],
+  );
 
   useEffect(() => {
-    fetch(url)
-    .then(res => res.json())
-    .then(json => setResults(json.data));
-  }, []);
+    if (inputValue === '') {
+      setOptions(value ? [value] : []);
+      return undefined;
+    }
+
+    fetchOptions();
+  }, [inputValue]);
 
   return (
     <Stack>
       <Autocomplete
-        onChange={onChangeAction}
+        sx={{ marginBottom: '30px'}}
         getOptionLabel={(results: Review["Details"]) => results.title}
-        options={results}
-        isOptionEqualToValue={(option, value) => option.title === value.title}
+        filterOptions={(x) => x}
+        options={options}
         noOptionsText="No title found"
-        renderOption={(props, results) => (
-          <Box component="li" {...props} key={results.id}>
-            {results.title}
-          </Box>
-        )}
+        onChange={(event, newValue) => {
+          setOptions(newValue ? [newValue, ...options] : options);
+          if (newValue) {
+            selectionEvent(newValue);
+          }
+        }}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
         renderInput={(props) => (
           <TextField {...props} label="Search for a film title" />
+        )}
+        renderOption={(props, results) => (
+          <Box component="li" {...props} key={results.id}>
+            <Avatar
+              src={`https://image.tmdb.org/t/p/w300${results.poster_path}`}
+              variant="square"
+              sx={{ height: '75px', width: '50px', marginRight: '15px' }}
+            />
+            <Box>
+              <Box>{results.title}</Box>
+              <Box>{new Date(results.release_date).getFullYear()}</Box>
+            </Box>
+          </Box>
         )}
       />
     </Stack>

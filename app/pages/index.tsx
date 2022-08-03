@@ -1,11 +1,11 @@
 import { FunctionComponent } from 'react';
 import { Hero, Content } from '../components';
 import { getReviews } from '../services/api/reviews/reviews';
-import { Reviews } from '../utils/types';
+import { Entries, Review } from '../utils/types';
 import { GetStaticProps } from 'next/types';
 
 interface Props {
-  reviews: Reviews,
+  reviews: Entries<Review>,
 };
 
 export const Index: FunctionComponent<Props> = (props: Props) => {
@@ -20,7 +20,7 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const reviews: Reviews = await getReviews('');
+  const reviews: Entries<Review> = await getReviews('');
 
   return { props: { reviews } };
 };
