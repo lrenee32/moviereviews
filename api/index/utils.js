@@ -10,7 +10,7 @@ function sortEntries(arr) {
   });
 
   return {
-    Featured: sorted.filter(i => i.FeaturedImage !== ''),
+    Featured: sorted.filter(i => i.Featured),
     All: sorted,
   }
 };

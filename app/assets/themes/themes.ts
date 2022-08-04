@@ -1,6 +1,6 @@
 import { Theme } from "@mui/material";
 
-const VARIABLES = {
+export const VARIABLES = {
   bgColor: '#0E0E0E',
   primaryColor: '#E91E63',
   primaryTextColor: '#FFFFFF',
@@ -59,6 +59,32 @@ export const global = (theme: Theme) => {
           },
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: ({ ownerState }) => ({
+            ...(ownerState.size === 'large' && {
+              height: 'auto',
+              borderRadius: '40px',
+              '& .MuiChip-label': {
+                fontSize: '16px',
+                padding: '11px 30px'
+              },
+            }),
+            ...(ownerState.variant === 'outlined' && {
+              color: 'rgba(255, 255, 255, 0.16)',
+              '&:hover': {
+                color: '#FFFFFF',
+              },
+            }),
+          }),
+        },
+      },
     },
   };
 };
+
+declare module '@mui/material/Chip' {
+  interface ChipPropsSizeOverrides {
+    large: true;
+  }
+}

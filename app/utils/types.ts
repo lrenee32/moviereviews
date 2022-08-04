@@ -1,5 +1,7 @@
 import { Descendant } from 'slate';
 
+export type EntryTypes = 'review' | 'article';
+
 export interface Entry<T> {
   EntryId: string,
   UserId: string | string[] | undefined,
@@ -8,6 +10,8 @@ export interface Entry<T> {
   Details: T | null,
   Created: number,
   Tags: string[],
+  Featured: boolean,
+  Type: EntryTypes,
 };
 
 export interface Entries<T> {
