@@ -15,6 +15,13 @@ export const global = (theme: Theme) => {
       },
     },
     components: {
+      MuiAppBar: {
+        styleOverrides: {
+          positionAbsolute: {
+            boxShadow: 'none',
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: ({ ownerState }) => ({

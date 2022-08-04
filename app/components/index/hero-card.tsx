@@ -8,6 +8,7 @@ import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { TypographyVariant } from '@mui/material';
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 
 interface Props {
   review: Entry<Review>,
@@ -17,6 +18,8 @@ interface Props {
 
 export const HeroCard: FunctionComponent<Props> = (props: Props) => {
   const { review, headingVariant, showDescription } = props;
+
+  console.log(formatDistanceToNowStrict(review.Created));
 
   return (
     <Card
@@ -50,9 +53,10 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
           maxWidth: '600px',
         }}
       >
-        <Box marginBottom="10px">
+        <Box display="flex" marginBottom="10px" alignItems="center">
           <Chip label={`IMDB: ${review.Details!.TMDBRating}`} color="primary" sx={{ marginRight: '5px' }} />
-          <Chip label={`Personal: ${review.Details!.UserRating}`} color="primary" />
+          <Chip label={`Personal: ${review.Details!.UserRating}`} color="primary" sx={{ marginRight: '5px' }} />
+          <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(review.Created) } ago</Typography>
         </Box>
         <Typography variant={headingVariant} marginBottom="10px">{ review.Title }</Typography>
         <Typography marginBottom="15px">{ showDescription && review.Details!.FilmOverview }</Typography>

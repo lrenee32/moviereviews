@@ -6,12 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const theme = createTheme(global(createTheme()));
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
   
   return (
     <ThemeProvider theme={theme}>

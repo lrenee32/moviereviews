@@ -23,43 +23,45 @@ export const Content: FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <Container fixed sx={{ paddingY: '100px' }}>
-      <Box>
-        <Typography variant="h3" marginBottom="15px">Highlights Today</Typography>
-        <Typography variant="h4" marginBottom="70px" sx={{ opacity: '.5' }}>Be sure not to miss these reviews.</Typography>
-      </Box>
-      <Grid container spacing={2}>
-        {Featured.map((review: Entry<Review>) => {
-          return (
-            <Grid key={review.EntryId} item xs={6} md={3}>
-              <Card>
-                <CardActionArea href={`/review/${review.EntryId}`}>
-                  <CardMedia
-                    component="img"
-                    height="100%"
-                    image={getPosterImage(review.Details!.FilmPoster)}
-                    alt={`${review.Title}-${review.EntryId}`}
-                  />
-                </CardActionArea>
-                <CardContent sx={{ paddingX: '0' }}>
-                  <Typography variant="h6">{review.Title}</Typography>
-                  <Box>
-                    <Chip
-                      label={ `IMDB: ${review.Details!.TMDBRating}` }
-                      color="primary"
-                      sx={{ marginRight: '5px' }}
+    <Box sx={{ background: 'linear-gradient(to right, #e91e63 0%, #121212 20%, #121212 80%, #e91e63 100%)' }}>
+      <Container fixed sx={{ paddingY: '100px', backgroundColor: '#121212' }}>
+        <Box>
+          <Typography variant="h3" marginBottom="15px">Highlights Today</Typography>
+          <Typography variant="h4" marginBottom="70px" sx={{ opacity: '.5' }}>Be sure not to miss these reviews.</Typography>
+        </Box>
+        <Grid container spacing={2}>
+          {Featured.map((review: Entry<Review>) => {
+            return (
+              <Grid key={review.EntryId} item xs={6} md={3}>
+                <Card>
+                  <CardActionArea href={`/review/${review.EntryId}`}>
+                    <CardMedia
+                      component="img"
+                      height="100%"
+                      image={getPosterImage(review.Details!.FilmPoster)}
+                      alt={`${review.Title}-${review.EntryId}`}
                     />
-                    <Chip
-                      label={ `Personal: ${review.Details!.UserRating}` }
-                      color="primary"
-                    />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Container>
+                  </CardActionArea>
+                  <CardContent sx={{ paddingX: '0' }}>
+                    <Typography variant="h6">{review.Title}</Typography>
+                    <Box>
+                      <Chip
+                        label={ `IMDB: ${review.Details!.TMDBRating}` }
+                        color="primary"
+                        sx={{ marginRight: '5px' }}
+                      />
+                      <Chip
+                        label={ `Personal: ${review.Details!.UserRating}` }
+                        color="primary"
+                      />
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
+    </Box>
   );
 };
