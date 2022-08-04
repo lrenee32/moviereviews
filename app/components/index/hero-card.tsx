@@ -19,8 +19,6 @@ interface Props {
 export const HeroCard: FunctionComponent<Props> = (props: Props) => {
   const { review, headingVariant, showDescription } = props;
 
-  console.log(formatDistanceToNowStrict(review.Created));
-
   return (
     <Card
       variant="outlined"

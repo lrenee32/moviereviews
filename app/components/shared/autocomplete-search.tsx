@@ -22,7 +22,6 @@ export const AutocompleteSearch: FunctionComponent<Props> = (props: Props) => {
     () => {
       return throttle(
         async () => {
-          console.log('hit');
           const res = await optionsSearch(inputValue);
           setOptions(res);
         },

@@ -1,5 +1,7 @@
 import { FunctionComponent, useState, useRef } from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
+import NextLink from 'next/link';
+import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -7,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
-import MaterialTable from 'material-table';
+import MaterialTable, { MaterialTableProps } from 'material-table';
 import GenericModal from 'components/shared/generic-modal';
 import { AutocompleteSearch } from 'components/shared/autocomplete-search';
 import { Tags } from 'components/shared/tags';
@@ -15,6 +17,7 @@ import { RichTextEditor } from 'components/shared/rich-text-editor/rich-text-edi
 import { Entry, Entries, Review } from 'utils/types';
 import { serializeToText, toTitleCase } from 'utils/utils';
 import { createEntry, editEntry, deleteEntry, getEntries, searchSuggestions, revalidate } from 'services/api/admin/admin';
+
 
 type ActionTypes = 'create' | 'edit' | 'delete';
 
@@ -58,14 +61,6 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const [userRating, setUserRating] = useState<Review["UserRating"]>(initialValues.userRating)
   const [tags, setTags] = useState<Entry<Review>["Tags"]>(initialValues.tags);
   const [created, setCreated] = useState<Entry<Review>["Created"]>(initialValues.created);
-  
-  if (entries && entries.length > 0) {
-    entries.map(entry => {
-      if (typeof entry.Content === 'object') {
-        entry.ContentText = serializeToText(entry.Content);
-      }
-    });
-  }
 
   const reset = () => {
     setAction(initialValues.action);
@@ -121,11 +116,24 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     }
   };
 
-  const tableData = {
+  const tableData: MaterialTableProps<Entry<Review>> = {
     data: entries,
     columns: [
-      { title: 'Title', field: 'Title' },
-      { title: 'Content', field: 'ContentText' },
+      {
+        title: 'Title',
+        field: 'Title',
+        render: (rowData: Entry<Review>) => (
+          <NextLink href={`/review/${rowData.EntryId}`} passHref>
+            <Link>{rowData.Title}</Link>
+          </NextLink>
+        ),
+      },
+      {
+        title: 'Content',
+        field: 'ContentText',
+        render: (rowData: Entry<Review>) => serializeToText(rowData.Content),
+        cellStyle: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '1px' }
+      },
     ],
     actions: [
       { icon: 'edit', onClick: (_event, row: Entry<Review>) => actionEvent(row, 'edit')},
