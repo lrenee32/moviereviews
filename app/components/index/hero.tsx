@@ -5,11 +5,11 @@ import { HeroCard } from '../../components/index/hero-card';
 import { Theme, useMediaQuery } from '@mui/material';
 
 interface Props {
-  reviews: Entries<Review>,
+  entries: Entries<Review>,
 };
 
 export const Hero: FunctionComponent<Props> = (props: Props) => {
-  const { Featured } = props.reviews;
+  const { Featured } = props.entries;
   const isXL = useMediaQuery((theme: Theme) => theme.breakpoints.up('xl'));
   const isSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
@@ -17,7 +17,7 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
     <Grid container height={'90vh'}>
       <Grid item xs={12} md={6} xl={8}>
         <HeroCard
-          review={Featured[0]}
+          entry={Featured[0]}
           headingVariant="h2"
           showDescription
         />
@@ -26,7 +26,7 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
         <Grid item xs={0} md={6} xl={4}>
           <Grid item xs={12} height={'60%'}>
             <HeroCard
-              review={Featured[1]} 
+              entry={Featured[1]} 
               headingVariant="h3"
               showDescription={isXL}
             />
@@ -34,13 +34,13 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
           <Grid container height={'40%'}>
             <Grid item xs={6}>
               <HeroCard
-                review={Featured[2]}
+                entry={Featured[2]}
                 headingVariant="h4"
               />
             </Grid>
             <Grid item xs={6}>
               <HeroCard
-                review={Featured[3]}
+                entry={Featured[3]}
                 headingVariant="h4"
               />
             </Grid>

@@ -11,7 +11,7 @@ function sortEntries(arr) {
   });
 };
 
-class EntryUtils {
+class AdminEntryUtils {
   async search(SearchTerm) {
     try {
       const params = {
@@ -55,6 +55,9 @@ class EntryUtils {
           EntryId: uuidv4(),
           UserId: UserId,
           Title: Item.Title,
+          Type: Item.Type,
+          Featured: Item.Featured,
+          SitePick: Item.SitePick,
           Content: Item.Content,
           Details: Item.Details,
           Created: Date.now(),
@@ -77,6 +80,9 @@ class EntryUtils {
           EntryId: EntryId,
           UserId: UserId,
           Title: Item.Title,
+          Type: Item.Type,
+          Featured: Item.Featured,
+          SitePick: Item.SitePick,
           Content: Item.Content,
           Details: Item.Details,
           Created: Item.Created,
@@ -105,4 +111,4 @@ class EntryUtils {
   };
 }
 
-module.exports = EntryUtils;
+module.exports = AdminEntryUtils;

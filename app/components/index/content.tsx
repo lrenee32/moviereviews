@@ -12,31 +12,33 @@ import Chip from '@mui/material/Chip';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { VARIABLES } from 'assets/themes/themes';
 
-type ActionTypes = 'recent' | 'featured' | 'top';
+type ActionTypes = 'recent' | 'pick' | 'top';
 
 interface Props {
-  reviews: Entries<Review>,
+  entries: Entries<Review>,
 };
 
 export const Content: FunctionComponent<Props> = (props: Props) => {
-  const { All } = props.reviews;
+  const { All } = props.entries;
   const clonedArr = [...All];
   const [filterType, setFilterType] = useState<ActionTypes>('recent');
-  const [filtered, setFiltered] = useState<Entry<Review>[]>(clonedArr.splice(0, 4));
+  const [filtered, setFiltered] = useState<Entry<Review>[]>(clonedArr.filter(i => i.Type === 'review').splice(0, 4));
 
   const filterAction = (action: ActionTypes) => {
-    const arr = [...All];
+    const arr = [...All].filter(i => i.Type === 'review');
     setFilterType(action);
     switch (action) {
       case 'recent':
         setFiltered(arr.splice(0, 4));
         break;
-      case 'featured':
-        setFiltered(arr.filter(i => i.Featured));
+      case 'pick':
+        setFiltered(arr.filter(i => i.SitePick));
         break;
       case 'top':
         setFiltered(arr.sort((a, b) => (b.Details!.UserRating - a.Details!.UserRating)).splice(0, 4));
         break;
+      case 'pick':
+        setFiltered(arr)
     }
   };
 
@@ -61,45 +63,45 @@ export const Content: FunctionComponent<Props> = (props: Props) => {
               size="large"
             />
             <Chip
+              label="Site Picks"
+              sx={{ ml: '5px' }}
+              onClick={() => filterAction('pick')}
+              variant={filterType === 'pick' ? 'filled': 'outlined'}
+              size="large"
+            />
+            <Chip
               label="Top Rated"
               sx={{ ml: '5px' }}
               onClick={() => filterAction('top')}
               variant={filterType === 'top' ? 'filled': 'outlined'}
               size="large"
             />
-            <Chip
-              label="Featured"
-              sx={{ ml: '5px' }}
-              onClick={() => filterAction('featured')}
-              variant={filterType === 'featured' ? 'filled': 'outlined'}
-              size="large"
-            />
           </Box>
         </Box>
         <Grid container spacing={2}>
-          {filtered.map((review: Entry<Review>) => {
+          {filtered.map((entry: Entry<Review>) => {
             return (
-              <Grid key={review.EntryId} item xs={6} md={3}>
+              <Grid key={entry.EntryId} item xs={6} md={3}>
                 <Card sx={{ backgroundImage: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
-                  <CardActionArea href={`/review/${review.EntryId}`}>
+                  <CardActionArea href={`/entry/${entry.EntryId}`}>
                     <CardMedia
                       component="img"
                       height="100%"
-                      image={getPosterImage(review.Details!.FilmPoster)}
-                      alt={`${review.Title}-${review.EntryId}`}
+                      image={getPosterImage(entry.Details!.FilmPoster)}
+                      alt={`${entry.Title}-${entry.EntryId}`}
                     />
                   </CardActionArea>
                   <CardContent sx={{ paddingX: '0' }}>
-                    <Typography lineHeight="1" mb="2.5px" variant="h6">{review.Title}</Typography>
-                    <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase', mb: '5px' }}>| { formatDistanceToNowStrict(review.Created) } ago</Typography>
+                    <Typography lineHeight="1" mb="2.5px" variant="h6">{entry.Title}</Typography>
+                    <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase', mb: '5px' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
                     <Box>
                       <Chip
-                        label={ `IMDB: ${review.Details!.TMDBRating}` }
+                        label={ `IMDB: ${entry.Details!.TMDBRating}` }
                         color="primary"
                         sx={{ marginRight: '5px' }}
                       />
                       <Chip
-                        label={ `Personal: ${review.Details!.UserRating}` }
+                        label={ `Personal: ${entry.Details!.UserRating}` }
                         color="primary"
                       />
                     </Box>

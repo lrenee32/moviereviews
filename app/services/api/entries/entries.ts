@@ -1,18 +1,18 @@
 import { API } from "../api-service";
 
-export const getReviews = (SearchTerm: string) => {
+export const getEntries = (SearchTerm: string) => {
   return API({
     method: 'GET',
-    path: '/reviews',
+    path: '/entries',
     params: new URLSearchParams({
       SearchTerm,
     }),
   });
 };
 
-export const getReview = (ReviewId: string | string[] | undefined) => {
+export const getEntry = (EntryId: string | string[] | undefined) => {
   return API({
     method: 'GET',
-    path: `/review/${ReviewId}`,
+    path: `/entry/${EntryId}`,
   });
 }

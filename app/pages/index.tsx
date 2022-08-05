@@ -1,30 +1,30 @@
 import { FunctionComponent } from 'react';
 import { Hero, Content, Nav } from 'components';
-import { getReviews } from 'services/api/reviews/reviews';
+import { getEntries } from 'services/api/entries/entries';
 import { Entries, Review } from 'utils/types';
 import { GetStaticProps } from 'next/types';
 import styles from 'components/shared/nav/main-nav.module.scss';
 
 interface Props {
-  reviews: Entries<Review>,
+  entries: Entries<Review>,
 };
 
 export const Index: FunctionComponent<Props> = (props: Props) => {
-  const { reviews } = props;
+  const { entries } = props;
 
   return (
     <>
       <Nav styles={styles} />
-      <Hero reviews={reviews} />
-      <Content reviews={reviews} />
+      <Hero entries={entries} />
+      <Content entries={entries} />
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const reviews: Entries<Review> = await getReviews('');
+  const entries: Entries<Review> = await getEntries('');
 
-  return { props: { reviews } };
+  return { props: { entries } };
 };
 
 export default Index;

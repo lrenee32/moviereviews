@@ -3,11 +3,11 @@ const ReviewActions = require('./actions');
 const { search, searchById } = new ReviewActions();
 
 module.exports = (api) => {
-  api.get('/reviews', request => {
+  api.get('/entries', request => {
     return search(request);
   });
 
-  api.get('/review/:ReviewId', request => {
+  api.get('/entry/:EntryId', request => {
     return searchById(request);
   });
 };

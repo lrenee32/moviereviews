@@ -15,7 +15,7 @@ function sortEntries(arr) {
   }
 };
 
-class ReviewUtils {
+class EntryUtils {
   async search(SearchTerm) {
     try {
       const params = {
@@ -34,14 +34,14 @@ class ReviewUtils {
     };
   };
 
-  async searchById(ReviewId) {
+  async searchById(EntryId) {
     try {
       const params = {
         TableName: 'movie-reviews_reviews',
-        KeyConditionExpression: 'UserId = :UserId AND EntryId = :ReviewId',
+        KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
         ExpressionAttributeValues: { 
           ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-          ':ReviewId': ReviewId,
+          ':EntryId': EntryId,
         },
       };
       const res = await db.query(params);
@@ -52,4 +52,4 @@ class ReviewUtils {
   };
 };
 
-module.exports = ReviewUtils;
+module.exports = EntryUtils;

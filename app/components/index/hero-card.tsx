@@ -11,13 +11,13 @@ import { TypographyVariant } from '@mui/material';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 
 interface Props {
-  review: Entry<Review>,
+  entry: Entry<Review>,
   headingVariant: TypographyVariant,
   showDescription?: boolean | false;
 };
 
 export const HeroCard: FunctionComponent<Props> = (props: Props) => {
-  const { review, headingVariant, showDescription } = props;
+  const { entry, headingVariant, showDescription } = props;
 
   return (
     <Card
@@ -35,8 +35,8 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
       <CardMedia
         component="img"
         height="100%"
-        image={review.Details!.FeaturedImage}
-        alt={`${review.Title}-${review.EntryId}`}
+        image={entry.Details!.FeaturedImage}
+        alt={`${entry.Title}-${entry.EntryId}`}
         sx={{
           position: 'absolute',
           height: '100%',
@@ -52,13 +52,17 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
         }}
       >
         <Box display="flex" marginBottom="10px" alignItems="center">
-          <Chip label={`IMDB: ${review.Details!.TMDBRating}`} color="primary" sx={{ marginRight: '5px' }} />
-          <Chip label={`Personal: ${review.Details!.UserRating}`} color="primary" sx={{ marginRight: '5px' }} />
-          <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(review.Created) } ago</Typography>
+          {entry.Type === 'review' &&
+            <>
+              <Chip label={`IMDB: ${entry.Details!.TMDBRating}`} color="primary" sx={{ marginRight: '5px' }} />
+              <Chip label={`Personal: ${entry.Details!.UserRating}`} color="primary" sx={{ marginRight: '5px' }} />
+            </>
+          }
+          <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
         </Box>
-        <Typography variant={headingVariant} marginBottom="10px">{ review.Title }</Typography>
-        <Typography marginBottom="15px">{ showDescription && review.Details!.FilmOverview }</Typography>
-        <Button href={`/review/${review.EntryId}`} variant="outlined">Read Review</Button>
+        <Typography variant={headingVariant} marginBottom="10px">{ entry.Title }</Typography>
+        <Typography marginBottom="15px">{ showDescription && entry.Details!.FilmOverview }</Typography>
+        <Button href={`/entry/${entry.EntryId}`} variant="outlined">Read More</Button>
       </CardContent>
     </Card>
   );

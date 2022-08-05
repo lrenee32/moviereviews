@@ -3,7 +3,7 @@ const app = require('../app');
 const AdminEntryUtils = require('./utils');
 const { search, searchById, create, editById, deleteById } = new AdminEntryUtils();
 
-class EntryActions {
+class AdminEntryActions {
   async search(request) {
     const { SearchTerm } = request.queryString;
 
@@ -80,4 +80,4 @@ class EntryActions {
   };
 };
 
-module.exports = EntryActions;
+module.exports = AdminEntryActions;

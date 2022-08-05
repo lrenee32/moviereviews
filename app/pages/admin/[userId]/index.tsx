@@ -45,6 +45,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     title: Entry<Review>["Title"],
     type: Entry<Review>["Type"],
     featured: Entry<Review>["Featured"],
+    sitePick: Entry<Review>["SitePick"],
     imageURL: Review["FeaturedImage"],
     content: Entry<Review>["Content"],
     details: Partial<Entry<Review>["Details"]>,
@@ -57,6 +58,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     title: '',
     type: 'article',
     featured: false,
+    sitePick: false,
     imageURL: '',
     content: [{type: 'paragraph', children: [{text: ''}]}],
     details: null,
@@ -70,6 +72,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const [title, setTitle] = useState<Entry<Review>["Title"]>(initialValues.title);
   const [type, setType] = useState<Entry<Review>["Type"]>(initialValues.type);
   const [featured, setFeatured] = useState<Entry<Review>["Featured"]>(initialValues.featured);
+  const [sitePick, setSitePick] = useState<Entry<Review>["SitePick"]>(initialValues.sitePick);
   const [imageURL, setImageURL] = useState<Review["FeaturedImage"]>(initialValues.imageURL);
   const [content, setContent] = useState<Entry<Review>["Content"]>(initialValues.content);
   const [details, setDetails] = useState<Partial<Entry<Review>["Details"]>>(initialValues.details);
@@ -82,6 +85,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     setTitle(initialValues.title);
     setType(initialValues.type);
     setFeatured(initialValues.featured);
+    setSitePick(initialValues.sitePick);
     setImageURL(initialValues.imageURL);
     setContent(initialValues.content);
     setDetails(initialValues.details);
@@ -96,6 +100,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       setTitle(entry.Title);
       setType(entry.Type);
       setFeatured(entry.Featured);
+      setSitePick(entry.SitePick);
       setImageURL(entry.Details!.FeaturedImage);
       setContent(entry.Content);
       setDetails(entry.Details);
@@ -116,22 +121,28 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       Title: title,
       Type: type,
       Featured: featured,
+      SitePick: sitePick,
       Content: content,
       Details: {...details, UserRating: userRating, FeaturedImage: imageURL},
       Tags: tags,
     };
     switch(action) {
       case 'create':
-        return createEntry(userId, body).then(() => {
+        return createEntry(userId, body).then((res: Entry<Review>) => {
+          entries.unshift(res);
           return revalidate(userId).then(() => cancelEvent());
         });
       case 'edit':
         const json: Partial<Entry<Partial<Review>>> = {...body, EntryId: entryId, Created: created};
-        return editEntry(userId, entryId, json).then(() => {
+        return editEntry(userId, entryId, json).then((res: Entry<Review>) => {
+          const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
+          entries[arrIndex] = res;
           return revalidate(userId).then(() => cancelEvent());
         });
       case 'delete':
-        return deleteEntry(userId, entryId).then(() => {
+        return deleteEntry(userId, entryId).then((res: Entry<Review>) => {
+          const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
+          entries.splice(arrIndex, 1);
           return revalidate(userId).then(() => cancelEvent());
         });
     }
@@ -144,7 +155,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         title: 'Title',
         field: 'Title',
         render: (rowData: Entry<Review>) => (
-          <NextLink href={`/review/${rowData.EntryId}`} passHref>
+          <NextLink href={`/entry/${rowData.EntryId}`} passHref>
             <Link>{rowData.Title}</Link>
           </NextLink>
         ),
@@ -154,6 +165,15 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         field: 'Featured',
         render: (rowData: Entry<Review>) => (
           rowData.Featured
+          ? <Check color="success" />
+          : <Close />
+        ),
+      },
+      {
+        title: 'Site Pick',
+        field: 'SitePick',
+        render: (rowData: Entry<Review>) => (
+          rowData.SitePick
           ? <Check color="success" />
           : <Close />
         ),
@@ -187,6 +207,18 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   };
 
   const generateModalContent = (action: ActionTypes) => {
+    type CheckBoxTypes = 'featured' | 'pick';
+    const checkBoxDisabled = (selected: CheckBoxTypes) => {
+      const features = entries.filter(i => i.Featured);
+      const picks = entries.filter(i => i.SitePick);
+      const isFeatured = features.find(i => i.EntryId === entryId);
+      const isSitePick = picks.find(i => i.EntryId === entryId);
+      if (selected === 'featured') {
+        return features.length > 3 && !isFeatured;
+      }
+      return picks.length > 3 && !isSitePick;
+    };
+
     switch(action) {
       case 'create':
       case 'edit':
@@ -200,36 +232,46 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <FormControl fullWidth sx={{ mb: '30px' }}>
+            <FormControl fullWidth sx={{ mb: '30px' }} disabled={action === 'edit'}>
               <InputLabel>Entry Type</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
                 value={type}
-                label="Age"
+                label="Entry Type"
                 onChange={(e) => setType(e.target.value)}
               >
                 <MenuItem value="review">Review</MenuItem>
                 <MenuItem value="article">Article</MenuItem>
               </Select>
             </FormControl>
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" sx={{ mb: '30px' }}>
               <TextField
                 fullWidth
                 label="Image URL"
                 id="image-url"
-                sx={{ mb: '30px', mr: '30px' }}
+                sx={{ mr: '30px' }}
                 value={imageURL}
                 onChange={(e) => setImageURL(e.target.value)}
               />
-              <FormGroup sx={{ mb: '30px' }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
-                  }
-                  label="Featured"
-                />
-              </FormGroup>
+              <Box>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={featured} onChange={(e) => setFeatured(e.target.checked)} disabled={checkBoxDisabled('featured')} sx={{ p: '2.5px 9px' }} />
+                    }
+                    label="Featured"
+                  />
+                </FormGroup>
+                {type === 'review' &&
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox checked={sitePick} onChange={(e) => setSitePick(e.target.checked)} disabled={checkBoxDisabled('pick')} sx={{ p: '2.5px 9px' }} />
+                      }
+                      label="Site Pick"
+                    />
+                  </FormGroup>
+                }
+              </Box>
             </Box>
             {(action === 'create' && type === 'review') &&
             <AutocompleteSearch
