@@ -3,32 +3,69 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ReadOnly } from 'components/shared/rich-text-editor/readonly';
-import { getEntries, getEntry } from 'services/api/entries/entries';
+import { LatestReviews } from 'components/index/latest-reviews';
+import { Nav } from 'components/shared/nav/nav';
+import { getEntries } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
+import { toTitleCase } from 'utils/utils';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
+import { VARIABLES } from 'assets/themes/themes';
+
+
 
 interface Props {
   entry: Entry<Review>,
+  entries: Entries<Review>,
 };
 
 const EntryDetails: FunctionComponent<Props> = (props: Props) => {
-  const { entry } = props;
+  const { entry, entries } = props;
 
   return (
-    <Container fixed sx={{ paddingY: '100px' }}>
-      <Box>
-        <Typography variant="h2" marginBottom="15px">{entry.Title}</Typography>
-      </Box>
-      <ReadOnly value={entry.Content} />
-    </Container>
+    <Box sx={{ background: `linear-gradient(to bottom, #0D090A 50%, ${VARIABLES.primaryColor} 150%)` }}>
+      <Container fixed sx={{ pb: '100px', pt: '70px', background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
+        <Nav style="large" />
+        <Typography
+          sx={{
+            backgroundColor: VARIABLES.primaryColor,
+            padding: '2.5px 10px',
+            transform: 'skewX(-15deg)',
+            display: 'inline-block',
+            mb: '10px',
+          }}
+        >
+          {toTitleCase(entry.Type)}
+        </Typography>
+        <Typography variant="h2" mb="30px">
+          {entry.Title}
+        </Typography>
+        <Box display="flex">
+          <Box width="70%" pr="20px">
+            <Box
+              component="img"
+              alt={`${entry.EntryId}-featured-image`}
+              src={entry.Details!.FeaturedImage}
+              sx={{ width: '100%' }}
+            />
+            <Box ml="80px">
+              <ReadOnly value={entry.Content} />
+            </Box>
+          </Box>
+          <Box width="30%" position="sticky" alignSelf="flex-start" top="0">
+            <LatestReviews entries={entries.All} />
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id;
-  const entry: Review = await getEntry(id);
+  const entries: Entries<Review> = await getEntries('');
+  const entry: Entry<Review> | undefined = entries.All!.find(i => i.EntryId === id);
 
-  return { props: { entry } };
+  return { props: { entry, entries } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

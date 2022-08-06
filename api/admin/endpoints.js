@@ -1,6 +1,6 @@
 'use strict';
 const AdminEntryActions = require('./actions');
-const { search, searchById, create, editById, deleteById, revalidate } = new AdminEntryActions();
+const { search, searchById, create, editById, deleteById } = new AdminEntryActions();
 
 module.exports = (api) => {
   api.get('/admin/:UserId/entries', request => {
@@ -21,9 +21,5 @@ module.exports = (api) => {
 
   api.delete('/admin/:UserId/entry/delete/:EntryId', request => {
     return deleteById(request);
-  });
-
-  api.get('/admin/:UserId/revalidate', request => {
-    return revalidate(request);
   });
 };

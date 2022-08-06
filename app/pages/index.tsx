@@ -3,7 +3,6 @@ import { Hero, Content, Nav } from 'components';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Review } from 'utils/types';
 import { GetStaticProps } from 'next/types';
-import styles from 'components/shared/nav/main-nav.module.scss';
 
 interface Props {
   entries: Entries<Review>,
@@ -14,7 +13,7 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <>
-      <Nav styles={styles} />
+      <Nav style="main" />
       <Hero entries={entries} />
       <Content entries={entries} />
     </>

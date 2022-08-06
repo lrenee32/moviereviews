@@ -4,28 +4,15 @@ import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import DialogContentText from '@mui/material/DialogContentText';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import MaterialTable, { MaterialTableProps } from 'material-table';
 import GenericModal from 'components/shared/generic-modal';
-import { AutocompleteSearch } from 'components/shared/autocomplete-search';
-import { Tags } from 'components/shared/tags';
-import { RichTextEditor } from 'components/shared/rich-text-editor/rich-text-editor';
 import { Entry, Entries, Review } from 'utils/types';
 import { serializeToText, toTitleCase } from 'utils/utils';
-import { createEntry, editEntry, deleteEntry, getEntries, searchSuggestions, revalidate } from 'services/api/admin/admin';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import { createEntry, editEntry, deleteEntry, getEntries } from 'services/api/admin/admin';
+import { ModalContent } from 'components/admin/modal-content';
 
 
 type ActionTypes = 'create' | 'edit' | 'delete';
@@ -130,20 +117,20 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       case 'create':
         return createEntry(userId, body).then((res: Entry<Review>) => {
           entries.unshift(res);
-          return revalidate(userId).then(() => cancelEvent());
+          cancelEvent();
         });
       case 'edit':
         const json: Partial<Entry<Partial<Review>>> = {...body, EntryId: entryId, Created: created};
         return editEntry(userId, entryId, json).then((res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
           entries[arrIndex] = res;
-          return revalidate(userId).then(() => cancelEvent());
+          cancelEvent();
         });
       case 'delete':
         return deleteEntry(userId, entryId).then((res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
           entries.splice(arrIndex, 1);
-          return revalidate(userId).then(() => cancelEvent());
+          cancelEvent();
         });
     }
   };
@@ -205,140 +192,6 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       borderRadius: '10px',
     },
   };
-
-  const generateModalContent = (action: ActionTypes) => {
-    type CheckBoxTypes = 'featured' | 'pick';
-    const checkBoxDisabled = (selected: CheckBoxTypes) => {
-      const features = entries.filter(i => i.Featured);
-      const picks = entries.filter(i => i.SitePick);
-      const isFeatured = features.find(i => i.EntryId === entryId);
-      const isSitePick = picks.find(i => i.EntryId === entryId);
-      if (selected === 'featured') {
-        return features.length > 3 && !isFeatured;
-      }
-      return picks.length > 3 && !isSitePick;
-    };
-
-    switch(action) {
-      case 'create':
-      case 'edit':
-        return (
-          <>
-            <TextField
-              fullWidth
-              label="Title"
-              id="title"
-              sx={{ marginBottom: '30px', marginTop: '5px' }}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <FormControl fullWidth sx={{ mb: '30px' }} disabled={action === 'edit'}>
-              <InputLabel>Entry Type</InputLabel>
-              <Select
-                value={type}
-                label="Entry Type"
-                onChange={(e) => setType(e.target.value)}
-              >
-                <MenuItem value="review">Review</MenuItem>
-                <MenuItem value="article">Article</MenuItem>
-              </Select>
-            </FormControl>
-            <Box display="flex" alignItems="center" sx={{ mb: '30px' }}>
-              <TextField
-                fullWidth
-                label="Image URL"
-                id="image-url"
-                sx={{ mr: '30px' }}
-                value={imageURL}
-                onChange={(e) => setImageURL(e.target.value)}
-              />
-              <Box>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={featured} onChange={(e) => setFeatured(e.target.checked)} disabled={checkBoxDisabled('featured')} sx={{ p: '2.5px 9px' }} />
-                    }
-                    label="Featured"
-                  />
-                </FormGroup>
-                {type === 'review' &&
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox checked={sitePick} onChange={(e) => setSitePick(e.target.checked)} disabled={checkBoxDisabled('pick')} sx={{ p: '2.5px 9px' }} />
-                      }
-                      label="Site Pick"
-                    />
-                  </FormGroup>
-                }
-              </Box>
-            </Box>
-            {(action === 'create' && type === 'review') &&
-            <AutocompleteSearch
-              optionsSearch={searchSuggestions}
-              selectionEvent={(e) => setDetails({
-                TMDBRating: e.vote_average,
-                FilmTitle: e.title,
-                FilmYear: e.release_date,
-                FilmOverview: e.overview,
-                FilmPoster: e.poster_path,
-              })}
-            />
-            }
-            {type === 'review' &&
-              <Box
-                sx={{
-                  position: 'relative',
-                  border: '1px solid rgba(255,255,255,0.23)',
-                  borderRadius: '4px',
-                  marginBottom: '30px',
-                  padding: '16.5px 14px',
-                  '&:hover': {
-                    borderColor: '#FFFFFF',
-                  },
-                  '&:active, &:active > div:first-of-type': {
-                    borderColor: '#E91E73',
-                    color: '#E91E73',
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    transform: 'scale(0.75)',
-                    top: '-12px',
-                    left: '0',
-                    padding: '0 7.5px',
-                    backgroundColor: '#121212',
-                    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
-                  }}
-                >
-                  Rating
-                </Box>
-                <Rating
-                  name="rating-create"
-                  getLabelText={() => 'Rating'}
-                  value={userRating}
-                  max={10}
-                  precision={0.5}
-                  onChange={(_e, value) => setUserRating(value!)}
-                />
-              </Box>
-            }
-            <RichTextEditor value={content} setValue={setContent} />
-            <Tags selectionEvent={(e) => setTags(e)} tags={tags} max={5} />
-          </>
-        )
-      case 'delete':
-        return (
-          <DialogContentText>
-            {`Are you sure you want to delete the entry "${title}"?`}
-          </DialogContentText>
-        );
-      default:
-        break;
-    }
-  };
   
   return (
     <>
@@ -358,7 +211,32 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       <GenericModal
         ref={modalRef}
         header={`${toTitleCase(action)} Entry`}
-        content={generateModalContent(action)}
+        content={
+          <ModalContent
+            action={action}
+            entries={entries}
+            entryId={entryId}
+            title={title}
+            type={type}
+            imageURL={imageURL}
+            featured={featured}
+            sitePick={sitePick}
+            userRating={userRating}
+            content={content}
+            tags={tags}
+            actions={{
+              setTitle,
+              setType,
+              setImageURL,
+              setFeatured,
+              setSitePick,
+              setDetails,
+              setUserRating,
+              setContent,
+              setTags,
+            }}
+          />
+        }
         cancel={{ text: 'Cancel', action: cancelEvent}}
         confirmation={{ text: 'Confirm', action: confirmEvent }}
       />

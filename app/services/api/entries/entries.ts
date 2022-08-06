@@ -15,4 +15,8 @@ export const getEntry = (EntryId: string | string[] | undefined) => {
     method: 'GET',
     path: `/entry/${EntryId}`,
   });
-}
+};
+
+export const getPosterImage = (posterPath: string) => {
+  return `https://image.tmdb.org/t/p/w500/${posterPath}`;
+};

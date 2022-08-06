@@ -62,12 +62,3 @@ export const searchSuggestions = (searchTerm: string) => {
     .then(res => res.json())
     .then(json => json.results)
 };
-
-export const revalidate = (
-  userId: Entry<Review>["UserId"]
-) => {
-  return API({
-    method: 'GET',
-    path: `/admin/${userId}/revalidate`,
-  });
-};

@@ -64,20 +64,6 @@ class AdminEntryActions {
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
-
-  async revalidate(request) {
-    const { UserId } = request.pathParams;
-    
-    try {
-      if (UserId === 'a5c723d5-89ba-4554-a09d-ee3870be41a3') {
-        await app.ApiResponse.revalidate(`http://localhost:3000/admin/${UserId}`);
-        return { revalidated: true };
-      }
-    } catch (err) {
-      console.warn(`Error revalidating: ${err}`);
-      return new app.ApiResponse(err.message, {}, 500);
-    }
-  };
 };
 
 module.exports = AdminEntryActions;

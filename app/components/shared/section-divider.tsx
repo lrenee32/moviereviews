@@ -28,7 +28,7 @@ export const SectionDivider: FunctionComponent<Props> = (props: Props) => {
         sx={{
           backgroundColor: VARIABLES.primaryColor,
           padding: '2.5px 10px',
-          transform: 'skewX(-15deg)'
+          transform: 'skewX(-15deg)',
         }}
       >
         {text}
