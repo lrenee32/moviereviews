@@ -5,13 +5,12 @@ import Typography from '@mui/material/Typography';
 import { ReadOnly } from 'components/shared/rich-text-editor/readonly';
 import { LatestReviews } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
+import { Footer } from 'components/shared/nav/footer';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
 import { toTitleCase } from 'utils/utils';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
 import { VARIABLES } from 'assets/themes/themes';
-
-
 
 interface Props {
   entry: Entry<Review>,
@@ -22,8 +21,8 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
   const { entry, entries } = props;
 
   return (
-    <Box sx={{ background: `linear-gradient(to bottom, #0D090A 50%, ${VARIABLES.primaryColor} 150%)` }}>
-      <Container fixed sx={{ pb: '100px', pt: '70px', background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
+    <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
+      <Container fixed sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
         <Nav style="large" />
         <Typography
           sx={{
@@ -55,6 +54,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             <LatestReviews entries={entries.All} />
           </Box>
         </Box>
+        <Footer />
       </Container>
     </Box>
   );

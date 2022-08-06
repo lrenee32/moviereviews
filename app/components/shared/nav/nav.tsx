@@ -3,6 +3,8 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import styles from 'components/shared/nav/main-nav.module.scss';
+import { SiteLinks } from './links';
+import { SocialLinks } from './socials';
 
 interface Props {
   style: 'main' | 'large',
@@ -22,10 +24,14 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
         </AppBar>
       )}
       {style === 'large' && (
-        <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', mb: '70px' }}>
-          <Typography className={styles["large-logo"]}>
-            Splatter
-          </Typography>
+        <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', display: 'flex', alignItems: 'center' }}>
+          <Box display="flex" alignItems="center" ml="-220px">
+            <SocialLinks />
+            <Typography ml="40px" className={styles["large-logo"]}>
+              Splatter
+            </Typography>
+          </Box>
+          <SiteLinks />
         </AppBar>
       )}
     </>
