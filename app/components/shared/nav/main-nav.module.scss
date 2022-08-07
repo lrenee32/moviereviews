@@ -8,6 +8,27 @@
   font-size: 48px;
   letter-spacing: 5px;
   color: #E91E63;
+  line-height: 1;
+  margin: 16px;
+}
+
+.small-nav {
+  background-image: none;
+  background-color: #0D090A;
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.small-logo {
+  font-family: 'Ghastly Panic', sans-serif;
+  font-size: 30px;
+  letter-spacing: 5px;
+  color: #E91E63;
+  line-height: 1;
+  margin: 10px 32px 10px 16px;
 }
 
 .large-logo {
@@ -20,4 +41,24 @@
 
 .footer-logo {
   width: 50%;
+}
+
+@media (min-width: 600px) {
+  .small-nav {
+    max-width: 600px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 900px) {
+  .small-nav {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .small-nav {
+    max-width: 1200px;
+  }
 }

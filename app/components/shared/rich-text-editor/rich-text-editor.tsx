@@ -37,7 +37,7 @@ export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
         }}
       >
         <Toolbar />
-        <Box p="10px" sx={{ '> :first-of-type > :first-of-type': { marginTop: '0' } }}>
+        <Box p="10px" sx={{ '> :first-of-type > :first-of-type': { marginTop: '0', minHeight: '250px' } }}>
           <Editable
             renderElement={renderElement}
             renderLeaf={renderLeaf}

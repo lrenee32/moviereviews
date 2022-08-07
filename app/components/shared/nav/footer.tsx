@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import { SocialLinks } from './socials';
-import { SiteLinks } from './links';
+import { FooterLinks } from './footer-links';
 
 export const Footer: FunctionComponent = () => {
   return (
@@ -18,7 +18,7 @@ export const Footer: FunctionComponent = () => {
         />
       </NextLink>
       <SocialLinks sx={{ mb: '30px' }} />
-      <SiteLinks />
+      <FooterLinks />
       <Typography paddingY="20px">{`Copyright © ${new Date().getFullYear()} Splatter, LLC`}</Typography>
     </AppBar>
   );

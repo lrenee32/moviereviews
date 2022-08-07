@@ -6,6 +6,7 @@ import { ReadOnly } from 'components/shared/rich-text-editor/readonly';
 import { LatestReviews } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
 import { Footer } from 'components/shared/nav/footer';
+import { DisqusComments } from 'components/index/comment-section';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
 import { toTitleCase } from 'utils/utils';
@@ -49,6 +50,11 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             <Box ml="80px">
               <ReadOnly value={entry.Content} />
             </Box>
+            <DisqusComments
+              url={`https://localhost:3000/entry/${entry.EntryId}`}
+              identifier={entry.EntryId}
+              title={entry.Title}
+            />
           </Box>
           <Box width="30%" position="sticky" alignSelf="flex-start" top="0">
             <LatestReviews entries={entries.All} />

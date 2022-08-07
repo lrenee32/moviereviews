@@ -3,11 +3,11 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import styles from 'components/shared/nav/main-nav.module.scss';
-import { SiteLinks } from './links';
+import { NavLinks } from './nav-links';
 import { SocialLinks } from './socials';
 
 interface Props {
-  style: 'main' | 'large',
+  style: 'main' | 'secondary' | 'large',
 };
 
 export const Nav: FunctionComponent<Props> = (props: Props) => {
@@ -16,11 +16,17 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
     <>
       {style === 'main' && (
         <AppBar position="absolute" color="transparent">
-          <Box ml="16px" mt="16px">
-            <Typography className={styles.logo}>
-              Splatter
-            </Typography>
-          </Box>
+          <Typography className={styles.logo}>
+            Splatter
+          </Typography>
+        </AppBar>
+      )}
+      {style === 'secondary' && (
+        <AppBar position="sticky" className={styles["small-nav"]}>
+          <Typography className={styles["small-logo"]}>
+            Splatter
+          </Typography>
+          <NavLinks />
         </AppBar>
       )}
       {style === 'large' && (
@@ -31,7 +37,7 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
               Splatter
             </Typography>
           </Box>
-          <SiteLinks />
+          <NavLinks />
         </AppBar>
       )}
     </>

@@ -14,7 +14,12 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
   const isSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   return (
-    <Grid container height={'90vh'}>
+    <Grid
+      container
+      height={'80vh'}
+      minHeight="700px"
+      id="back-to-top-anchor"
+    >
       <Grid item xs={12} md={6} xl={8}>
         <HeroCard
           entry={Featured[0]}

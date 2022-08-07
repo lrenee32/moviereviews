@@ -13,6 +13,9 @@ export const global = (theme: Theme) => {
       primary: {
         main: VARIABLES.primaryColor,
       },
+      background: {
+        default: '#0D090A'
+      }
     },
     components: {
       MuiAppBar: {
