@@ -3,6 +3,7 @@ import isHotkey from "is-hotkey";
 import { Editable, withReact, Slate, useSlate } from "slate-react";
 import { createEditor, Descendant, Editor, Transforms } from "slate";
 import { withHistory } from "slate-history";
+import Image from 'next/image';
 
 import Box from '@mui/material/Box';
 import { Toolbar } from './toolbar';
@@ -74,6 +75,8 @@ export const Element = ({ attributes, children, element }) => {
       return <li {...attributes}>{children}</li>;
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
+    case "image":
+      return <Image src={element.url} alt="" />
     default:
       return <p {...attributes}>{children}</p>;
   }

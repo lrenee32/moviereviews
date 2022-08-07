@@ -6,12 +6,13 @@ export const ListType = ['bulleted-list', 'numbered-list'];
 
 export type ListType = 'bulleted-list' | 'numbered-list';
 
-export type BlockType = 'block-quote' | 'bulleted-list' | 'heading-one' | 'heading-two' | 'paragraph' | ListType;
+export type BlockType = 'block-quote' | 'bulleted-list' | 'heading-one' | 'heading-two' | 'paragraph' | 'link' | 'image' | ListType;
 
 export type MarkType = 'bold' | 'italic' | 'underline' | 'code';
 
 interface CustomElement {
   type: BlockType,
+  url?: string,
   children: CustomText[],
 };
 

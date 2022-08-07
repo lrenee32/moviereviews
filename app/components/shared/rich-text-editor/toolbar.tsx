@@ -11,6 +11,7 @@ import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ImageIcon from '@mui/icons-material/Image';
 
 export const Toolbar: FunctionComponent = () => {
   return (
@@ -48,6 +49,9 @@ export const Toolbar: FunctionComponent = () => {
         </Button>
         <Button type="block" format="bulleted-list">
           <FormatListBulletedIcon />
+        </Button>
+        <Button type="block" format="image">
+          <ImageIcon />
         </Button>
       </Box>
       <Divider />

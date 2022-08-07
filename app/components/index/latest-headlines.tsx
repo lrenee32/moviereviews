@@ -41,7 +41,7 @@ export const LatestHeadlines: FunctionComponent<Props> = (props: Props) => {
             </Card>
           ))}
         </Box>
-        <Box width="30%" position="sticky" alignSelf="flex-start" top="50px">
+        <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
           <LatestReviews entries={entries} />
         </Box>
       </Box>
