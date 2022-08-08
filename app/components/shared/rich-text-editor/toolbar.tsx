@@ -11,6 +11,7 @@ import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import LinkIcon from '@mui/icons-material/Link';
 import ImageIcon from '@mui/icons-material/Image';
 import { useSlate } from 'slate-react';
 import { insertImage } from "./utils";
@@ -22,7 +23,7 @@ export const Toolbar: FunctionComponent = () => {
   const onChange = (e) => {
     if (e.target.files) {
       const file = URL.createObjectURL(e.target.files[0]);
-      insertImage(editor, file);
+      insertImage(editor, file, e.target.files[0].name);
     }
   };
 
@@ -61,6 +62,9 @@ export const Toolbar: FunctionComponent = () => {
         </Button>
         <Button type="block" format="bulleted-list">
           <FormatListBulletedIcon />
+        </Button>
+        <Button type="mark" format="link">
+          <LinkIcon />
         </Button>
         <Button type="block" format="image" imageUpload={imageUpload}>
           <input ref={imageUpload} hidden accept="image/*" type="file" onChange={onChange} />

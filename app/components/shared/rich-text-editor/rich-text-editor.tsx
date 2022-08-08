@@ -1,4 +1,4 @@
-import { FunctionComponent, Dispatch, SetStateAction, useCallback, useMemo } from "react";
+import { FunctionComponent, Dispatch, SetStateAction, useCallback, useMemo, useState } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, Slate, useSlate } from "slate-react";
 import { createEditor, Descendant, Editor, Transforms } from "slate";
@@ -6,7 +6,9 @@ import { withHistory } from "slate-history";
 import { withImages, withCorrectVoidBehavior } from "./utils";
 
 import Box from '@mui/material/Box';
+import Popover from '@mui/material/Popover';
 import { Toolbar } from './toolbar';
+import { Button, TextField } from "@mui/material";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -22,7 +24,7 @@ interface Props {
 
 export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
   const { value, setValue } = props;
-  const renderElement = useCallback(props => <Element {...props} />, []);
+  const renderElement = useCallback(props => <Element {...props} isEditing={true} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withCorrectVoidBehavior(withImages(withHistory(withReact(createEditor())))), []);
 
@@ -61,7 +63,21 @@ export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export const Element = ({ attributes, children, element }) => {
+export const Element = ({ attributes, children, element, isEditing }) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [caption, setCaption] = useState<string>(element.caption);
+
+  const popoverClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const popoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attributes}>{children}</blockquote>;
@@ -77,15 +93,51 @@ export const Element = ({ attributes, children, element }) => {
       return <ol {...attributes}>{children}</ol>;
     case "image":
       return (
-        <>
-          <Box
-            component="img"
-            alt=""
-            src={element.url}
-            sx={{ width: '100%', maxHeight: '20em' }}
-          />
+        <Box {...attributes}>
+          <Box>
+            <Box
+              component="img"
+              alt={caption}
+              src={element.url}
+              sx={{ width: '100%' }}
+            />
+            {isEditing
+            ?
+              <>
+                <Button
+                  sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }}
+                  component="button"
+                  variant="text"
+                  onClick={popoverClick}
+                >
+                  {caption}
+                </Button>
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={popoverClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  sx={{ padding: '15px' }}
+                >
+                  <TextField
+                    fullWidth
+                    label="Enter caption here:"
+                    id={`caption-${element.url}`}
+                    value={caption}
+                    onChange={(e) => setCaption(e.target.value)}
+                  />
+                </Popover>
+              </>
+            :
+              <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }}>{element.caption}</Box>
+            }
+          </Box>
           {children}
-        </>
+        </Box>
       );
     default:
       return <p {...attributes}>{children}</p>;
