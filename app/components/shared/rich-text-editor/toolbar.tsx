@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { Button } from './button';
@@ -12,8 +12,20 @@ import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ImageIcon from '@mui/icons-material/Image';
+import { useSlate } from 'slate-react';
+import { insertImage } from "./utils";
 
 export const Toolbar: FunctionComponent = () => {
+  const editor = useSlate();
+  const imageUpload = useRef(null);
+
+  const onChange = (e) => {
+    if (e.target.files) {
+      const file = URL.createObjectURL(e.target.files[0]);
+      insertImage(editor, file);
+    }
+  };
+
   return (
     <>
       <Box
@@ -50,7 +62,8 @@ export const Toolbar: FunctionComponent = () => {
         <Button type="block" format="bulleted-list">
           <FormatListBulletedIcon />
         </Button>
-        <Button type="block" format="image">
+        <Button type="block" format="image" imageUpload={imageUpload}>
+          <input ref={imageUpload} hidden accept="image/*" type="file" onChange={onChange} />
           <ImageIcon />
         </Button>
       </Box>

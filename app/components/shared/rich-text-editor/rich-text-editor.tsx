@@ -3,7 +3,7 @@ import isHotkey from "is-hotkey";
 import { Editable, withReact, Slate, useSlate } from "slate-react";
 import { createEditor, Descendant, Editor, Transforms } from "slate";
 import { withHistory } from "slate-history";
-import Image from 'next/image';
+import { withImages, withCorrectVoidBehavior } from "./utils";
 
 import Box from '@mui/material/Box';
 import { Toolbar } from './toolbar';
@@ -24,7 +24,7 @@ export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
   const { value, setValue } = props;
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withCorrectVoidBehavior(withImages(withHistory(withReact(createEditor())))), []);
 
   return (
     <Box border="1px solid rgba(255, 255, 255, 0.23)" borderRadius="4px" marginBottom="30px">
@@ -38,7 +38,7 @@ export const RichTextEditor: FunctionComponent<Props> = (props: Props) => {
         }}
       >
         <Toolbar />
-        <Box p="10px" sx={{ '> :first-of-type > :first-of-type': { marginTop: '0', minHeight: '250px' } }}>
+        <Box p="10px" sx={{ '> :first-of-type > :first-of-type': { marginTop: '0' } }}>
           <Editable
             renderElement={renderElement}
             renderLeaf={renderLeaf}
@@ -76,7 +76,17 @@ export const Element = ({ attributes, children, element }) => {
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
     case "image":
-      return <Image src={element.url} alt="" />
+      return (
+        <>
+          <Box
+            component="img"
+            alt=""
+            src={element.url}
+            sx={{ width: '100%', maxHeight: '20em' }}
+          />
+          {children}
+        </>
+      );
     default:
       return <p {...attributes}>{children}</p>;
   }

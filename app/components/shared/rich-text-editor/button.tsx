@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode, Ref } from 'react';
 import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
 import { BlockType, MarkType, ListType } from './typings';
@@ -11,10 +11,11 @@ interface Props {
   type: Type,
   format: MarkType | BlockType,
   children: ReactNode,
+  imageUpload?: Ref,
 };
 
 export const Button: FunctionComponent<Props> = (props: Props) => {
-  const { type, format, children } = props;
+  const { type, format, children, imageUpload } = props;
   const editor = useSlate();
 
   const isActive = () => {
@@ -34,11 +35,16 @@ export const Button: FunctionComponent<Props> = (props: Props) => {
     switch (type) {
       case 'block':
         const isList = ListType.includes(format);
+        const isImage = format === 'image';
 
         Transforms.unwrapNodes(editor, {
           match: n => ListType.includes(n.type),
           split: true
         });
+
+        if (isImage) {
+          return imageUpload.current.click();
+        }
       
         Transforms.setNodes(editor, {
           type: isActive() ? "paragraph" : isList ? "list-item" : format
