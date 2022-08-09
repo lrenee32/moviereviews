@@ -15,6 +15,7 @@ import { AutocompleteSearch } from 'components/shared/autocomplete-search';
 import { Tags } from 'components/shared/tags';
 import { RichTextEditor } from 'components/shared/rich-text-editor/rich-text-editor';
 import { searchSuggestions } from 'services/api/admin/admin';
+import { Editor } from 'components/shared/wysiwyg/Editor';
 
 type ActionTypes = 'create' | 'edit' | 'delete';
 
@@ -164,7 +165,8 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
               />
             </Box>
           }
-          <RichTextEditor value={content} setValue={setContent} />
+          <Editor value={content} setValue={setContent} />
+          {/* <RichTextEditor value={content} setValue={setContent} /> */}
           <Tags selectionEvent={(e) => setTags(e)} tags={tags} max={5} />
         </>
       )}
