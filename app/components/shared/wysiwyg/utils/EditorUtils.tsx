@@ -1,3 +1,4 @@
+import { ListType } from 'components/shared/rich-text-editor/typings';
 import { Editor, Transforms } from 'slate';
 
 export const getActiveStyles = (editor: Editor) => {
@@ -42,11 +43,22 @@ export const getTextBlockStyle = (editor: Editor) => {
 }
 
 export const toggleBlockType = (editor: Editor, blockType: string) => {
+  const isList = ListType.includes(blockType);
   const currentBlockType = getTextBlockStyle(editor);
-  const changeTo = currentBlockType === blockType ? "paragraph" : blockType;
+  const isActive = currentBlockType === blockType;
+  const changeTo = isActive ? "paragraph" : isList ? "list-item" : blockType;
+  Transforms.unwrapNodes(editor, {
+    match: n => ListType.includes(n.type),
+    split: true
+  });
   Transforms.setNodes(
     editor,
     { type: changeTo },
     { at: editor.selection, match: (n) => Editor.isBlock(editor, n) }
   );
-}
+
+  if (!isActive && isList) {
+    const block = { type: blockType, children: [] };
+    Transforms.wrapNodes(editor, block);
+  }
+};

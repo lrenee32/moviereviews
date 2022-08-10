@@ -1,11 +1,11 @@
 import { Editor } from 'slate';
-import { DefaultElement } from 'slate-react';
+import { DefaultElement, RenderElementProps, RenderLeafProps } from 'slate-react';
 
 export const useEditorConfig = (editor: Editor) => {
   return { renderElement, renderLeaf };
 };
 
-const renderElement = (props) => {
+const renderElement = (props: RenderElementProps) => {
   const { element, children, attributes } = props;
   switch (element.type) {
     case 'paragraph':
@@ -18,12 +18,20 @@ const renderElement = (props) => {
       return <h3 {...attributes}>{children}</h3>;
     case 'h4':
       return <h4 {...attributes}>{children}</h4>;
+    case 'bulleted-list':
+      return <ul {...attributes}>{children}</ul>;
+    case 'numbered-list':
+      return <ol {...attributes}>{children}</ol>;
+    case 'list-item':
+      return <li {...attributes}>{children}</li>;
+    case 'block-quote':
+      return <blockquote {...attributes}>{children}</blockquote>;
     default:
       return <DefaultElement {...props} />;
   }
 };
 
-const renderLeaf = ({ attributes, children, leaf }) => {
+const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   if (leaf.bold) {
     children = <strong {...attributes}>{children}</strong>;
   }

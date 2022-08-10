@@ -7,7 +7,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface Props {
   buttonText: string,
-  items: string[],
+  items: { value: string, text: string, action: (arg0: string) => void }[],
 };
 
 export const DropdownButton: FunctionComponent<Props> = ({ buttonText, items }) => {
@@ -19,6 +19,10 @@ export const DropdownButton: FunctionComponent<Props> = ({ buttonText, items }) 
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const eventHandler = ({ action, value }: { action: () => void, value: string }) => {
+    action(value);
+    handleClose();
+  }
 
   return (
     <Box>
@@ -35,7 +39,7 @@ export const DropdownButton: FunctionComponent<Props> = ({ buttonText, items }) 
         onClose={handleClose}
       >
         {items.map(item => (
-          <MenuItem key={item}>{item}</MenuItem>
+          <MenuItem key={item.text} onClick={() => eventHandler(item)}>{item.text}</MenuItem>
         ))}
       </Menu>
     </Box>
