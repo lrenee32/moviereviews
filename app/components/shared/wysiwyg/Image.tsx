@@ -62,7 +62,7 @@ export const Image: FunctionComponent<RenderElementProps> = ({ attributes, child
   );
 
   return (
-    <Box {...attributes}>
+    <Box contentEditable={false} {...attributes}>
       <Box>
         <Box
           component="img"

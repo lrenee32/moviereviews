@@ -1,67 +1,27 @@
-import { Editor, Node, Path, Range, Transforms } from 'slate';
+import { Editor } from 'slate';
 import { DefaultElement, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { Link } from '../Link';
+import { LinkEditor } from '../LinkEditor';
 import { Image } from '../Image';
 
 export const useEditorConfig = (editor: Editor) => {
-  const { isVoid } = editor;
+  const { isVoid, isInline } = editor;
+
   editor.isVoid = (element) => {
-    return ['image'].includes(element.type) || isVoid(element);
+    if (element.type === 'image') {
+      return true;
+    }
+    return isVoid(element);
   };
 
-  editor.isInline = (element) => ['link'].includes(element.type);
+  editor.isInline = (element) => {
+    if (element.type === 'link') {
+      return true;
+    }
+    return isInline(element);
+  };
 
   return { renderElement, renderLeaf };
-};
-
-export const withCorrectVoidBehavior = editor => {
-  const { deleteBackward, insertBreak } = editor
-
-  // if current selection is void node, insert a default node below
-  editor.insertBreak = () => {
-    if (!editor.selection || !Range.isCollapsed(editor.selection)) {
-      return insertBreak()
-    }
-
-    const selectedNodePath = Path.parent(editor.selection.anchor.path)
-    const selectedNode = Node.get(editor, selectedNodePath)
-    if (Editor.isVoid(editor, selectedNode)) {
-      Editor.insertNode(editor, {
-        type: 'paragraph',
-        children: [{ text: '' }],
-      })
-      return
-    }
-
-    insertBreak()
-  }
-    
-  // if prev node is a void node, remove the current node and select the void node
-  editor.deleteBackward = unit => {
-    if (
-      !editor.selection ||
-      !Range.isCollapsed(editor.selection) ||
-      editor.selection.anchor.offset !== 0
-    ) {
-      return deleteBackward(unit)
-    }
-
-    const parentPath = Path.parent(editor.selection.anchor.path)
-    const parentNode = Node.get(editor, parentPath)
-    const parentIsEmpty = Node.string(parentNode).length === 0
-
-    if (parentIsEmpty && Path.hasPrevious(parentPath)) {
-      const prevNodePath = Path.previous(parentPath)
-      const prevNode = Node.get(editor, prevNodePath)
-      if (Editor.isVoid(editor, prevNode)) {
-        return Transforms.removeNodes(editor)
-      }
-    }
-
-    deleteBackward(unit)
-  }
-
-  return editor
 };
 
 const renderElement = (props: RenderElementProps) => {
@@ -87,6 +47,8 @@ const renderElement = (props: RenderElementProps) => {
       return <blockquote {...attributes}>{children}</blockquote>;
     case 'link':
       return <Link {...props} />;
+    // case 'link-editor':
+    //   return <LinkEditor {...props} />
     case 'image':
       return <Image {...props} />;
     default:

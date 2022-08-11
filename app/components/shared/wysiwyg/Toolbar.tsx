@@ -3,7 +3,9 @@ import { useSlate } from 'slate-react';
 import {
   getActiveStyles,
   getTextBlockStyle,
+  hasActiveLinkAtSelection,
   insertImageFile,
+  insertLink,
   toggleBlockType,
   toggleStyle,
 } from './utils/EditorUtils';
@@ -135,6 +137,16 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
           />
         ))}
         <Divider orientation="vertical" variant="middle" flexItem />
+        <ToolbarButton
+          icon={getIconForButton("link")}
+          type="link"
+          isActive={hasActiveLinkAtSelection(editor)}
+          onMouseDown={event => {
+            event.preventDefault();
+            const url = prompt('Enter a URL');
+            insertLink(editor, url);
+          }}
+        />
         <ToolbarButton
           icon={[
             getIconForButton("image"),
