@@ -1,7 +1,6 @@
 import { Editor } from 'slate';
 import { DefaultElement, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { Link } from '../Link';
-import { LinkEditor } from '../LinkEditor';
 import { Image } from '../Image';
 
 export const useEditorConfig = (editor: Editor) => {
@@ -24,7 +23,7 @@ export const useEditorConfig = (editor: Editor) => {
   return { renderElement, renderLeaf };
 };
 
-const renderElement = (props: RenderElementProps) => {
+const renderElement = (props: RenderElementProps, isEditing: boolean) => {
   const { element, children, attributes } = props;
   switch (element.type) {
     case 'paragraph':
@@ -46,11 +45,9 @@ const renderElement = (props: RenderElementProps) => {
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>;
     case 'link':
-      return <Link {...props} />;
-    // case 'link-editor':
-    //   return <LinkEditor {...props} />
+      return <Link {...props} isEditing={isEditing} />;
     case 'image':
-      return <Image {...props} />;
+      return <Image {...props} isEditing={isEditing} />;
     default:
       return <DefaultElement {...props} />;
   }

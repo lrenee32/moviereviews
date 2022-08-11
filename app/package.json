@@ -22,11 +22,13 @@
     "lodash": "^4.17.21",
     "material-table": "^2.0.3",
     "next": "12.1.6",
+    "object-to-formdata": "^4.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "slate": "^0.81.1",
     "slate-history": "^0.66.0",
-    "slate-react": "^0.81.0"
+    "slate-react": "^0.81.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.1",

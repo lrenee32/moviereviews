@@ -13,6 +13,7 @@ export type MarkType = 'bold' | 'italic' | 'underline' | 'code';
 interface CustomElement {
   type: BlockType,
   url?: string,
+  file?: File,
   caption?: string,
   children: CustomText[],
 };

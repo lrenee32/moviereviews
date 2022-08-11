@@ -23,7 +23,7 @@ export const Editor: FunctionComponent<Props> = ({ value, setValue }) => {
         <Toolbar />
         <Box className={styles["editor-text-container"]}>
           <Editable
-            renderElement={renderElement}
+            renderElement={(props) => renderElement(props, true)}
             renderLeaf={renderLeaf}
           />
         </Box>

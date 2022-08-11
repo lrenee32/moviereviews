@@ -2,6 +2,8 @@
 const { v4: uuidv4 } = require('uuid');
 const Database = require('../shared/db');
 const db = new Database();
+const S3 = require('../shared/s3');
+const s3 = new S3();
 
 function sortEntries(arr) {
   return arr.sort((a, b) => {
@@ -49,16 +51,25 @@ class AdminEntryUtils {
 
   async create(UserId, Item) {
     try {
+      const entryId = uuidv4();
+
+      const content = Item.Content.map(async(i) => {
+        if (i.type === 'image') {
+          i.url = await uploadImage(i.url, `entry/${entryId}`);
+        }
+        return i;
+      });
+
       const params = {
         TableName: 'movie-reviews_reviews',
         Item: {
-          EntryId: uuidv4(),
+          EntryId: entryId,
           UserId: UserId,
           Title: Item.Title,
           Type: Item.Type,
           Featured: Item.Featured,
           SitePick: Item.SitePick,
-          Content: Item.Content,
+          Content: content,
           Details: Item.Details,
           Created: Date.now(),
           Tags: Item.Tags,
@@ -108,6 +119,17 @@ class AdminEntryUtils {
     } catch (err) {
       return err || err.message;
     };
+  };
+
+  async uploadImage(file, bucket) {
+    const params = {
+      Body: file,
+      Bucket: bucket,
+      Key: file.name,
+    };
+  
+    const res = await s3.put(params);
+    return res;
   };
 }
 

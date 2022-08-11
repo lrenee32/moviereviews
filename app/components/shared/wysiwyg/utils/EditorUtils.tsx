@@ -1,6 +1,6 @@
-import { ListType } from 'components/shared/rich-text-editor/typings';
 import { Editor, Element, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { ListType } from './Typings';
 
 export const getActiveStyles = (editor: Editor) => {
   return new Set(Object.keys(Editor.marks(editor) ?? {}))
@@ -79,6 +79,7 @@ export const insertImageFile = (editor: Editor, files, selection) => {
         type: 'image',
         caption: fileName,
         url,
+        file,
         children: [{ text: '' }],
       },
       { at: selection, select: true },
@@ -87,9 +88,9 @@ export const insertImageFile = (editor: Editor, files, selection) => {
   reader.readAsDataURL(file);
 }
 
-export const createLinkNode = (href, text) => ({
+export const createLinkNode = (url, text) => ({
   type: "link",
-  href,
+  url,
   children: [{ text }]
 });
 

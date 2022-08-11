@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ReadOnly } from 'components/shared/rich-text-editor/readonly';
+import { ReadOnly } from 'components/shared/wysiwyg/ReadOnly';
 import { LatestReviews } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
 import { Footer } from 'components/shared/nav/footer';

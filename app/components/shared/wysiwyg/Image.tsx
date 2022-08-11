@@ -5,7 +5,11 @@ import isHotkey from 'is-hotkey';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export const Image: FunctionComponent<RenderElementProps> = ({ attributes, children, element }) => {
+interface Props extends RenderElementProps {
+  isEditing: boolean,
+};
+
+export const Image: FunctionComponent<Props> = ({ attributes, children, element, isEditing }) => {
   const [isEditingCaption, setEditingCaption] = useState<boolean>(false);
   const [caption, setCaption] = useState(element.caption);
   const editor = useSlate();
@@ -62,27 +66,44 @@ export const Image: FunctionComponent<RenderElementProps> = ({ attributes, child
   );
 
   return (
-    <Box contentEditable={false} {...attributes}>
-      <Box>
-        <Box
-          component="img"
-          alt={caption}
-          src={element.url}
-          sx={{ width: '100%' }}
-        />
-        {isEditingCaption ? (
-          <TextField
-            label="Enter caption here"
-            value={caption}
-            onChange={onCaptionChange}
-            onKeyDown={onKeyDown}
-            onBlur={onToggleCaptionEditMode}
-          />
-        ) : (
-          <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }} onClick={onToggleCaptionEditMode}>{element.caption}</Box>
-        )}
-      </Box>
-      {children}
-    </Box>
+    <>
+      {isEditing ? (
+        <Box contentEditable={false} {...attributes}>
+          <Box>
+            <Box
+              component="img"
+              alt={caption}
+              src={element.url}
+              sx={{ width: '100%' }}
+            />
+            {isEditingCaption ? (
+              <TextField
+                label="Enter caption here"
+                value={caption}
+                onChange={onCaptionChange}
+                onKeyDown={onKeyDown}
+                onBlur={onToggleCaptionEditMode}
+              />
+            ) : (
+              <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }} onClick={onToggleCaptionEditMode}>{element.caption}</Box>
+            )}
+          </Box>
+          {children}
+        </Box>
+      ) : (
+        <Box>
+          <Box>
+            <Box
+              component="img"
+              alt={caption}
+              src={element.url}
+              sx={{ width: '100%' }}
+            />
+            <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }}>{element.caption}</Box>
+          </Box>
+          {children}
+        </Box>
+      )}
+    </>
   );
 };
