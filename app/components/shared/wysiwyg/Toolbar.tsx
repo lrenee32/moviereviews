@@ -1,11 +1,10 @@
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useCallback, useRef } from 'react';
 import { useSlate } from 'slate-react';
 import {
   getActiveStyles,
   getTextBlockStyle,
-  hasActiveLinkAtSelection,
+  insertImageFile,
   toggleBlockType,
-  toggleLinkAtSelection,
   toggleStyle,
 } from './utils/EditorUtils';
 
@@ -31,8 +30,9 @@ const CHARACTER_STYLES = ['bold', 'italic', 'underline', 'code'];
 const MISC_STYLES = ['bulleted-list', 'numbered-list', 'block-quote'];
 
 
-export const Toolbar: FunctionComponent = () => {
+export const Toolbar: FunctionComponent = ({ previousSelection }) => {
   const editor = useSlate();
+  const imageInput = useRef(null);
 
   const getIconForButton = (style: string) => {
     switch (style) {
@@ -94,6 +94,8 @@ export const Toolbar: FunctionComponent = () => {
     [editor]
   );
 
+  const onImageSelected = (e) => insertImageFile(editor, e.target.files, previousSelection);
+
   const blockType = getTextBlockStyle(editor);
 
   return (
@@ -134,12 +136,23 @@ export const Toolbar: FunctionComponent = () => {
         ))}
         <Divider orientation="vertical" variant="middle" flexItem />
         <ToolbarButton
-          icon={getIconForButton("link")}
-          type="link"
-          isActive={hasActiveLinkAtSelection(editor)}
+          icon={[
+            getIconForButton("image"),
+            <input
+              ref={imageInput}
+              hidden
+              key="image-upload"
+              type="file"
+              id="image-upload"
+              accept="image/png, image/jpeg"
+              onChange={onImageSelected}
+            />
+          ]}
+          type="image"
+          isActive={false}
           onMouseDown={event => {
             event.preventDefault();
-            toggleLinkAtSelection(editor);
+            imageInput?.current?.click();
           }}
         />
       </Box>

@@ -1,7 +1,8 @@
 import { FunctionComponent, useMemo, Dispatch, SetStateAction } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
-import { useEditorConfig } from './hooks/useEditorConfig';
+import { useEditorConfig, withCorrectVoidBehavior } from './hooks/useEditorConfig';
+import useSelection from './hooks/useSelection';
 
 import Box from '@mui/material/Box';
 import { Toolbar } from './Toolbar';
@@ -14,13 +15,15 @@ interface Props {
 }
 
 export const Editor: FunctionComponent<Props> = ({ value, setValue }) => {
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const { renderLeaf, renderElement } = useEditorConfig(editor);
+  const editor = useMemo(() => withCorrectVoidBehavior(withReact(createEditor())), []);
+  const { renderLeaf, renderElement } = useEditorConfig(editor, selection, previousSelection);
+
+  const [previousSelection, selection, setSelection] = useSelection(editor);
 
   return (
     <Slate editor={editor} value={value} onChange={setValue}>
       <Box className={styles["editor-container"]}>
-        <Toolbar />
+        <Toolbar previousSelection={previousSelection} />
         <Box className={styles["editor-text-container"]}>
           <Editable
             renderElement={renderElement}

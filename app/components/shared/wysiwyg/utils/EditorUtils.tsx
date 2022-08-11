@@ -62,3 +62,26 @@ export const toggleBlockType = (editor: Editor, blockType: string) => {
     Transforms.wrapNodes(editor, block);
   }
 };
+
+export const insertImageFile = (editor: Editor, files, selection) => {
+  if (files.length === 0) {
+    return;
+  }
+  const file = files[0];
+  const fileName = file.name;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const url = e.target.result;
+    Transforms.insertNodes(
+      editor,
+      {
+        type: 'image',
+        caption: fileName,
+        url,
+        children: [{ text: '' }],
+      },
+      { at: selection, select: true },
+    );
+  };
+  reader.readAsDataURL(file);
+}
