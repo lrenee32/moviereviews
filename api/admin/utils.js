@@ -49,27 +49,18 @@ class AdminEntryUtils {
     };
   };
 
-  async create(UserId, Item) {
+  async create(UserId, EntryId, Item) {
     try {
-      const entryId = uuidv4();
-
-      const content = Item.Content.map(async(i) => {
-        if (i.type === 'image') {
-          i.url = await uploadImage(i.url, `entry/${entryId}`);
-        }
-        return i;
-      });
-
       const params = {
         TableName: 'movie-reviews_reviews',
         Item: {
-          EntryId: entryId,
+          EntryId: EntryId,
           UserId: UserId,
           Title: Item.Title,
           Type: Item.Type,
           Featured: Item.Featured,
           SitePick: Item.SitePick,
-          Content: content,
+          Content: Item.Content,
           Details: Item.Details,
           Created: Date.now(),
           Tags: Item.Tags,
@@ -78,6 +69,21 @@ class AdminEntryUtils {
 
       await db.put(params);
       return params.Item;
+    } catch (err) {
+      return err || err.message;
+    };
+  };
+
+  async presign(UserId, EntryId, FileName) {
+    const params = {
+      Bucket: 'splatterandscream-dev',
+      Key: `${UserId}/entry/${EntryId}/images/${FileName}`,
+      ContentType: 'multipart/form-data',
+      Expires: 600,
+    }
+    try {
+      const presignedURL = await s3.presign('putObject', params);
+      return presignedURL;
     } catch (err) {
       return err || err.message;
     };
@@ -119,17 +125,6 @@ class AdminEntryUtils {
     } catch (err) {
       return err || err.message;
     };
-  };
-
-  async uploadImage(file, bucket) {
-    const params = {
-      Body: file,
-      Bucket: bucket,
-      Key: file.name,
-    };
-  
-    const res = await s3.put(params);
-    return res;
   };
 }
 

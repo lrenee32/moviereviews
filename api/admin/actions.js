@@ -1,7 +1,7 @@
 'use strict';
 const app = require('../app');
 const AdminEntryUtils = require('./utils');
-const { search, searchById, create, editById, deleteById } = new AdminEntryUtils();
+const { search, searchById, create, presign, editById, deleteById } = new AdminEntryUtils();
 
 class AdminEntryActions {
   async search(request) {
@@ -28,17 +28,30 @@ class AdminEntryActions {
   };
 
   async create(request) {
+    const { UserId, EntryId } = request.pathParams;
     const Item = request.body;
-    const { UserId } = request.pathParams;
 
     try {
-      const res = await create(UserId, Item);
+      const res = await create(UserId, EntryId, Item);
       return res;
     } catch (err) {
       console.warn(`Error creating entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
+
+  async presign(request) {
+    const { FileName } = request.queryString;
+    const { UserId, EntryId } = request.pathParams;
+
+    try {
+      const res = await presign(UserId, EntryId, FileName);
+      return res;
+    } catch (err) {
+      console.warn(`Error creating presigned url: ${err}`);
+      return new app.ApiResponse(err.message, {}, 500);
+    };
+  }
 
   async editById(request) {
     const { UserId, EntryId } = request.pathParams;

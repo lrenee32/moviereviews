@@ -12,6 +12,9 @@ class S3 {
   delete(params) {
     return s3.deleteObject(params).promise();
   };
+  presign(action, params) {
+    return s3.getSignedUrl(action, params);
+  };
 };
 
 module.exports = S3;
