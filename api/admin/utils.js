@@ -1,5 +1,4 @@
 'use strict';
-const { v4: uuidv4 } = require('uuid');
 const Database = require('../shared/db');
 const db = new Database();
 const S3 = require('../shared/s3');
@@ -114,8 +113,21 @@ class AdminEntryUtils {
     };
   };
 
-  async deleteById(UserId, EntryId) {
+  async deleteById(UserId, EntryId, Items) {
     try {
+      if (Items.length > 0) {
+        const bucket = 'splatterandscream-dev';
+        const keys = Items.map(i => ({
+          Key: i.replace(`https://${bucket}.s3.amazonaws.com/`, ''),
+        }));
+        await s3.deleteObjects({
+          Bucket: bucket,
+          Delete: {
+            Objects: keys,
+          },
+        });
+      }
+
       const params = {
         TableName: 'movie-reviews_reviews',
         Key: { "UserId": UserId, "EntryId": EntryId },

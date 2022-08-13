@@ -68,9 +68,10 @@ class AdminEntryActions {
 
   async deleteById(request) {
     const { UserId, EntryId } = request.pathParams;
+    const Items = request.body;
 
     try {
-      const res = await deleteById(UserId, EntryId);
+      const res = await deleteById(UserId, EntryId, Items);
       return res;
     } catch (err) {
       console.warn(`Error creating entry: ${err}`);

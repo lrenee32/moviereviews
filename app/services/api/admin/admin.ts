@@ -115,10 +115,15 @@ export const editEntry = (
 export const deleteEntry = (
   userId: Entry<Review>["UserId"],
   entryId: Entry<Review>["EntryId"],
+  images: Entry<Review>["Content"],
 ) => {
   return API({
     method: 'DELETE',
     path: `/admin/${userId}/entry/delete/${entryId}`,
+    body: images,
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 };
 

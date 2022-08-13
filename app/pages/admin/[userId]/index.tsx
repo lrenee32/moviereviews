@@ -127,7 +127,9 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
           cancelEvent();
         });
       case 'delete':
-        return deleteEntry(userId, entryId).then((res: Entry<Review>) => {
+        const filtered = body.Content.filter(i => i.type === 'image');
+        const images = filtered.map(i => i.url);
+        return deleteEntry(userId, entryId, images).then((res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
           entries.splice(arrIndex, 1);
           cancelEvent();
