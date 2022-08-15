@@ -3,7 +3,7 @@ import { API } from '../api-service';
 import { v4 as uuidv4 } from 'uuid';
 import isUrl from 'is-url';
 
-const presignAndPutObject = async (userId, entryId, file) => {
+const presignAndPutObject = async (userId: Entry<Review>["UserId"], entryId: Entry<Review>["EntryId"], file: File) => {
   const presignedURL = await API({
     method: 'POST',
     path: `/admin/${userId}/entry/presign/${entryId}`,

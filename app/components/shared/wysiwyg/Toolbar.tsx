@@ -55,7 +55,7 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
       case 'link':
         return <LinkIcon />;
       case 'image':
-        return <ImageIcon />;
+        return <ImageIcon key={style} />;
       default:
         throw new Error(`Unhandled style in getIconForButton: ${style}`);
     }

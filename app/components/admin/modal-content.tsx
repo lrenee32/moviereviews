@@ -71,7 +71,7 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (e) => {
-      const url = e.target.result;
+      const url = e.target?.result;
       setFeaturedImage({
         url,
         file,

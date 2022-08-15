@@ -2,6 +2,9 @@ import { FunctionComponent } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
+import SvgIcon from '@mui/material/SvgIcon';
+import SplatterIcon from 'public/images/hand-splatter.svg';
 import { ReadOnly } from 'components/shared/wysiwyg/ReadOnly';
 import { LatestReviews } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
@@ -28,7 +31,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-      <Container fluid maxWidth="md" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
+      <Container maxWidth="lg" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
         <Nav style="large" />
         <Typography
           sx={{
@@ -57,12 +60,33 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             />
             <Box ml={isLg && "80px"}>
               <ReadOnly value={entry.Content} />
+              {entry.Type === 'review' && (
+                <Rating
+                  readOnly
+                  value={entry.Details?.UserRating}
+                  precision={0.5}
+                  max={10}
+                  sx={{ fontSize: '72px', '& > span': { width: '42px' }, mb: '20px' }}
+                  icon={
+                    <SvgIcon component={SplatterIcon} viewBox="72 72 600 375" fontSize="inherit" sx={{ color: VARIABLES.primaryColor }} />
+                  }
+                  emptyIcon={
+                    <SvgIcon component={SplatterIcon} viewBox="72 72 600 375" fontSize="inherit" />
+                  }
+                />
+              )}
+              <Box display="flex" mb="30px">
+                <Typography mr="5px">Related Topics:</Typography>
+                {entry.Tags.map(i => (
+                  <Typography key={i} mr="5px" sx={{ opacity: '.5' }}>{`#${i}`}</Typography>
+                ))}
+              </Box>
+              <DisqusComments
+                url={`https://localhost:3000/entry/${entry.EntryId}`}
+                identifier={entry.EntryId}
+                title={entry.Title}
+              />
             </Box>
-            <DisqusComments
-              url={`https://localhost:3000/entry/${entry.EntryId}`}
-              identifier={entry.EntryId}
-              title={entry.Title}
-            />
           </Box>
           {isLg && (
             <Box width="30%" position="sticky" alignSelf="flex-start" top="0">

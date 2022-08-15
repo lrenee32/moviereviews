@@ -17,6 +17,11 @@ export const global = (theme: Theme) => {
         default: '#0D090A'
       }
     },
+    typography: {
+      h5: {
+        fontSize: '27px',
+      },
+    },
     components: {
       MuiAppBar: {
         styleOverrides: {

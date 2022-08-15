@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import styles from 'components/shared/nav/main-nav.module.scss';
 import { NavLinks } from './nav-links';
 import { SocialLinks } from './socials';
@@ -16,7 +15,7 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       {style === 'main' && (
-        <AppBar position="absolute" color="transparent">
+        <AppBar position="absolute" color="transparent" id="back-to-top-anchor">
           <NextLink href="/" passHref>
             <Box
               component="img"
@@ -41,7 +40,7 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
         </AppBar>
       )}
       {style === 'large' && (
-        <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', display: 'flex', alignItems: 'center' }}>
+        <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', display: 'flex', alignItems: 'center', mb: '10px' }} id="back-to-top-anchor">
           <Box display="flex" alignItems="center" ml="-200px">
             <SocialLinks />
             <Box
