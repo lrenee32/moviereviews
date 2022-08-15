@@ -42,7 +42,7 @@ const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Pr
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {header}
-        <CloseIcon onClick={() => toggleModal(false)} sx={{ '&:hover': { color: VARIABLES.primaryColor, cursor: 'pointer' } }} />
+        <CloseIcon onClick={() => cancel.action()} sx={{ '&:hover': { color: VARIABLES.primaryColor, cursor: 'pointer' } }} />
       </DialogTitle>
       <DialogContent>
         {content}

@@ -1,7 +1,7 @@
 'use strict';
 const app = require('../app');
 const AdminEntryUtils = require('./utils');
-const { search, searchById, create, presign, editById, deleteById } = new AdminEntryUtils();
+const { search, searchById, create, presign, editById, deleteById, deleteImages } = new AdminEntryUtils();
 
 class AdminEntryActions {
   async search(request) {
@@ -61,7 +61,7 @@ class AdminEntryActions {
       const res = await editById(UserId, EntryId, Item);
       return res;
     } catch (err) {
-      console.warn(`Error creating entry: ${err}`);
+      console.warn(`Error editing entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };
@@ -74,7 +74,19 @@ class AdminEntryActions {
       const res = await deleteById(UserId, EntryId, Items);
       return res;
     } catch (err) {
-      console.warn(`Error creating entry: ${err}`);
+      console.warn(`Error deleting entry: ${err}`);
+      return new app.ApiResponse(err.message, {}, 500);
+    };
+  };
+
+  async deleteImages(request) {
+    const Items = request.body;
+
+    try {
+      const res = await deleteImages(Items);
+      return res;
+    } catch (err) {
+      console.warn(`Error deleting entry images: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);
     };
   };

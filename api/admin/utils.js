@@ -138,6 +138,23 @@ class AdminEntryUtils {
       return err || err.message;
     };
   };
+
+  async deleteImages(Items) {
+    try {
+      const bucket = 'splatterandscream-dev';
+      const keys = Items.map(i => ({
+        Key: i.replace(`https://${bucket}.s3.amazonaws.com/`, ''),
+      }));
+      return await s3.deleteObjects({
+        Bucket: bucket,
+        Delete: {
+          Objects: keys,
+        },
+      });
+    } catch (err) {
+      return err || err.message;
+    };
+  };
 }
 
 module.exports = AdminEntryUtils;

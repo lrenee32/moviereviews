@@ -12,6 +12,10 @@ import { Entries, Entry, Review } from 'utils/types';
 import { toTitleCase } from 'utils/utils';
 import { GetStaticProps, GetStaticPaths } from 'next/types';
 import { VARIABLES } from 'assets/themes/themes';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Theme } from '@mui/material';
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
+import format from 'date-fns/format';
 
 interface Props {
   entry: Entry<Review>,
@@ -20,10 +24,11 @@ interface Props {
 
 const EntryDetails: FunctionComponent<Props> = (props: Props) => {
   const { entry, entries } = props;
+  const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return (
     <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-      <Container fixed sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
+      <Container fluid maxWidth="md" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
         <Nav style="large" />
         <Typography
           sx={{
@@ -36,18 +41,21 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
         >
           {toTitleCase(entry.Type)}
         </Typography>
-        <Typography variant="h2" mb="30px">
+        <Typography variant="h2">
           {entry.Title}
         </Typography>
+        <Typography mb="30px" sx={{ opacity: '.5'}}>
+          {`Published ${formatDistanceToNowStrict(entry.Created) } ago on ${format(new Date(entry.Created), 'PP')}`}
+        </Typography>
         <Box display="flex">
-          <Box width="70%" pr="20px">
+          <Box width={isLg ? '70%' : '100%'} pr={isLg && '20px'}>
             <Box
               component="img"
               alt={`${entry.EntryId}-featured-image`}
               src={entry.Details!.FeaturedImage}
               sx={{ width: '100%' }}
             />
-            <Box ml="80px">
+            <Box ml={isLg && "80px"}>
               <ReadOnly value={entry.Content} />
             </Box>
             <DisqusComments
@@ -56,9 +64,11 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
               title={entry.Title}
             />
           </Box>
-          <Box width="30%" position="sticky" alignSelf="flex-start" top="0">
-            <LatestReviews entries={entries.All} />
-          </Box>
+          {isLg && (
+            <Box width="30%" position="sticky" alignSelf="flex-start" top="0">
+              <LatestReviews entries={entries.All} />
+            </Box>
+          )}
         </Box>
         <Footer />
       </Container>

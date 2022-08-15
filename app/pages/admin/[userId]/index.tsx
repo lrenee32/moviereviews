@@ -33,12 +33,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     type: Entry<Review>["Type"],
     featured: Entry<Review>["Featured"],
     sitePick: Entry<Review>["SitePick"],
-    imageURL: Review["FeaturedImage"],
+    featuredImage: { url: string, file: null },
     content: Entry<Review>["Content"],
     details: Partial<Entry<Review>["Details"]>,
     userRating: Review["UserRating"],
     tags: Entry<Review>["Tags"],
     created: Entry<Review>["Created"],
+    previousImages: string[],
   } = {
     action: 'create',
     entryId: '',
@@ -46,12 +47,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     type: 'article',
     featured: false,
     sitePick: false,
-    imageURL: '',
+    featuredImage: { url: '', file: null },
     content: [{type: 'paragraph', children: [{text: ''}]}],
     details: null,
     userRating: 0,
     tags: [],
     created: 0,
+    previousImages: [],
   };
   
   const [action, setAction] = useState<ActionTypes>(initialValues.action);
@@ -60,12 +62,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const [type, setType] = useState<Entry<Review>["Type"]>(initialValues.type);
   const [featured, setFeatured] = useState<Entry<Review>["Featured"]>(initialValues.featured);
   const [sitePick, setSitePick] = useState<Entry<Review>["SitePick"]>(initialValues.sitePick);
-  const [imageURL, setImageURL] = useState<Review["FeaturedImage"]>(initialValues.imageURL);
+  const [featuredImage, setFeaturedImage] = useState<{url: string, file: File | null}>(initialValues.featuredImage);
   const [content, setContent] = useState<Entry<Review>["Content"]>(initialValues.content);
   const [details, setDetails] = useState<Partial<Entry<Review>["Details"]>>(initialValues.details);
   const [userRating, setUserRating] = useState<Review["UserRating"]>(initialValues.userRating)
   const [tags, setTags] = useState<Entry<Review>["Tags"]>(initialValues.tags);
   const [created, setCreated] = useState<Entry<Review>["Created"]>(initialValues.created);
+  const [previousImages, setPreviousImages] = useState<string[]>(initialValues.previousImages);
 
   const reset = () => {
     setAction(initialValues.action);
@@ -73,11 +76,12 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     setType(initialValues.type);
     setFeatured(initialValues.featured);
     setSitePick(initialValues.sitePick);
-    setImageURL(initialValues.imageURL);
+    setFeaturedImage(initialValues.featuredImage);
     setContent(initialValues.content);
     setDetails(initialValues.details);
     setUserRating(initialValues.userRating);
     setTags(initialValues.tags);
+    setPreviousImages(initialValues.previousImages);
   };
 
   const actionEvent = (entry: Entry<Review> | null, action: ActionTypes) => {
@@ -88,12 +92,15 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       setType(entry.Type);
       setFeatured(entry.Featured);
       setSitePick(entry.SitePick);
-      setImageURL(entry.Details!.FeaturedImage);
+      setFeaturedImage({ url: entry.Details!.FeaturedImage, file: null });
       setContent(entry.Content);
       setDetails(entry.Details);
       setUserRating(entry.Details!.UserRating);
       setTags(entry.Tags);
       setCreated(entry.Created);
+      
+      const filtered = entry.Content.filter(i => i.type === 'image');
+      setPreviousImages(filtered.map(i => i.url).concat([entry.Details!.FeaturedImage]));
     }
     return modalRef?.current?.toggleModal(true);
   };
@@ -110,7 +117,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       Featured: featured,
       SitePick: sitePick,
       Content: content,
-      Details: {...details, UserRating: userRating, FeaturedImage: imageURL},
+      Details: {...details, UserRating: userRating, FeaturedImage: featuredImage},
       Tags: tags,
     };
     switch(action) {
@@ -121,7 +128,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         });
       case 'edit':
         const json: Partial<Entry<Partial<Review>>> = {...body, EntryId: entryId, Created: created};
-        return editEntry(userId, entryId, json).then((res: Entry<Review>) => {
+        return editEntry(userId, entryId, json, previousImages).then((res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
           entries[arrIndex] = res;
           cancelEvent();
@@ -129,6 +136,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       case 'delete':
         const filtered = body.Content.filter(i => i.type === 'image');
         const images = filtered.map(i => i.url);
+        images.push(body.Details?.FeaturedImage.url);
         return deleteEntry(userId, entryId, images).then((res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
           entries.splice(arrIndex, 1);
@@ -220,7 +228,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
             entryId={entryId}
             title={title}
             type={type}
-            imageURL={imageURL}
+            featuredImage={featuredImage}
             featured={featured}
             sitePick={sitePick}
             userRating={userRating}
@@ -229,7 +237,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
             actions={{
               setTitle,
               setType,
-              setImageURL,
+              setFeaturedImage,
               setFeatured,
               setSitePick,
               setDetails,
