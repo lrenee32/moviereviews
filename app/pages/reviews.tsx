@@ -13,6 +13,8 @@ import { GetStaticProps } from 'next/types';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { VARIABLES } from 'assets/themes/themes';
 import { Footer } from 'components/shared/nav/footer';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Theme } from '@mui/material';
 
 interface Props {
   entries: Entries<Review>["All"],
@@ -20,6 +22,7 @@ interface Props {
 
 export const Index: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
+  const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return (
     <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
@@ -52,9 +55,9 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
             </CardContent>
           </CardActionArea>
         </Card>
-        <Box width="70%">
+        <Box width={isLg ? '70%' : '100%' } mr={isLg ? '20px' : '0px' }>
           {entries.slice(1, entries.length).map(entry => (
-            <Card key={`${entry.Title}-${entry.EntryId}-review`} sx={{ mt: '20px', mr: '20px'}}>
+            <Card key={`${entry.Title}-${entry.EntryId}-review`} sx={{ mt: '20px' }}>
               <CardActionArea href={`/entry/${entry.EntryId}`} sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <CardMedia
                   component="img"

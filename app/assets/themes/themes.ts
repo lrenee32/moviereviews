@@ -19,7 +19,21 @@ export const global = (theme: Theme) => {
     },
     typography: {
       h5: {
-        fontSize: '27px',
+        '@media only screen and (max-width: 479px)': {
+          fontSize: '1rem',
+        },
+        '@media only screen and (min-width: 480px) and (max-width: 599px)': {
+          fontSize: '1.1rem',
+        },
+        '@media only screen and (min-width: 600px) and (max-width: 767px)': {
+          fontSize: '1.4rem',
+        },
+        '@media only screen and (min-width: 768px) and (max-width: 899px)': {
+          fontSize: '1.5rem',
+        },
+        [theme.breakpoints.up('md')]: {
+          fontSize: '1.4rem',
+        },
       },
     },
     components: {
