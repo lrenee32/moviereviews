@@ -15,6 +15,7 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <Grid
+      id="back-to-top-anchor"
       container
       height={'80vh'}
       minHeight="700px"

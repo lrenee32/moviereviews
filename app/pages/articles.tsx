@@ -25,7 +25,7 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
     <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
       <Container maxWidth="lg" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
         <Nav style="large" />
-        <Card key={`${entries[0].Title}-${entries[0].EntryId}-headline`} sx={{ mb: '40px' }}>
+        <Card id="back-to-top-anchor" key={`${entries[0].Title}-${entries[0].EntryId}-headline`} sx={{ mb: '40px' }}>
           <CardActionArea href={`/entry/${entries[0].EntryId}`} sx={{ position: 'relative', '.MuiCardActionArea-focusHighlight': { backgroundColor: '#000000' } }}>
             <CardMedia
               component="img"

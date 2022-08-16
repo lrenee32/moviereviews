@@ -30,10 +30,11 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return (
-    <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-      <Container maxWidth="lg" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
+    <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', mt: isLg ? '0px' : '65px' }}>
+      <Container maxWidth="lg" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50)' }}>
         <Nav style="large" />
         <Typography
+          id="back-to-top-anchor"
           sx={{
             backgroundColor: VARIABLES.primaryColor,
             padding: '2.5px 10px',

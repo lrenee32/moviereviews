@@ -8,6 +8,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import Divider from '@mui/material/Divider';
 import styles from 'components/shared/nav/main-nav.module.scss';
 import { NavLinks } from './nav-links';
 import { SocialLinks } from './socials';
@@ -22,6 +24,12 @@ interface Props {
 export const Nav: FunctionComponent<Props> = (props: Props) => {
   const { style } = props;
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isXs = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
+  const Links: { href: string, text: string }[] = [
+    { href: '/reviews', text: 'Reviews' },
+    { href: '/articles', text: 'Articles' },
+  ];
 
   const [open, setOpen] = useState(false);
 
@@ -32,7 +40,7 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       {style === 'main' && (
-        <AppBar position="absolute" color="transparent" id="back-to-top-anchor">
+        <AppBar position="absolute" color="transparent">
           <NextLink href="/" passHref>
             <Box
               component="img"
@@ -57,34 +65,55 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
         </AppBar>
       )}
       {style === 'large' && isLg && (
-        <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', display: 'flex', alignItems: 'center', mb: '10px' }} id="back-to-top-anchor">
+        <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', display: 'flex', alignItems: 'center', mb: '10px' }}>
           <Box display="flex" alignItems="center" ml="-200px">
             <SocialLinks />
-            <Box
-              component="img"
-              alt="site-logo-header"
-              src="../../images/site-logo-main.png"
-              sx={{ height: '200px', m: '16px 16px 16px 32px', '&:hover': { cursor: 'pointer' } }}
-            />
+            <NextLink href="/" passHref>
+              <Box
+                component="img"
+                alt="site-logo-header"
+                src="../../images/site-logo-main.png"
+                sx={{ height: '200px', m: '16px 16px 16px 32px', '&:hover': { cursor: 'pointer' } }}
+              />
+            </NextLink>
           </Box>
           <NavLinks />
         </AppBar>
       )}
       {style === 'large' && !isLg && (
         <AppBar position="fixed">
-          <Toolbar>
+          <Box display="flex" justifyContent="space-between" m="7.5px">
             <IconButton onClick={toggleDrawer(!open)}>
               <MenuIcon />
             </IconButton>
-          </Toolbar>
+            <NextLink href="/" passHref>
+              <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
+            </NextLink>
+            <Box></Box>
+          </Box>
         </AppBar>
       )}
-      <Drawer open={open}>
-        <IconButton onClick={toggleDrawer(false)} sx={{ position: 'absolute', top: '5px', right: '5px', zIndex: '999' }}>
-          <CloseIcon />
-        </IconButton>
+      <Drawer open={open} ModalProps={{ onBackdropClick: toggleDrawer(false) }} sx={{ width: '100%', '.MuiDrawer-paper': { width: isXs ? '100%' : '370px' } }}>
+        <Box display="flex" justifyContent="space-between" m="10px">
+          <Box></Box>
+          <NextLink href="/" passHref>
+            <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
+          </NextLink>
+          <IconButton onClick={toggleDrawer(false)}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <List>
-          <ListItem>Test</ListItem>
+          {Links.map(i => (
+            <>
+              <NextLink href={i.href} passHref>
+                <ListItemButton>
+                  <ListItem>{i.text}</ListItem>
+                </ListItemButton>
+              </NextLink>
+              <Divider variant="middle" />
+            </>
+          ))}
         </List>
       </Drawer>
     </>
