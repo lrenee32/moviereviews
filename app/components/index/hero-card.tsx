@@ -51,15 +51,7 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
           maxWidth: '600px',
         }}
       >
-        <Box display="flex" marginBottom="10px" alignItems="center">
-          {entry.Type === 'review' &&
-            <>
-              <Chip label={`IMDB: ${entry.Details!.TMDBRating}`} color="primary" sx={{ marginRight: '5px' }} />
-              <Chip label={`Personal: ${entry.Details!.UserRating}`} color="primary" sx={{ marginRight: '5px' }} />
-            </>
-          }
-          <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
-        </Box>
+        <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
         <Typography variant={headingVariant} marginBottom="10px">{ entry.Title }</Typography>
         <Typography marginBottom="15px">{ showDescription && entry.Details!.FilmOverview }</Typography>
         <Button href={`/entry/${entry.EntryId}`} variant="outlined">Read More</Button>

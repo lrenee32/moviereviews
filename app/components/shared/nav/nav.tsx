@@ -81,41 +81,43 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
         </AppBar>
       )}
       {style === 'large' && !isLg && (
-        <AppBar position="fixed">
-          <Box display="flex" justifyContent="space-between" m="7.5px">
-            <IconButton onClick={toggleDrawer(!open)}>
-              <MenuIcon />
-            </IconButton>
-            <NextLink href="/" passHref>
-              <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
-            </NextLink>
-            <Box></Box>
-          </Box>
-        </AppBar>
-      )}
-      <Drawer open={open} ModalProps={{ onBackdropClick: toggleDrawer(false) }} sx={{ width: '100%', '.MuiDrawer-paper': { width: isXs ? '100%' : '370px' } }}>
-        <Box display="flex" justifyContent="space-between" m="10px">
-          <Box></Box>
-          <NextLink href="/" passHref>
-            <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
-          </NextLink>
-          <IconButton onClick={toggleDrawer(false)}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <List>
-          {Links.map(i => (
-            <>
-              <NextLink href={i.href} passHref>
-                <ListItemButton>
-                  <ListItem>{i.text}</ListItem>
-                </ListItemButton>
+        <>
+          <AppBar position="fixed">
+            <Box display="flex" justifyContent="space-between" m="7.5px">
+              <IconButton onClick={toggleDrawer(!open)}>
+                <MenuIcon />
+              </IconButton>
+              <NextLink href="/" passHref>
+                <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
               </NextLink>
-              <Divider variant="middle" />
-            </>
-          ))}
-        </List>
-      </Drawer>
+              <Box></Box>
+            </Box>
+          </AppBar>
+          <Drawer open={open} ModalProps={{ onBackdropClick: toggleDrawer(false) }} sx={{ width: '100%', '.MuiDrawer-paper': { width: isXs ? '100%' : '370px' } }}>
+            <Box display="flex" justifyContent="space-between" m="10px">
+              <Box></Box>
+              <NextLink href="/" passHref>
+                <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
+              </NextLink>
+              <IconButton onClick={toggleDrawer(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            <List>
+              {Links.map(i => (
+                <Box key={i.text}>
+                  <NextLink href={i.href} passHref>
+                    <ListItemButton>
+                      <ListItem>{i.text}</ListItem>
+                    </ListItemButton>
+                  </NextLink>
+                  <Divider variant="middle" />
+                </Box>
+              ))}
+            </List>
+          </Drawer>
+        </>
+      )}
     </>
   );
 };

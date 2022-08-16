@@ -59,7 +59,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
               src={entry.Details!.FeaturedImage}
               sx={{ width: '100%' }}
             />
-            <Box ml={isLg && "80px"}>
+            <Box ml={isLg ? "80px" : '0px'}>
               <ReadOnly value={entry.Content} />
               {entry.Type === 'review' && (
                 <Rating
@@ -67,12 +67,12 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
                   value={entry.Details?.UserRating}
                   precision={0.5}
                   max={10}
-                  sx={{ fontSize: '72px', '& > span': { width: '42px' }, mb: '20px' }}
+                  sx={{ fontSize: '5vw', mb: '20px' }}
                   icon={
-                    <SvgIcon component={SplatterIcon} viewBox="72 72 600 375" fontSize="inherit" sx={{ color: VARIABLES.primaryColor }} />
+                    <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" sx={{ color: VARIABLES.primaryColor }} />
                   }
                   emptyIcon={
-                    <SvgIcon component={SplatterIcon} viewBox="72 72 600 375" fontSize="inherit" />
+                    <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" />
                   }
                 />
               )}

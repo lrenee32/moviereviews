@@ -1,14 +1,9 @@
 import { FunctionComponent } from 'react';
 import { Entries, Review } from 'utils/types';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import { LatestReviews } from './latest-reviews';
 import { SectionDivider } from 'components/shared/section-divider';
-import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
+import { ContentCard } from 'components/shared/content/content-card';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Theme } from '@mui/material';
 
@@ -26,22 +21,7 @@ export const LatestHeadlines: FunctionComponent<Props> = (props: Props) => {
       <Box display="flex">
         <Box width={isLg ? '70%' : '100%' } sx={{ mr: isLg ? '20px' : '0px' }}>
           {entries.map(entry => (
-            <Card key={`${entry.Title}-${entry.EntryId}-headline`} sx={{ mt: '20px' }}>
-              <CardActionArea href={`/entry/${entry.EntryId}`} sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                <CardMedia
-                  component="img"
-                  image={entry.Details!.FeaturedImage}
-                  alt={`${entry.Title}-${entry.EntryId}-headline`}
-                  sx={{ width: '50%' }}
-                />
-                <CardContent sx={{ width: '50%', mt: "30px" }}>
-                  <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase', mb: '5px' }}>{entry.Type} | { formatDistanceToNowStrict(entry.Created) } ago</Typography>
-                  <Typography variant="h5">
-                    {entry.Title}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
+            <ContentCard key={`${entry.EntryId}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
           ))}
         </Box>
         {isLg && (

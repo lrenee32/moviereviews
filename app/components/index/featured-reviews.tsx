@@ -11,6 +11,8 @@ import Chip from '@mui/material/Chip';
 import { SectionDivider } from 'components/shared/section-divider';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { getPosterImage } from 'services/api/entries/entries';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Theme } from '@mui/material';
 
 type ActionTypes = 'pick' | 'top';
 
@@ -21,6 +23,7 @@ interface Props {
 export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
   const clonedArr = [...entries];
+  const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const [filterType, setFilterType] = useState<ActionTypes>('pick');
   const [filtered, setFiltered] = useState<Entry<Review>[]>(clonedArr.filter(i => i.SitePick));
@@ -41,7 +44,7 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       <SectionDivider text="Featured Reviews" />
-      <Box textAlign="right" mb="20px">
+      <Box textAlign={isLg ? 'right' : 'center'} mb="20px">
         <Chip
           label="Site Picks"
           sx={{ ml: '5px' }}
@@ -77,11 +80,12 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
                     <Chip
                       label={ `IMDB: ${entry.Details!.TMDBRating}` }
                       color="primary"
-                      sx={{ marginRight: '5px' }}
+                      sx={{ marginRight: '5px', mb: '5px' }}
                       />
                     <Chip
                       label={ `Personal: ${entry.Details!.UserRating}` }
                       color="primary"
+                      sx={{ marginRight: '5px', mb: '5px' }}
                     />
                   </Box>
                 </CardContent>

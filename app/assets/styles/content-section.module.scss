@@ -1,0 +1,82 @@
+@import './variables.scss';
+
+.wrapper {
+  background: linear-gradient(to bottom, #0D090A 85%, $primary-color 185%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  .container {
+    background: $base-color;
+    box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.50);
+    .featured-card {
+      margin-bottom: 40px;
+      .action-area {
+        position: relative;
+        .MuiCardActionAread-focusHighlight {
+          background-color: $base-color;
+        }
+        .card-image {
+          width: 100%;
+        }
+        .card-overlay {
+          background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,.9) 50%, rgba(0,0,0,0) 100%);
+          position: absolute;
+          z-index: 999;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+        }
+        .card-content {
+          position: absolute;
+          z-index: 1000;
+          left: 0;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .card-image {
+    height: 300px;
+  }
+  .card-content {
+    bottom: 0;
+    width: 100%;
+    .card-title {
+      font-size: 2.2rem;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .card-image {
+    height: 500px;
+  }
+  .card-content {
+    top: 0;
+    width: 45%;
+    margin: 50px;
+    .card-title {
+      font-size: 3.75rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 899px) {
+  .wrapper {
+    margin-top: 65px;
+    .inner-container {
+      width: 100%;
+      margin-right: 0px;
+    }
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .inner-container {
+    width: 70%;
+    margin-right: 20px;
+  }
+}
