@@ -19,6 +19,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { Theme } from '@mui/material';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import format from 'date-fns/format';
+import styles from 'assets/styles/entry.module.scss';
 
 interface Props {
   entry: Entry<Review>,
@@ -30,36 +31,30 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return (
-    <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', mt: isLg ? '0px' : '65px' }}>
-      <Container maxWidth="lg" sx={{ background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50)' }}>
+    <Box className={styles['wrapper']}>
+      <Container maxWidth="lg" className={styles['container']}>
         <Nav style="large" />
         <Typography
           id="back-to-top-anchor"
-          sx={{
-            backgroundColor: VARIABLES.primaryColor,
-            padding: '2.5px 10px',
-            transform: 'skewX(-15deg)',
-            display: 'inline-block',
-            mb: '10px',
-          }}
+          className={styles['entry-type']}
         >
           {toTitleCase(entry.Type)}
         </Typography>
         <Typography variant="h2">
           {entry.Title}
         </Typography>
-        <Typography mb="30px" sx={{ opacity: '.5'}}>
+        <Typography className={styles['entry-subtitle']}>
           {`Published ${formatDistanceToNowStrict(entry.Created) } ago on ${format(new Date(entry.Created), 'PP')}`}
         </Typography>
-        <Box display="flex">
-          <Box width={isLg ? '70%' : '100%'} pr={isLg && '20px'}>
+        <Box className={styles['inner-wrapper']}>
+          <Box className={styles['inner-container']}>
             <Box
               component="img"
               alt={`${entry.EntryId}-featured-image`}
               src={entry.Details!.FeaturedImage}
-              sx={{ width: '100%' }}
+              className={styles['entry-featured-image']}
             />
-            <Box ml={isLg ? "80px" : '0px'}>
+            <Box className={styles['content-container']}>
               <ReadOnly value={entry.Content} />
               {entry.Type === 'review' && (
                 <Rating
@@ -67,7 +62,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
                   value={entry.Details?.UserRating}
                   precision={0.5}
                   max={10}
-                  sx={{ fontSize: '5vw', mb: '20px' }}
+                  className={styles['entry-rating']}
                   icon={
                     <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" sx={{ color: VARIABLES.primaryColor }} />
                   }
@@ -76,10 +71,10 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
                   }
                 />
               )}
-              <Box display="flex" mb="30px">
-                <Typography mr="5px">Related Topics:</Typography>
+              <Box className={styles['entry-tags']}>
+                <Typography className={styles['title']}>Related Topics:</Typography>
                 {entry.Tags.map(i => (
-                  <Typography key={i} mr="5px" sx={{ opacity: '.5' }}>{`#${i}`}</Typography>
+                  <Typography key={i} className={styles['tags']}>{`#${i}`}</Typography>
                 ))}
               </Box>
               <DisqusComments
@@ -90,7 +85,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             </Box>
           </Box>
           {isLg && (
-            <Box width="30%" position="sticky" alignSelf="flex-start" top="0">
+            <Box className={styles['side-container']}>
               <LatestReviews entries={entries.All} />
             </Box>
           )}
