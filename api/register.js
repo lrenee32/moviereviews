@@ -5,4 +5,5 @@
 module.exports = function (api) {
   require('./index/endpoints')(api);
   require('./admin/endpoints')(api);
+  require('./authentication/endpoints')(api);
 };

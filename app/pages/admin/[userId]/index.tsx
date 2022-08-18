@@ -1,18 +1,23 @@
 import { FunctionComponent, useState, useRef } from 'react';
-import { GetStaticProps, GetStaticPaths } from 'next/types';
+import { GetServerSideProps } from 'next/types';
 import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import MaterialTable, { MaterialTableProps } from 'material-table';
 import GenericModal from 'components/shared/generic-modal';
+import navStyles from 'assets/styles/nav.module.scss';
 import { Entry, Entries, Review } from 'utils/types';
 import { serializeToText, toTitleCase } from 'utils/utils';
 import { createEntry, editEntry, deleteEntry, getEntries } from 'services/api/admin/admin';
 import { ModalContent } from 'components/admin/modal-content';
+import { authenticated, getUserInfo, logout } from 'services/api/authentication/auth-service';
+import { useRouter } from 'next/router';
 
 
 type ActionTypes = 'create' | 'edit' | 'delete';
@@ -20,11 +25,13 @@ type ActionTypes = 'create' | 'edit' | 'delete';
 interface Props {
   userId: Entry<Review>["UserId"],
   entries: Entries<Review>["All"],
+  userInfo: any,
 };
 
 const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const modalRef = useRef<HTMLDivElement>();
-  const { userId, entries } = props;
+  const { userId, entries, userInfo } = props;
+  const router = useRouter();
 
   const initialValues: {
     action: ActionTypes,
@@ -69,6 +76,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const [tags, setTags] = useState<Entry<Review>["Tags"]>(initialValues.tags);
   const [created, setCreated] = useState<Entry<Review>["Created"]>(initialValues.created);
   const [previousImages, setPreviousImages] = useState<string[]>(initialValues.previousImages);
+
+  const adminLogout = () => {
+    return logout(userInfo.email)
+      .then(() => {
+        router.push('/admin/login');
+      });
+  };
 
   const reset = () => {
     setAction(initialValues.action);
@@ -205,6 +219,19 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   
   return (
     <>
+      <AppBar position="sticky" className={navStyles['small-nav']}>
+        <Box display="flex" justifyContent="space-between" width="100%">
+          <NextLink href="/" passHref>
+            <Box
+              component="img"
+              alt="site-logo-header"
+              src="../../../images/site-logo-main.png"
+              sx={{ height: '50px', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' } }}
+            />
+          </NextLink>
+          <Button color="inherit" onClick={adminLogout}>Logout</Button>
+        </Box>
+      </AppBar>
       <Container sx={{ marginY: '100px' }}>
         <Typography variant="h3" marginBottom={'30px'}>Manage Entries</Typography>
         <Button onClick={() => actionEvent(null, 'create')} variant="outlined">Create Entry</Button>
@@ -254,19 +281,24 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const isAuthenticated = await authenticated(context);
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const userInfo = getUserInfo(context);
+  console.log(userInfo);
   const userId: Entry<Review>["UserId"] = context.params?.userId;
   const entries: Entries<Review> = await getEntries(userId, '');
 
-  return { props: { userId, entries } };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = ['a5c723d5-89ba-4554-a09d-ee3870be41a3'].map((userId) => ({
-    params: { userId },
-  }));
-
-  return { paths, fallback: 'blocking' };
+  return { props: { userId, entries, userInfo } };
 };
 
 export default AdminProfile;

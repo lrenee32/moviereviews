@@ -13,6 +13,14 @@ export interface APIRequest extends FetchOptions {
   params?: URLSearchParams,
 };
 
+const handleResponse = async (response) => {
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json);
+  }
+  return json;
+}
+
 export const API = async (request: APIRequest) => {
   const url = new URL(baseUrl + request.path);
   if (request.params) {
@@ -23,5 +31,5 @@ export const API = async (request: APIRequest) => {
     headers: request.headers,
     body: JSON.stringify(request.body),
   })
-    .then(res => res.json());
+    .then(res => handleResponse(res));
 };

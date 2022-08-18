@@ -11,6 +11,11 @@ function isValid(token) {
   return false;
 };
 
+function getExpiration(token) {
+  const jwtPayload = token.split('.')[1];
+  return JSON.parse(Buffer.from(jwtPayload, 'base64')).exp;
+};
+
 class AuthenticationUtils {
   async authenticate(email, password) {
     try {
@@ -23,10 +28,10 @@ class AuthenticationUtils {
         ClientId: process.env.CognitoPoolClientId,
         UserPoolId: process.env.CognitoPoolId,
       };
-      const res = await Cognito.adminInitiateAuth(params);
-      return res.data;
+      const res = await Cognito.adminInitiateAuth(params).promise();
+      return res.AuthenticationResult;
     } catch (err) {
-      return err || err.message;
+      throw new Error(err || err.message);
     };
   };
 
@@ -38,13 +43,13 @@ class AuthenticationUtils {
     };
   };
 
-  async logoout(email) {
+  async logout(email) {
     try {
       const params = {
-        UserPoolId: process.env.CognitoPoolClientId,
+        UserPoolId: process.env.CognitoPoolId,
         Username: email,
       };
-      const res = await Cognito.adminUserGlobalSignOut(params);
+      const res = await Cognito.adminUserGlobalSignOut(params).promise();
       return res;
     } catch (err) {
       return err || err.message;
