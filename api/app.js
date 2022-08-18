@@ -6,6 +6,6 @@ module.exports = api
 
 require('./register.js')(api)
 
-// api.registerAuthorizer('CognitoAuthorizer', {
-//   providerARNs: [settings.cognitoArn],
-// })
+api.registerAuthorizer('CognitoAuthorizer', {
+  providerARNs: [process.env.CognitoPoolARN],
+})

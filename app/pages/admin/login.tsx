@@ -20,9 +20,9 @@ const Login: FunctionComponent = () => {
       noValidate
       autoComplete="off"
     >
-      <Typography variant="h3">Log in</Typography>
-      <TextField value={email} onChange={(e) => setEmail(e.target.value)} />
-      <TextField value={password} onChange={(e) => setPassword(e.target.value)} />
+      <Typography variant="h3" mb="30px">Log in</Typography>
+      <TextField type="text" placeholder="Enter email here" value={email} onChange={(e) => setEmail(e.target.value)} sx={{ marginBottom: '20px' }} />
+      <TextField type="password" placeholder="Enter password here" value={password} onChange={(e) => setPassword(e.target.value)} sx={{ marginBottom: '30px' }} />
       <Button variant="contained">Log in</Button>
     </Box>
   );
