@@ -18,5 +18,5 @@ export const getEntry = (EntryId: string | string[] | undefined) => {
 };
 
 export const getPosterImage = (posterPath: string) => {
-  return `https://image.tmdb.org/t/p/w500/${posterPath}`;
+  return `${process.env.NEXT_PUBLIC_TMDB_IMAGES_URL}/w500/${posterPath}`;
 };

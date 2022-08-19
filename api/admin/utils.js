@@ -75,7 +75,7 @@ class AdminEntryUtils {
 
   async presign(UserId, EntryId, FileName) {
     const params = {
-      Bucket: 'splatterandscream-dev',
+      Bucket: process.env.S3Bucket,
       Key: `${UserId}/entry/${EntryId}/images/${FileName}`,
       ContentType: 'multipart/form-data',
       Expires: 600,
@@ -116,7 +116,7 @@ class AdminEntryUtils {
   async deleteById(UserId, EntryId, Items) {
     try {
       if (Items.length > 0) {
-        const bucket = 'splatterandscream-dev';
+        const bucket = process.env.S3Bucket;
         const keys = Items.map(i => ({
           Key: i.replace(`https://${bucket}.s3.amazonaws.com/`, ''),
         }));
@@ -141,7 +141,7 @@ class AdminEntryUtils {
 
   async deleteImages(Items) {
     try {
-      const bucket = 'splatterandscream-dev';
+      const bucket = process.env.S3Bucket;
       const keys = Items.map(i => ({
         Key: i.replace(`https://${bucket}.s3.amazonaws.com/`, ''),
       }));

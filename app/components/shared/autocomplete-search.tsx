@@ -63,7 +63,7 @@ export const AutocompleteSearch: FunctionComponent<Props> = (props: Props) => {
         renderOption={(props, results) => (
           <Box component="li" {...props} key={results.id}>
             <Avatar
-              src={`https://image.tmdb.org/t/p/w300${results.poster_path}`}
+              src={`${process.env.NEXT_PUBLIC_TMDB_IMAGES_URL}/w300${results.poster_path}`}
               variant="square"
               sx={{ height: '75px', width: '50px', marginRight: '15px' }}
             />

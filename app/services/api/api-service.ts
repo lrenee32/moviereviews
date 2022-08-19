@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:5000';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type APIMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT" | "HEAD" | "OPTIONS" | "CONNECT";
 

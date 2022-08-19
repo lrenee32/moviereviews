@@ -15,7 +15,7 @@ export const ReadOnly: FunctionComponent<Props> = ({ value }) => {
 
   return (
     <Slate editor={editor} value={value}>
-      <Box>
+      <Box mb="30px">
         <Editable
           readOnly
           renderElement={(props) => renderElement(props, false)}

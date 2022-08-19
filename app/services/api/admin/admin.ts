@@ -146,7 +146,7 @@ export const deleteEntry = (
 };
 
 export const searchSuggestions = (searchTerm: string) => {
-  return fetch('https://api.themoviedb.org/3/search/movie?api_key=51d3b35a03189901a4907665233f6831&query=' + searchTerm)
+  return fetch(`${process.env.NEXT_PUBLIC_TMDB_API_URL}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${searchTerm}`)
     .then(res => res.json())
     .then(json => json.results)
 };

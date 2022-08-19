@@ -28,13 +28,16 @@ export const ContentSection: FunctionComponent<Props> = (props: Props) => {
         <Nav style="large" />
         <Card id="back-to-top-anchor" key={`${entries[0].Title}-${entries[0].EntryId}-${sectionName}-headline`} className={styles['featured-card']}>
           <CardActionArea href={`/entry/${entries[0].EntryId}`} className={styles['action-area']}>
-            <CardMedia
-              component="img"
-              image={entries[0].Details!.FeaturedImage}
-              alt={`${entries[0].Title}-${entries[0].EntryId}-${sectionName}-headline-image`}
-              className={styles['card-image']}
-            />
-            <Box className={styles['card-overlay']} />
+            <Box className={styles['card-image-container']}>
+              <Box className={styles['card-image-container-fill']} />
+              <CardMedia
+                component="img"
+                image={entries[0].Details!.FeaturedImage}
+                alt={`${entries[0].Title}-${entries[0].EntryId}-${sectionName}-headline-image`}
+                className={styles['card-image']}
+              />
+              <Box className={styles['card-overlay']} />
+            </Box>
             <CardContent className={styles['card-content']}>
               <Typography
                 className={typographyStyles['styled-title']}

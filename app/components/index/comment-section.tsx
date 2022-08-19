@@ -10,13 +10,13 @@ interface Props {
 export const DisqusComments: FunctionComponent<Props> = (props: Props) => {
   const { url, identifier, title } = props;
 
-  const disqusShortname = 'splatter-1';
+  const disqusShortname = process.env.NEXT_PUBLIC_DISQUS_SHORTNAME;
 
   const disqusConfig = { url, identifier, title };
 
   return (
     <DiscussionEmbed
-      shortname={disqusShortname}
+      shortname={disqusShortname!}
       config={disqusConfig}
     />
   )

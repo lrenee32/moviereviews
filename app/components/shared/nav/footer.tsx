@@ -19,7 +19,7 @@ export const Footer: FunctionComponent = () => {
       </NextLink>
       <SocialLinks sx={{ mb: '30px' }} />
       <FooterLinks />
-      <Typography paddingY="20px">{`Copyright © ${new Date().getFullYear()} Splatter, LLC`}</Typography>
+      <Typography paddingY="20px">{`Copyright © ${new Date().getFullYear()} Splatter & Scream, LLC`}</Typography>
     </AppBar>
   );
 };

@@ -1,6 +1,8 @@
 import { FunctionComponent } from 'react';
+import NextLink from 'next/link';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -20,6 +22,7 @@ import { Theme } from '@mui/material';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import format from 'date-fns/format';
 import styles from 'assets/styles/entry.module.scss';
+
 
 interface Props {
   entry: Entry<Review>,
@@ -74,11 +77,15 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
               <Box className={styles['entry-tags']}>
                 <Typography className={styles['title']}>Related Topics:</Typography>
                 {entry.Tags.map(i => (
-                  <Typography key={i} className={styles['tags']}>{`#${i}`}</Typography>
+                  <NextLink key={i} href={{ pathname: '/search', query: { s: i } }} passHref>
+                    <Link>
+                      <Typography className={styles['tags']}>{`#${i}`}</Typography>
+                    </Link>
+                  </NextLink>
                 ))}
               </Box>
               <DisqusComments
-                url={`https://localhost:3000/entry/${entry.EntryId}`}
+                url={`${process.env.NEXT_PUBLIC_HOSTNAME}/entry/${entry.EntryId}`}
                 identifier={entry.EntryId}
                 title={entry.Title}
               />
