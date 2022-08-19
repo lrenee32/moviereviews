@@ -61,8 +61,8 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
           <Box width={isLg ? '70%' : '100%' } sx={{ mr: isLg ? '20px' : '0px' }}>
             {loading ? (
               <>
-                {[...Array(3)].map(i => (
-                  <Skeleton key={i} className={cardStyles['card']} height={202.98} variant="rectangular" />
+                {[...Array(3)].map((_i, index) => (
+                  <Skeleton key={`skeleton-${index}`} className={cardStyles['card']} height={202.98} variant="rectangular" />
                 ))}
               </>
             ) : (

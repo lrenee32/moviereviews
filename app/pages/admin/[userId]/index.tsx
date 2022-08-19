@@ -219,7 +219,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   
   return (
     <>
-      <AppBar position="sticky" className={navStyles['small-nav']}>
+      <AppBar id="back-to-top-anchor" position="sticky" className={navStyles['small-nav']}>
         <Box display="flex" justifyContent="space-between" width="100%">
           <NextLink href="/" passHref>
             <Box
@@ -282,9 +282,12 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const userInfo = getUserInfo(context);
+  const userId: Entry<Review>["UserId"] = context.params?.userId;
+
   const isAuthenticated = await authenticated(context);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || (userInfo.sub !== userId)) {
     return {
       redirect: {
         destination: '/admin/login',
@@ -292,10 +295,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-
-  const userInfo = getUserInfo(context);
-  console.log(userInfo);
-  const userId: Entry<Review>["UserId"] = context.params?.userId;
+  
   const entries: Entries<Review> = await getEntries(userId, '');
 
   return { props: { userId, entries, userInfo } };
