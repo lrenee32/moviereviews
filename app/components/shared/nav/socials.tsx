@@ -9,6 +9,29 @@ import NextLink from 'next/link';
 import { VARIABLES } from 'assets/themes/themes';
 import { SxProps, Theme } from '@mui/material/styles';
 
+const SocialAccounts = [
+  {
+    site: 'Facebook',
+    href: 'https://facebook.com/splatterandscream',
+    icon: <Facebook />,
+  },
+  {
+    site: 'Twitter',
+    href: 'https://twitter.com/splatternscream',
+    icon: <Twitter />,
+  },
+  {
+    site: 'Instagram',
+    href: 'https://instagram.com/splatternscream',
+    icon: <Instagram />,
+  },
+  {
+    site: 'Youtube',
+    href: 'https://www.youtube.com/channel/UCaNDv_alOiNj1hQ4mUiILeA',
+    icon: <Youtube />,
+  },
+];
+
 interface Props {
   sx?: SxProps<Theme>,
 };
@@ -16,26 +39,13 @@ interface Props {
 export const SocialLinks: FunctionComponent<Props> = (props: Props) => {
   return (
     <Box sx={{ ...props.sx, '> a': { backgroundColor: 'rgba(255, 255, 255, 0.08)', '&:not(:last-of-type)': { mr: '10px' }, '&:hover': { backgroundColor: VARIABLES.primaryColor } } }}>
-      <NextLink href="/" passHref>
-        <IconButton>
-          <Facebook />
-        </IconButton>
-      </NextLink>
-      <NextLink href="/" passHref>
-        <IconButton>
-          <Twitter />
-        </IconButton>
-      </NextLink>
-      <NextLink href="/" passHref>
-        <IconButton>
-          <Instagram />
-        </IconButton>
-      </NextLink>
-      <NextLink href="/" passHref>
-        <IconButton>
-          <Youtube />
-        </IconButton>
-      </NextLink>
+      {SocialAccounts.map(i => (
+        <NextLink key={i.site} href={i.href} passHref>
+          <IconButton>
+            {i.icon}
+          </IconButton>
+        </NextLink>
+      ))}
     </Box>
   );
 };
