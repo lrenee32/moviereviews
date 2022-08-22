@@ -1,0 +1,11 @@
+.header {
+  margin-bottom: 30px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  & > div, button {
+    margin-bottom: 30px;
+  }
+}
