@@ -1,60 +1,37 @@
 'use strict';
 const AWS = require('aws-sdk');
-AWS.config.update({ region: process.env.CognitoPoolRegion });
-const Cognito = new AWS.CognitoIdentityServiceProvider();
+const SES = new AWS.SES();
 
-function isValid(token) {
-  const now = Math.floor(new Date() / 1000);
-  if (token) {
-    return now < getExpiration(token);
-  }
-  return false;
-};
-
-function getExpiration(token) {
-  const jwtPayload = token.split('.')[1];
-  return JSON.parse(Buffer.from(jwtPayload, 'base64')).exp;
-};
-
-class AuthenticationUtils {
-  async authenticate(email, password) {
-    try {
-      const params = {
-        AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
-        AuthParameters: {
-          USERNAME: email,
-          PASSWORD: password,
+function generateParams(name, email, message) {
+  return {
+    Source: process.env.SiteEmail,
+    Destination: { ToAddresses: [process.env.SiteEmail] },
+    ReplyToAddresses: [email],
+    Message: {
+      Body: {
+        Text: {
+          Charset: 'UTF-8',
+          Data: `Message sent from email ${email} by ${name} \nContent: ${message}`,
         },
-        ClientId: process.env.CognitoPoolClientId,
-        UserPoolId: process.env.CognitoPoolId,
-      };
-      const res = await Cognito.adminInitiateAuth(params).promise();
-      return res.AuthenticationResult;
-    } catch (err) {
-      throw new Error(err || err.message);
-    };
+      },
+      Subject: {
+        Charset: 'UTF-8',
+        Data: `Message received from ${process.env.S3Bucket}`,
+      },
+    },
   };
+};
 
-  async authenticated(token) {
+class MessageUtils {
+  async createMessage(name, email, message) {
     try {
-      return isValid(token);
-    } catch (err) {
-      return err || err.message;
-    };
-  };
-
-  async logout(email) {
-    try {
-      const params = {
-        UserPoolId: process.env.CognitoPoolId,
-        Username: email,
-      };
-      const res = await Cognito.adminUserGlobalSignOut(params).promise();
+      const params = generateParams(name, email, message);
+      const res = await SES.sendEmail(params).promise();
       return res;
     } catch (err) {
-      return err || err.message;
+      throw new Error(err);
     };
   };
 }
 
-module.exports = AuthenticationUtils;
+module.exports = MessageUtils;
