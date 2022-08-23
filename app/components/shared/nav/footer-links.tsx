@@ -5,7 +5,6 @@ import NextLink from 'next/link';
 import { VARIABLES } from 'assets/themes/themes';
 
 const Links: { href: string, text: string }[] = [
-  { href: '/about', text: 'About' },
   { href: '/contact', text: 'Contact' },
   { href: '/privacy', text: 'Privacy Policy' },
   { href: '/terms', text: 'Terms Of Use' },

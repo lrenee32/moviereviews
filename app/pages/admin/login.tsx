@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { authenticate } from 'services/api/authentication/auth-service';
 import { useRouter } from 'next/router';
 
@@ -11,13 +12,19 @@ const Login: FunctionComponent = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const login = () => {
+    setSubmitting(true);
     return authenticate({ email, password })
       .then((res) => {
+        setSubmitting(false);
         return router.push(`/admin/${res.sub}`);
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        setSubmitting(false);
+        alert(err);
+      });
   };
 
   return (
@@ -33,9 +40,13 @@ const Login: FunctionComponent = () => {
       autoComplete="off"
     >
       <Typography variant="h3" mb="30px">Log in</Typography>
-      <TextField type="text" placeholder="Enter email here" value={email} onChange={(e) => setEmail(e.target.value)} sx={{ marginBottom: '20px' }} />
-      <TextField type="password" placeholder="Enter password here" value={password} onChange={(e) => setPassword(e.target.value)} sx={{ marginBottom: '30px' }} />
-      <Button variant="contained" onClick={login}>Log in</Button>
+      <TextField type="text" placeholder="Enter email here" value={email} onChange={(e) => setEmail(e.target.value)} sx={{ marginBottom: '20px' }} disabled={submitting} />
+      <TextField type="password" placeholder="Enter password here" value={password} onChange={(e) => setPassword(e.target.value)} sx={{ marginBottom: '30px' }} disabled={submitting} />
+      {submitting ? (
+        <LoadingButton loading variant="contained" sx={{ minHeight: '36.5px' }} />
+      ) : (
+        <Button variant="contained" onClick={login}>Log in</Button>
+      )}
     </Box>
   );
 };

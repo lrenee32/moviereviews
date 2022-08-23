@@ -28,7 +28,7 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
                 component="img"
                 image={getPosterImage(entry.Details!.FilmPoster)}
                 alt={`${entry.Title}-${entry.EntryId}-latest-reviews`}
-                sx={{ height: '80px', width: '80px'}}
+                sx={{ height: '100%', width: '30%'}}
               />
               <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography

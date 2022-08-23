@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "deploy:latest": "claudia update --version latest  --set-env-from-json env.json"
+    "deploy:latest": "claudia update --version latest  --set-env-from-json env.json",
+    "deploy:prod": "claudia update --version api --set-env-from-json env.prod.json"
   },
   "author": "Jacob Adcock",
   "license": "ISC",
