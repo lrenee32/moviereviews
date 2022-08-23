@@ -6,15 +6,15 @@ import { Nav } from 'components';
 import { Footer } from 'components/shared/nav/footer';
 import { ReadOnly } from 'components/shared/wysiwyg/ReadOnly';
 import containerStyles from 'assets/styles/content-section.module.scss';
-import privacyStyles from 'assets/styles/privacy.module.scss';
-import body from 'utils/privacy-policy.json';
+import termsStyles from 'assets/styles/terms.module.scss';
+import body from 'utils/terms.json';
 
-const Privacy: FunctionComponent = () => {
+const Terms: FunctionComponent = () => {
   return (
     <Box className={containerStyles['wrapper']}>
       <Container maxWidth="lg" className={containerStyles['container']}>
         <Nav style="large" />
-        <Typography variant="h2" className={privacyStyles['header']} id="back-to-top-anchor">Privacy Policy</Typography>
+        <Typography variant="h2" className={termsStyles['header']} id="back-to-top-anchor">Terms of Use</Typography>
         <ReadOnly value={body} />
         <Footer />
       </Container>
@@ -22,4 +22,4 @@ const Privacy: FunctionComponent = () => {
   );
 };
 
-export default Privacy;
+export default Terms;

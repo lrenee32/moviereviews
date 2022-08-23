@@ -4,22 +4,22 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Nav } from 'components';
 import { Footer } from 'components/shared/nav/footer';
-import { ReadOnly } from 'components/shared/wysiwyg/ReadOnly';
 import containerStyles from 'assets/styles/content-section.module.scss';
-import privacyStyles from 'assets/styles/privacy.module.scss';
-import body from 'utils/privacy-policy.json';
+import errorStyles from 'assets/styles/404.module.scss';
 
-const Privacy: FunctionComponent = () => {
+const Custom404: FunctionComponent = () => {
   return (
     <Box className={containerStyles['wrapper']}>
       <Container maxWidth="lg" className={containerStyles['container']}>
         <Nav style="large" />
-        <Typography variant="h2" className={privacyStyles['header']} id="back-to-top-anchor">Privacy Policy</Typography>
-        <ReadOnly value={body} />
+        <Box className={errorStyles['error-container']}>
+          <Typography variant="h1">Page not found</Typography>
+          <Typography>The page you requested does not exist or has moved.</Typography>
+        </Box>
         <Footer />
       </Container>
     </Box>
   );
 };
 
-export default Privacy;
+export default Custom404;

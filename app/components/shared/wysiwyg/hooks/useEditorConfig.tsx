@@ -2,6 +2,8 @@ import { Editor } from 'slate';
 import { DefaultElement, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { Link } from '../Link';
 import { Image } from '../Image';
+import isHotkey, { HotKeyOptions } from 'is-hotkey';
+import { toggleStyle } from '../utils/EditorUtils';
 
 export const useEditorConfig = (editor: Editor) => {
   const { isVoid, isInline } = editor;
@@ -20,7 +22,7 @@ export const useEditorConfig = (editor: Editor) => {
     return isInline(element);
   };
 
-  return { renderElement, renderLeaf };
+  return { renderElement, renderLeaf, KeyBindings };
 };
 
 const renderElement = (props: RenderElementProps, isEditing: boolean) => {
@@ -72,3 +74,20 @@ const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
 
   return <span {...attributes}>{children}</span>;
 };
+
+const KeyBindings = {
+  onKeyDown: (editor: Editor, event: HotKeyOptions) => {
+    if (isHotkey('mod+b', event)) {
+      return toggleStyle(editor, 'bold');
+    }
+    if (isHotkey('mod+i', event)) {
+      return toggleStyle(editor, 'italic');
+    }
+    if (isHotkey('mod+c', event)) {
+      return toggleStyle(editor, 'code');
+    }
+    if (isHotkey('mod+u', event)) {
+      return toggleStyle(editor, 'underline');
+    }
+  }
+}

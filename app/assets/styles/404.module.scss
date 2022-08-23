@@ -1,0 +1,12 @@
+.error-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 150px 0 200px;
+  & > h1 {
+    margin-bottom: 30px;
+  }
+  & > p {
+    opacity: .5;
+  }
+}
