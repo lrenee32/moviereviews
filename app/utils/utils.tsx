@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Text, Node } from 'slate';
 import { Entry, Review } from './types';
 import NextLink from 'next/link';
