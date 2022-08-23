@@ -16,7 +16,7 @@ class AdminEntryUtils {
   async search(SearchTerm) {
     try {
       const params = {
-        TableName: 'movie-reviews_reviews',
+        TableName: process.env.DynamoDBTable,
         KeyConditionExpression: 'UserId = :UserId',
         FilterExpression: 'contains(Title, :Title)',
         ExpressionAttributeValues: { 
@@ -34,7 +34,7 @@ class AdminEntryUtils {
   async searchById(EntryId) {
     try {
       const params = {
-        TableName: 'movie-reviews_reviews',
+        TableName: process.env.DynamoDBTable,
         KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
         ExpressionAttributeValues: { 
           ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
@@ -51,7 +51,7 @@ class AdminEntryUtils {
   async create(UserId, EntryId, Item) {
     try {
       const params = {
-        TableName: 'movie-reviews_reviews',
+        TableName: process.env.DynamoDBTable,
         Item: {
           EntryId: EntryId,
           UserId: UserId,
@@ -91,7 +91,7 @@ class AdminEntryUtils {
   async editById(UserId, EntryId, Item) {
     try {
       const params = {
-        TableName: 'movie-reviews_reviews',
+        TableName: process.env.DynamoDBTable,
         Item: {
           EntryId: EntryId,
           UserId: UserId,
@@ -129,7 +129,7 @@ class AdminEntryUtils {
       }
 
       const params = {
-        TableName: 'movie-reviews_reviews',
+        TableName: process.env.DynamoDBTable,
         Key: { "UserId": UserId, "EntryId": EntryId },
       };
       await db.delete(params);
