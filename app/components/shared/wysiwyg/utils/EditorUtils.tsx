@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Editor, Element, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { ListType } from './Typings';

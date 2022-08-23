@@ -32,7 +32,7 @@ export const ContentSection: FunctionComponent<Props> = (props: Props) => {
               <Box className={styles['card-image-container-fill']} />
               <CardMedia
                 component="img"
-                image={entries[0].Details!.FeaturedImage}
+                image={entries[0].Details!.FeaturedImage as unknown as string}
                 alt={`${entries[0].Title}-${entries[0].EntryId}-${sectionName}-headline-image`}
                 className={styles['card-image']}
               />

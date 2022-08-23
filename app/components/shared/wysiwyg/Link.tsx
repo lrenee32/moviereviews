@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useState } from 'react';
 import { useSelected, useFocused, useSlate, RenderElementProps } from 'slate-react';
 import LinkMUI from '@mui/material/Link';

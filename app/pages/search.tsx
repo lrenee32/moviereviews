@@ -8,7 +8,7 @@ import { Nav } from 'components';
 import { Footer } from 'components/shared/nav/footer';
 import { ContentCard } from 'components/shared/content/content-card';
 import { getEntries } from 'services/api/entries/entries';
-import { Entries, Review } from 'utils/types';
+import { Entries, Entry, Review } from 'utils/types';
 import { GetStaticProps } from 'next/types';
 import styles from 'assets/styles/content-section.module.scss';
 import cardStyles from 'assets/styles/content-card.module.scss';
@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 interface Props {
-  entries: Entries<Review>["All"],
+  entries: Entries<Review>,
 };
 
 export const Search: FunctionComponent<Props> = (props: Props) => {
@@ -27,7 +27,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const router = useRouter();
   const { s } = router.query;
-  const [ searchResults, setSearchResults ] = useState([]);
+  const [ searchResults, setSearchResults ] = useState<Entry<Review>[]>([]);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {

@@ -43,7 +43,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
         >
           {toTitleCase(entry.Type)}
         </Typography>
-        <Typography variant="h2">
+        <Typography variant="h2" className={styles['entry-title']}>
           {entry.Title}
         </Typography>
         <Typography className={styles['entry-subtitle']}>
@@ -54,7 +54,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             <Box
               component="img"
               alt={`${entry.EntryId}-featured-image`}
-              src={entry.Details!.FeaturedImage}
+              src={entry.Details!.FeaturedImage as unknown as string}
               className={styles['entry-featured-image']}
             />
             <Box className={styles['content-container']}>

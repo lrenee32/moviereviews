@@ -35,7 +35,7 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
       <CardMedia
         component="img"
         height="100%"
-        image={entry.Details!.FeaturedImage}
+        image={entry.Details!.FeaturedImage as unknown as string}
         alt={`${entry.Title}-${entry.EntryId}`}
         sx={{
           position: 'absolute',

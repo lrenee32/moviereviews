@@ -28,5 +28,7 @@ export interface Review {
   FilmOverview: string,
   FilmPoster: string,
   UserRating: number,
-  FeaturedImage: string,
+  FeaturedImage: {
+    file: string,
+  },
 }

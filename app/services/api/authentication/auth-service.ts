@@ -1,5 +1,6 @@
 import { API } from "../api-service";
 import { getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { IncomingMessage, ServerResponse } from "http";
 
 const keyPrefix = 'CognitoIdentityServiceProvider';
 
@@ -11,7 +12,7 @@ const cacheTokens = ({ idToken, accessToken }: { idToken: string, accessToken: s
   setCookie(accessTokenKey, accessToken);
 };
 
-const hasTokens = ({ req, res }) => {
+const hasTokens = ({ req, res }: { req: IncomingMessage, res: ServerResponse }) => {
   const accessToken = getCookie(`${keyPrefix}.accessToken`, { req, res });
   const idToken = getCookie(`${keyPrefix}.idToken`, { req, res });
   return accessToken && idToken;
@@ -26,10 +27,10 @@ export const getIdToken = () => {
   return getCookie(`${keyPrefix}.idToken`);
 };
 
-export const getUserInfo = ({ req, res }) => {
+export const getUserInfo = ({ req, res }: { req: IncomingMessage, res: ServerResponse }) => {
   if (hasTokens({ req, res })) {
     const idToken = getCookie(`${keyPrefix}.idToken`, { req, res });
-    return JSON.parse(Buffer.from(idToken.split('.')[1], 'base64').toString());
+    return JSON.parse(Buffer.from((idToken as string).split('.')[1], 'base64').toString());
   }
   return null;
 }
@@ -56,7 +57,7 @@ export const authenticate = (body: { email: string, password: string }) => {
     });
 };
 
-export const authenticated = async ({ req, res }) => {
+export const authenticated = async ({ req, res }: { req: IncomingMessage, res: ServerResponse }) => {
   const accessToken = getCookie(`${keyPrefix}.accessToken`, { req, res });
   const idToken = getCookie(`${keyPrefix}.idToken`, { req, res });
 

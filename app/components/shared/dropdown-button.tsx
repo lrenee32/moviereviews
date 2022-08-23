@@ -19,7 +19,7 @@ export const DropdownButton: FunctionComponent<Props> = ({ buttonText, items }) 
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const eventHandler = ({ action, value }: { action: () => void, value: string }) => {
+  const eventHandler = ({ action, value }: { action: (arg0: string) => void, value: string }) => {
     action(value);
     handleClose();
   }

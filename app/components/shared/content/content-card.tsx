@@ -21,7 +21,7 @@ export const ContentCard: FunctionComponent<Props> = (props: Props) => {
       <CardActionArea href={`/entry/${entry.EntryId}`} className={styles['card-action-area']}>
         <CardMedia
           component="img"
-          image={entry.Details!.FeaturedImage}
+          image={entry.Details!.FeaturedImage as unknown as string}
           alt={`${entry.Title}-${entry.EntryId}-${sectionName}`}
           className={styles['card-image']}
         />

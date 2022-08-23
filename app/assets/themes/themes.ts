@@ -46,7 +46,7 @@ export const global = (theme: Theme) => {
       },
       MuiButton: {
         styleOverrides: {
-          root: ({ ownerState }) => ({
+          root: ({ ownerState }: any) => ({
             ...(ownerState.variant === 'outlined' && {
               '&:hover': {
                 backgroundColor: VARIABLES.primaryColor,
@@ -83,7 +83,7 @@ export const global = (theme: Theme) => {
       },
       MuiChip: {
         styleOverrides: {
-          root: ({ ownerState }) => ({
+          root: ({ ownerState }: any) => ({
             ...(ownerState.size === 'large' && {
               height: 'auto',
               borderRadius: '40px',

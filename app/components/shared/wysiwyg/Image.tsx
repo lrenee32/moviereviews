@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useState, useCallback } from 'react';
 import { Editor, Transforms } from 'slate';
 import { RenderElementProps, useSlate } from 'slate-react';
@@ -15,7 +17,7 @@ export const Image: FunctionComponent<Props> = ({ attributes, children, element,
   const editor = useSlate();
 
   const applyCaptionChange = useCallback(
-    (captionInput) => {
+    (captionInput: string) => {
       const imageNodeEntry = Editor.above(editor, {
         match: (n) => n.type === "image",
       });

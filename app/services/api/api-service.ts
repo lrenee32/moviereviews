@@ -13,7 +13,7 @@ export interface APIRequest extends FetchOptions {
   params?: URLSearchParams,
 };
 
-const handleResponse = async (response) => {
+const handleResponse = async (response: Response) => {
   const json = await response.json();
   if (!response.ok) {
     throw new Error(json);

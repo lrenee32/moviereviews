@@ -50,7 +50,7 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
     setSearchOpen(newOpen);
   };
 
-  const keyPress = (e) => {
+  const keyPress = (e: { key: string; }) => {
     if(e.key == 'Enter' && search !== ''){
       setSearchOpen(false);
       router.push({
@@ -61,7 +61,7 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
     }
   };
 
-  const AppearOnScroll = (props) => {
+  const AppearOnScroll = (props: { children: any; }) => {
     const { children } = props;
     const trigger = useScrollTrigger({
       disableHysteresis: true,

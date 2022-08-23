@@ -25,7 +25,7 @@ interface Marks {
   code?: boolean,
 };
 
-interface CustomText extends Marks {
+interface CustomText extends Marks, CustomElement {
   text: string,
 };
 

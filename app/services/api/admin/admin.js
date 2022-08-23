@@ -1,9 +1,8 @@
-import { Entry, Review } from 'utils/types';
 import { API } from '../api-service';
 import { v4 as uuidv4 } from 'uuid';
 import isUrl from 'is-url';
 
-const presignAndPutObject = async (userId: Entry<Review>["UserId"], entryId: Entry<Review>["EntryId"], file: File) => {
+const presignAndPutObject = async (userId, entryId, file) => {
   const presignedURL = await API({
     method: 'POST',
     path: `/admin/${userId}/entry/presign/${entryId}`,
@@ -25,7 +24,7 @@ const presignAndPutObject = async (userId: Entry<Review>["UserId"], entryId: Ent
   return imageURL;
 };
 
-export const getEntries = (userId: Entry<Review>["UserId"], SearchTerm: string) => {
+export const getEntries = (userId, SearchTerm) => {
   return API({
     method: 'GET',
     path: `/admin/${userId}/entries`,
@@ -35,7 +34,7 @@ export const getEntries = (userId: Entry<Review>["UserId"], SearchTerm: string) 
   });
 };
 
-export const getEntry = (userId: Entry<Review>["UserId"], entryId: Entry<Review>["EntryId"]) => {
+export const getEntry = (userId, entryId) => {
   return API({
     method: 'GET',
     path: `/admin/${userId}/entry/${entryId}`,
@@ -43,11 +42,11 @@ export const getEntry = (userId: Entry<Review>["UserId"], entryId: Entry<Review>
 };
 
 export const createEntry = async (
-  userId: Entry<Review>["UserId"],
-  body: Partial<Entry<Partial<Review>>>,
+  userId,
+  body,
 ) => {
   const entryId = uuidv4();
-  let clone: Partial<Entry<Partial<Review>>> = JSON.parse(JSON.stringify(body));
+  let clone = JSON.parse(JSON.stringify(body));
 
   const promises = body.Content?.map(async (i, index) => {
     if (i.type === 'image') {
@@ -59,7 +58,7 @@ export const createEntry = async (
     return i;
   });
 
-  clone.Details!.FeaturedImage = await presignAndPutObject(userId, entryId, body.Details?.FeaturedImage.file);
+  clone.Details.FeaturedImage = await presignAndPutObject(userId, entryId, body.Details?.FeaturedImage.file);
 
   return Promise.all(promises)
     .then(() => {
@@ -75,10 +74,10 @@ export const createEntry = async (
 };
 
 export const editEntry = async (
-  userId: Entry<Review>["UserId"],
-  entryId: Entry<Review>["EntryId"],
-  body: Partial<Entry<Review>>,
-  previousImages: string[],
+  userId,
+  entryId,
+  body,
+  previousImages,
 ) => {
   let clone = JSON.parse(JSON.stringify(body));
 
@@ -93,15 +92,15 @@ export const editEntry = async (
   });
 
   if (body.Details?.FeaturedImage.file && !isUrl(body.Details.FeaturedImage.url)) {
-    clone.Details!.FeaturedImage = await presignAndPutObject(userId, entryId, body.Details?.FeaturedImage.file);
+    clone.Details.FeaturedImage = await presignAndPutObject(userId, entryId, body.Details?.FeaturedImage.file);
   } else {
-    clone.Details!.FeaturedImage = body.Details?.FeaturedImage.url;
+    clone.Details.FeaturedImage = body.Details?.FeaturedImage.url;
   }
 
-  const images = clone.Content!
+  const images = clone.Content
     .filter(i => i.type === 'image')
     .map(i => i.url)
-    .concat([clone.Details!.FeaturedImage]);
+    .concat([clone.Details.FeaturedImage]);
   
 
   const imagesToDelete = previousImages.filter(x => !images.includes(x));
@@ -131,9 +130,9 @@ export const editEntry = async (
 };
 
 export const deleteEntry = (
-  userId: Entry<Review>["UserId"],
-  entryId: Entry<Review>["EntryId"],
-  images: Entry<Review>["Content"],
+  userId,
+  entryId,
+  images,
 ) => {
   return API({
     method: 'DELETE',
@@ -145,7 +144,7 @@ export const deleteEntry = (
   });
 };
 
-export const searchSuggestions = (searchTerm: string) => {
+export const searchSuggestions = (searchTerm) => {
   return fetch(`${process.env.NEXT_PUBLIC_TMDB_API_URL}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${searchTerm}`)
     .then(res => res.json())
     .then(json => json.results)

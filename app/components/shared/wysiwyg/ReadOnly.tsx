@@ -1,7 +1,6 @@
-import { FunctionComponent, useMemo, Dispatch, SetStateAction } from 'react';
-import { createEditor, Descendant } from 'slate';
-import { Slate, Editable, withReact } from 'slate-react';
-import { useEditorConfig } from './hooks/useEditorConfig';
+import { FunctionComponent } from 'react';
+import { Descendant } from 'slate';
+import { serializeToJSX } from 'utils/utils';
 
 import Box from '@mui/material/Box';
 
@@ -10,18 +9,9 @@ interface Props {
 }
 
 export const ReadOnly: FunctionComponent<Props> = ({ value }) => {
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const { renderLeaf, renderElement } = useEditorConfig(editor);
-
   return (
-    <Slate editor={editor} value={value}>
-      <Box mb="30px">
-        <Editable
-          readOnly
-          renderElement={(props) => renderElement(props, false)}
-          renderLeaf={renderLeaf}
-        />
-      </Box>
-    </Slate>
+    <Box mb="30px">
+      {value.map((i, index) => serializeToJSX(i, index))}
+    </Box>
   );
 };
