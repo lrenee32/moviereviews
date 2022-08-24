@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import AppBar from '@mui/material/AppBar';
+import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
@@ -17,17 +17,14 @@ import { NavLinks } from './nav-links';
 import { SocialLinks } from './socials';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Slide, Theme, useScrollTrigger } from '@mui/material';
+import { Slide, useScrollTrigger } from '@mui/material';
 
 interface Props {
-  style: 'main' | 'secondary' | 'large',
+  style: 'hero' | 'main' | 'large',
 };
 
 export const Nav: FunctionComponent<Props> = (props: Props) => {
   const { style } = props;
-  const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-  const isXs = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const router = useRouter();
 
   const Links: { href: string, text: string }[] = [
@@ -75,59 +72,63 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
     )
   };
 
-  return (
-    <>
-      {style === 'main' && (
-        <AppBar position="absolute" color="transparent">
+  const generateMainNav = (position: AppBarProps["position"], size: string) => {
+    return (
+      <AppBar position={position} className={styles[`main-nav-${size}`]}>
+        <Box className={styles['main-nav-container']}>
+          <IconButton onClick={toggleDrawer(!open)}>
+            <MenuIcon />
+          </IconButton>
           <NextLink href="/" passHref>
             <Box
               component="img"
               alt="site-logo-header"
               src="../../images/site-logo-main.png"
-              sx={{ width: '150px', m: '16px', '&:hover': { cursor: 'pointer' } }}
+              className={styles['logo']}
+            />
+          </NextLink>
+          <IconButton onClick={toggleSearch(!searchOpen)}>
+            {searchOpen ? (
+              <CloseIcon />
+            ) : (
+              <SearchIcon />
+            )}
+          </IconButton>
+        </Box>
+      </AppBar>
+    );
+  };
+
+  return (
+    <>
+      {style === 'hero' && (
+        <AppBar className={styles['hero-nav']}>
+          <NextLink href="/" passHref>
+            <Box
+              component="img"
+              alt="site-logo-header"
+              src="../../images/site-logo-main.png"
+              className={styles['logo']}
             />
           </NextLink>
         </AppBar>
       )}
-      {style === 'secondary' && (
-        <AppBar position="sticky" className={styles["small-nav"]}>
-          <Box display="flex" justifyContent="space-between" width="100%">
-            <IconButton onClick={toggleDrawer(!open)}>
-              <MenuIcon />
-            </IconButton>
-            <NextLink href="/" passHref>
-              <Box
-                component="img"
-                alt="site-logo-header"
-                src="../../images/site-logo-main.png"
-                sx={{ height: '50px', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' } }}
-              />
-            </NextLink>
-            <IconButton onClick={toggleSearch(!searchOpen)}>
-              {searchOpen ? (
-                <CloseIcon />
-              ) : (
-                <SearchIcon />
-              )}
-            </IconButton>
-          </Box>
-        </AppBar>
-      )}
-      {style === 'large' && isLg && (
+      {style === 'main' && generateMainNav('sticky', 'sticky')}
+      {style === 'large' && (
         <>
-          <AppBar position="static" sx={{ background: 'transparent', boxShadow: 'none', display: 'flex', alignItems: 'center', mb: '10px' }}>
-            <Box display="flex" alignItems="center" ml="-200px">
+          <AppBar className={styles['large-nav']}>
+            <Box className={styles['large-nav-logo-container']}>
               <SocialLinks />
               <NextLink href="/" passHref>
                 <Box
                   component="img"
                   alt="site-logo-header"
                   src="../../images/site-logo-main.png"
-                  sx={{ height: '200px', m: '16px 16px 16px 32px', '&:hover': { cursor: 'pointer' } }}
+                  className={styles['logo']}
                 />
               </NextLink>
             </Box>
-            <Box display="flex" justifyContent="space-between" width="100%">
+            <Box className={styles['large-nav-container']}>
               <IconButton onClick={toggleDrawer(!open)}>
                 <MenuIcon />
               </IconButton>
@@ -142,52 +143,16 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
             </Box>
           </AppBar>
           <AppearOnScroll {...props}>
-            <AppBar position="fixed" className={styles['small-nav']}>
-              <Box display="flex" justifyContent="space-between" width="100%" m="7.5px">
-                <IconButton onClick={toggleDrawer(!open)}>
-                  <MenuIcon />
-                </IconButton>
-                <NextLink href="/" passHref>
-                  <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
-                </NextLink>
-                
-                <IconButton onClick={toggleSearch(!searchOpen)}>
-                  {searchOpen ? (
-                    <CloseIcon />
-                  ) : (
-                    <SearchIcon />
-                  )}
-                </IconButton>
-              </Box>
-            </AppBar>
+            {generateMainNav('fixed', '')}
           </AppearOnScroll>
+          {generateMainNav('fixed', 'small')}
         </>
       )}
-      {style === 'large' && !isLg && (
-        <AppBar position="fixed" className={styles['small-nav']}>
-          <Box display="flex" justifyContent="space-between" width="100%" m="7.5px">
-            <IconButton onClick={toggleDrawer(!open)}>
-              <MenuIcon />
-            </IconButton>
-            <NextLink href="/" passHref>
-              <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
-            </NextLink>
-            
-            <IconButton onClick={toggleSearch(!searchOpen)}>
-              {searchOpen ? (
-                <CloseIcon />
-              ) : (
-                <SearchIcon />
-              )}
-            </IconButton>
-          </Box>
-        </AppBar>
-      )}
-      <Drawer open={open} ModalProps={{ onBackdropClick: toggleDrawer(false) }} sx={{ width: '100%', '.MuiDrawer-paper': { width: isXs ? '100%' : '370px' } }}>
-        <Box display="flex" justifyContent="space-between" m="10px">
+      <Drawer open={open} ModalProps={{ onBackdropClick: toggleDrawer(false) }} className={styles['nav-drawer']}>
+        <Box className={styles['drawer-logo-container']}>
           <Box></Box>
           <NextLink href="/" passHref>
-            <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" sx={{ height: '50px', '&:hover': { cursor: 'pointer' } }} />
+            <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" className={styles['logo']} />
           </NextLink>
           <IconButton onClick={toggleDrawer(false)}>
             <CloseIcon />
@@ -205,13 +170,13 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
             </Box>
           ))}
         </List>
-        <Box display="flex" justifyContent="center" position="absolute" bottom="0" mb="20px" width="100%">
+        <Box className={styles['drawer-social-container']}>
           <SocialLinks />
         </Box>
       </Drawer>
-      <Backdrop open={searchOpen} sx={{ zIndex: '1999', backgroundColor: 'rgba(0,0,0,.9)' }}>
-      <CloseIcon sx={{ position: 'absolute', top: '0', right: '0', m: '20px', zIndex: '2000', '&:hover': { cursor: 'pointer' } }} onClick={() => setSearchOpen(false)} />
-        <TextField variant="standard" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} sx={{ fontSize: '32px', '.MuiInput-root': { fontSize: 'inherit' } }} onKeyPress={keyPress} />
+      <Backdrop open={searchOpen} className={styles['site-search-backdrop']}>
+      <CloseIcon className={styles['site-search-close-icon']} onClick={() => setSearchOpen(false)} />
+      <TextField variant="standard" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} className={styles['site-search-input']} onKeyPress={keyPress} />
       </Backdrop>
     </>
   );

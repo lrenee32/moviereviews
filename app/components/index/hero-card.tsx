@@ -21,6 +21,7 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <Card
+      id={`${entry.EntryId}-hero`}
       variant="outlined"
       sx={{
         position: 'relative',

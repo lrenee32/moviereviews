@@ -22,7 +22,7 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
       <SectionDivider text="Latest Reviews" />
       {clonedArr.filter(i => i.Type === 'review').splice(0, 4).map(entry => {
         return (
-          <Card key={`${entry.Title}-${entry.EntryId}-headline`} sx={{ mt: '20px', mr: '20px'}}>
+          <Card id={`${entry.EntryId}-latest-reviews`} key={`${entry.Title}-${entry.EntryId}-headline`} sx={{ mt: '20px', mr: '20px'}}>
             <CardActionArea href={`/entry/${entry.EntryId}`} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
               <CardMedia
                 component="img"

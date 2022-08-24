@@ -13,9 +13,9 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <>
-      <Nav style="main" />
+      <Nav style="hero" />
       <Hero entries={entries} />
-      <Nav style="secondary" />
+      <Nav style="main" />
       <Content entries={entries} />
     </>
   );

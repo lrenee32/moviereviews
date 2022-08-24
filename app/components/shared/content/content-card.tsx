@@ -17,7 +17,7 @@ export const ContentCard: FunctionComponent<Props> = (props: Props) => {
   const { entry, sectionName } = props;
 
   return (
-    <Card key={`${entry.Title}-${entry.EntryId}-${sectionName}`} className={styles['card']}>
+    <Card id={`${entry.EntryId}-content-card`} key={`${entry.Title}-${entry.EntryId}-${sectionName}`} className={styles['card']}>
       <CardActionArea href={`/entry/${entry.EntryId}`} className={styles['card-action-area']}>
         <CardMedia
           component="img"

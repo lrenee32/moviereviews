@@ -64,7 +64,7 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
         {filtered.map((entry: Entry<Review>) => {
           return (
             <Grid key={entry.EntryId} item xs={6} md={3}>
-              <Card sx={{ backgroundImage: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
+              <Card id={`${entry.EntryId}-featured`} sx={{ backgroundImage: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
                 <CardActionArea href={`/entry/${entry.EntryId}`}>
                   <CardMedia
                     component="img"
