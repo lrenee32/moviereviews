@@ -12,12 +12,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
-import styles from 'assets/styles/nav.module.scss';
 import { NavLinks } from './nav-links';
 import { SocialLinks } from './socials';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { Slide, useScrollTrigger } from '@mui/material';
+import styles from 'assets/styles/nav.module.scss';
 
 interface Props {
   style: 'hero' | 'main' | 'large',
