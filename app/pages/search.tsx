@@ -31,7 +31,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    if (s !== undefined) {
+    if (entries.All && entries.All.length > 0 && s !== undefined) {
       const options = {
         includeScore: true,
         useExtendedSearch: true,

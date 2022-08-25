@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "Scream-and-Splatter-API-executor",
+    "name": "Scream-and-Splatter-API",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "4mgn34g8z3",
+    "module": "app"
+  }
+}

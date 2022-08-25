@@ -15,7 +15,7 @@ interface Props {
 
 export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
-  const clonedArr = [...entries];
+  const clonedArr = entries && entries.length > 0 ? [...entries] : [];
 
   return (
     <>

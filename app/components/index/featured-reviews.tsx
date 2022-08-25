@@ -22,7 +22,7 @@ interface Props {
 
 export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
-  const clonedArr = [...entries];
+  const clonedArr = entries && entries.length > 0 ? [...entries] : [];
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const [filterType, setFilterType] = useState<ActionTypes>('pick');

@@ -14,7 +14,9 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       <Nav style="hero" />
-      <Hero entries={entries} />
+      {entries && entries.All && entries.All.length > 0 && (
+        <Hero entries={entries} />
+      )}
       <Nav style="main" />
       <Content entries={entries} />
     </>

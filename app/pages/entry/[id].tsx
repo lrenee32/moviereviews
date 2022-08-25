@@ -15,7 +15,7 @@ import { DisqusComments } from 'components/index/comment-section';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
 import { toTitleCase } from 'utils/utils';
-import { GetStaticProps, GetStaticPaths } from 'next/types';
+import { GetServerSideProps } from 'next/types';
 import { VARIABLES } from 'assets/themes/themes';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Theme } from '@mui/material';
@@ -103,22 +103,12 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
   const entries: Entries<Review> = await getEntries('');
   const entry: Entry<Review> | undefined = entries.All!.find(i => i.EntryId === id);
 
   return { props: { entry, entries } };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const entries: Entries<Review> = await getEntries('');
-
-  const paths = entries.All.map((entry) => ({
-    params: { id: entry.EntryId },
-  }));
-
-  return { paths, fallback: 'blocking' };
 };
 
 export default EntryDetails;

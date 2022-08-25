@@ -12,13 +12,17 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
 
   return (
-    <ContentSection entries={entries} sectionName="articles" />
+    <>
+      {entries && entries.length > 0 && (
+        <ContentSection entries={entries} sectionName="articles" />
+      )}
+    </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
   const entries: Entries<Review> = await getEntries('');
-  const filtered = entries.All.filter(i => i.Type === 'article');
+  const filtered = entries.All && entries.All.length > 0 ? entries.All.filter(i => i.Type === 'article') : entries;
 
   return { props: { entries: filtered } };
 };
