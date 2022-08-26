@@ -88,7 +88,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
 export const getStaticProps: GetStaticProps = async () => {
   const entries: Entries<Review> = await getEntries('');
 
-  return { props: { entries } };
+  return { props: { entries }, revalidate: 10 };
 };
 
 export default Search;

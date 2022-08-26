@@ -17,7 +17,7 @@ class AuthenticationActions {
   };
 
   async authenticated(request) {
-    const token = request.headers.authorization;
+    const token = request.headers.Authorization;
 
     try {
       const res = await authenticated(token);

@@ -39,7 +39,7 @@ class AuthenticationUtils {
     try {
       return isValid(token);
     } catch (err) {
-      return err || err.message;
+      throw new Error(err || err.message);
     };
   };
 
@@ -52,7 +52,7 @@ class AuthenticationUtils {
       const res = await Cognito.adminUserGlobalSignOut(params).promise();
       return res;
     } catch (err) {
-      return err || err.message;
+      throw new Error(err || err.message);
     };
   };
 }

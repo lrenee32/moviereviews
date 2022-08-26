@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useMemo, useCallback, Dispatch, SetStateAction } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';

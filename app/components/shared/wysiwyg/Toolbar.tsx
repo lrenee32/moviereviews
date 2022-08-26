@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useCallback, useRef } from 'react';
 import { useSlate } from 'slate-react';
 import {

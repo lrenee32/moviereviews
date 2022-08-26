@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useState, useEffect, useMemo } from 'react';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';

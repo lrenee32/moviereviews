@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Dispatch, FunctionComponent, SetStateAction, useRef } from 'react';
 import { Entry, Entries, Review } from 'utils/types';
 import DialogContentText from '@mui/material/DialogContentText';

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useState, useRef } from 'react';
 import { GetServerSideProps } from 'next/types';
 import NextLink from 'next/link';

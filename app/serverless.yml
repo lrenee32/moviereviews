@@ -2,3 +2,8 @@ screamAndSplatterApp:
   component: "@sls-next/serverless-component@3.7.0"
   inputs:
     domain: "splatterandscream.com"
+    bucketName: "splatterandscream"
+    cloudfront:
+      distributionId: "E2RGY07YJJQX10"
+    name:
+      default: "cqfwpbb-ae9h87b"

@@ -4,8 +4,9 @@ const { search, searchById, create, presign, editById, deleteById, deleteImages 
 
 module.exports = (api) => {
   api.get('/admin/:UserId/entries', request => {
+    console.log(request);
     return search(request);
-  }, { cognitoAuthorizer: 'CognitoAuthorizer' });
+  });
   
   api.get('/admin/:UserId/entry/:EntryId', request => {
     return searchById(request);

@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const entries: Entries<Review> = await getEntries('');
   const filtered = entries.All && entries.All.length > 0 ? entries.All.filter(i => i.Type === 'review') : entries;
 
-  return { props: { entries: filtered } };
+  return { props: { entries: filtered }, revalidate: 10 };
 };
 
 export default Reviews;

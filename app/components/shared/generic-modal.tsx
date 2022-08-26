@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useState, forwardRef, useImperativeHandle, Ref, ReactNode } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
