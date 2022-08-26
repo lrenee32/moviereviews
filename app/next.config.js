@@ -2,7 +2,7 @@ const path = require('path')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  trailingSlash: true,
+  target: 'serverless',
   reactStrictMode: false,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
