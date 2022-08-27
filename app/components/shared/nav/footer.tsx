@@ -2,6 +2,7 @@ import { FunctionComponent } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import NoSsr from '@mui/material/NoSsr';
 import NextLink from 'next/link';
 import { SocialLinks } from './socials';
 import { FooterLinks } from './footer-links';
@@ -19,7 +20,9 @@ export const Footer: FunctionComponent = () => {
       </NextLink>
       <SocialLinks sx={{ mb: '30px' }} />
       <FooterLinks />
-      <Typography paddingY="20px">{`Copyright © ${new Date().getFullYear()} Splatter & Scream, LLC`}</Typography>
+      <NoSsr>
+        <Typography paddingY="20px">{`Copyright © ${new Date().getFullYear()} Splatter & Scream, LLC`}</Typography>
+      </NoSsr>
     </AppBar>
   );
 };

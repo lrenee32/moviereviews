@@ -7,7 +7,7 @@ module.exports = (api) => {
     return search(request);
   });
 
-  api.get('/entry/:EntryId', request => {
+  api.get('/entry/{EntryId}', request => {
     return searchById(request);
   });
 };

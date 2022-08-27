@@ -56,14 +56,14 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
 
   type CheckBoxTypes = 'featured' | 'pick';
   const checkBoxDisabled = (selected: CheckBoxTypes) => {
-    const features = entries.filter(i => i.Featured);
-    const picks = entries.filter(i => i.SitePick);
-    const isFeatured = features.find(i => i.EntryId === entryId);
-    const isSitePick = picks.find(i => i.EntryId === entryId);
+    const features = entries && entries.length > 0 && entries.filter(i => i.Featured);
+    const picks = entries && entries.length > 0 && entries.filter(i => i.SitePick);
+    const isFeatured = features && features.length > 0 ? features.find(i => i.EntryId === entryId) : false;
+    const isSitePick = picks && picks.length > 0 ? picks.find(i => i.EntryId === entryId) : false;
     if (selected === 'featured') {
-      return features.length > 3 && !isFeatured;
+      return features && features.length > 3 ? !isFeatured : false;
     }
-    return picks.length > 3 && !isSitePick;
+    return picks && picks.length > 3 ? !isSitePick : false;
   };
   const loadLocalImage = (e) => {
     const files = e.target.files;

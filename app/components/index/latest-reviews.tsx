@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
+import NoSsr from '@mui/material/NoSsr';
 import { SectionDivider } from 'components/shared/section-divider';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { getPosterImage } from 'services/api/entries/entries';
@@ -31,13 +32,15 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
                 sx={{ height: '100%', width: '30%'}}
               />
               <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography
-                  fontSize="12px"
-                  color="primary"
-                  sx={{ textTransform: 'uppercase', mb: '5px' }}
-                >
-                  {entry.Type} | { formatDistanceToNowStrict(entry.Created) } ago
-                </Typography>
+                <NoSsr>
+                  <Typography
+                    fontSize="12px"
+                    color="primary"
+                    sx={{ textTransform: 'uppercase', mb: '5px' }}
+                  >
+                    {entry.Type} | { formatDistanceToNowStrict(entry.Created) } ago
+                  </Typography>
+                </NoSsr>
                 <Typography>
                   {entry.Details!.FilmTitle}
                 </Typography>

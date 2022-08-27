@@ -70,7 +70,7 @@ export const authenticated = async ({ req, res }: { req: IncomingMessage, res: S
     method: 'POST',
     path: '/admin/authenticated',
     headers: {
-      'Authorization': `Bearer: ${accessToken}`,
+      'Authorization': `Bearer: ${idToken}`,
     },
   })
     .then(res => res)

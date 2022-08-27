@@ -6,6 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
+import NoSsr from '@mui/material/NoSsr';
 import { Review } from 'utils/types';
 import throttle from 'lodash/throttle';
 
@@ -71,7 +72,9 @@ export const AutocompleteSearch: FunctionComponent<Props> = (props: Props) => {
             />
             <Box>
               <Box>{results.title}</Box>
-              <Box>{new Date(results.release_date).getFullYear()}</Box>
+              <NoSsr>
+                <Box>{new Date(results.release_date).getFullYear()}</Box>
+              </NoSsr>
             </Box>
           </Box>
         )}

@@ -5,10 +5,11 @@ const { search, searchById, create, presign, editById, deleteById, deleteImages 
 
 class AdminEntryActions {
   async search(request) {
+    const { UserId } = request.pathParams;
     const { SearchTerm } = request.queryString;
 
     try {
-      const res = await search(SearchTerm);
+      const res = await search(UserId, SearchTerm);
       return res;
     } catch (err) {
       console.warn(`Error getting entries: ${err}`);

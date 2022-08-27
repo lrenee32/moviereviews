@@ -13,14 +13,14 @@ function sortEntries(arr) {
 };
 
 class AdminEntryUtils {
-  async search(SearchTerm) {
+  async search(UserId, SearchTerm) {
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
         KeyConditionExpression: 'UserId = :UserId',
         FilterExpression: 'contains(Title, :Title)',
         ExpressionAttributeValues: { 
-          ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
+          ':UserId': UserId,
           ':Title': SearchTerm,
         },
       };
@@ -76,8 +76,8 @@ class AdminEntryUtils {
   async presign(UserId, EntryId, FileName) {
     const params = {
       Bucket: process.env.S3Bucket,
-      Key: `${UserId}/entry/${EntryId}/images/${FileName}`,
-      ContentType: 'multipart/form-data',
+      Key: `images/${UserId}/entry/${EntryId}/${FileName}`,
+      ContentType: 'binary/octet-stream',
       Expires: 600,
     }
     try {

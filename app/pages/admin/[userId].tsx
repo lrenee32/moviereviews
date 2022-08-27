@@ -298,7 +298,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   
-  const entries: Entries<Review> = await getEntries(userId, '');
+  const entries: Entries<Review> = await getEntries(context, userId, '');
 
   return { props: { userId, entries, userInfo } };
 };

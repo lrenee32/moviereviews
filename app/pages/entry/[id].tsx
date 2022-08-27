@@ -6,6 +6,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
 import SvgIcon from '@mui/material/SvgIcon';
+import NoSsr from '@mui/material/NoSsr';
 import SplatterIcon from 'public/images/hand-splatter.svg';
 import { ReadOnly } from 'components/shared/wysiwyg/ReadOnly';
 import { LatestReviews } from 'components/index/latest-reviews';
@@ -46,9 +47,11 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
         <Typography variant="h2" className={styles['entry-title']}>
           {entry.Title}
         </Typography>
-        <Typography className={styles['entry-subtitle']}>
+        <NoSsr>
+          <Typography className={styles['entry-subtitle']}>
           {`Published ${formatDistanceToNowStrict(entry.Created) } ago on ${format(new Date(entry.Created), 'PP')}`}
         </Typography>
+        </NoSsr>
         <Box className={styles['inner-wrapper']}>
           <Box className={styles['inner-container']}>
             <Box

@@ -1,20 +1,26 @@
 import { API } from '../api-service';
 import { v4 as uuidv4 } from 'uuid';
 import isUrl from 'is-url';
+import { getCookie } from 'cookies-next';
 
 const presignAndPutObject = async (userId, entryId, file) => {
+  const idToken = getCookie('CognitoIdentityServiceProvider.idToken');
+
   const presignedURL = await API({
     method: 'POST',
     path: `/admin/${userId}/entry/presign/${entryId}`,
     params: new URLSearchParams({
       FileName: file.name,
     }),
+    headers: {
+      'Authorization': `Bearer ${idToken}`,
+    },
   });
 
   await fetch(presignedURL, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'binary/octet-stream',
     },
     body: file,
   });
@@ -24,20 +30,32 @@ const presignAndPutObject = async (userId, entryId, file) => {
   return imageURL;
 };
 
-export const getEntries = (userId, SearchTerm) => {
+export const getEntries = ({ req, res}, userId, SearchTerm) => {
+  const idToken = getCookie('CognitoIdentityServiceProvider.idToken', { req, res });
+
   return API({
     method: 'GET',
     path: `/admin/${userId}/entries`,
     params: new URLSearchParams({
       SearchTerm,
     }),
-  });
+    headers: {
+      'Authorization': `Bearer ${idToken}`,
+    },
+  })
+    .then(res => res)
+    .catch(err => console.log(err));
 };
 
 export const getEntry = (userId, entryId) => {
+  const idToken = getCookie('CognitoIdentityServiceProvider.idToken');
+
   return API({
     method: 'GET',
     path: `/admin/${userId}/entry/${entryId}`,
+    headers: {
+      'Authorization': `Bearer ${idToken}`,
+    },
   });
 };
 
@@ -45,6 +63,8 @@ export const createEntry = async (
   userId,
   body,
 ) => {
+  const idToken = getCookie('CognitoIdentityServiceProvider.idToken');
+
   const entryId = uuidv4();
   let clone = JSON.parse(JSON.stringify(body));
 
@@ -68,6 +88,7 @@ export const createEntry = async (
         body: clone,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`,
         },
       });
     });
@@ -79,6 +100,8 @@ export const editEntry = async (
   body,
   previousImages,
 ) => {
+  const idToken = getCookie('CognitoIdentityServiceProvider.idToken');
+
   let clone = JSON.parse(JSON.stringify(body));
 
   const promises = body.Content?.map(async (i, index) => {
@@ -113,6 +136,7 @@ export const editEntry = async (
         body: clone,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`,
         },
       })
         .then(async res => {
@@ -122,6 +146,7 @@ export const editEntry = async (
             body: imagesToDelete,
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`,
             },
           });
           return res;
@@ -134,12 +159,15 @@ export const deleteEntry = (
   entryId,
   images,
 ) => {
+  const idToken = getCookie('CognitoIdentityServiceProvider.idToken');
+  
   return API({
     method: 'DELETE',
     path: `/admin/${userId}/entry/delete/${entryId}`,
     body: images,
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`,
     },
   });
 };

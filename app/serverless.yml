@@ -4,6 +4,6 @@ screamAndSplatterApp:
     domain: "splatterandscream.com"
     bucketName: "splatterandscream"
     cloudfront:
-      distributionId: "E2RGY07YJJQX10"
+      distributionId: "EFSVFI00WES7Q"
     name:
-      default: "cqfwpbb-ae9h87b"
+      default: "szaioz8-ur821tb"

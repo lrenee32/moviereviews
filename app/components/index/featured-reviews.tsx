@@ -8,6 +8,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
+import NoSsr from '@mui/material/NoSsr';
 import { SectionDivider } from 'components/shared/section-divider';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { getPosterImage } from 'services/api/entries/entries';
@@ -75,7 +76,9 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
                 </CardActionArea>
                 <CardContent sx={{ paddingX: '0' }}>
                   <Typography lineHeight="1" mb="2.5px" variant="h6">{entry.Details!.FilmTitle}</Typography>
-                  <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase', mb: '5px' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
+                  <NoSsr>
+                    <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase', mb: '5px' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
+                  </NoSsr>
                   <Box>
                     <Chip
                       label={ `IMDB: ${entry.Details!.TMDBRating}` }
