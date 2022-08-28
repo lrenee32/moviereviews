@@ -55,6 +55,10 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>{`Search for ${s} - Splatter & Scream`}</title>
+        <meta name="description" content="Search for the latest and greatest horror." />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+        <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:url" content="https://splatterandscream.com/search" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="Search Archives - Splatter & Scream" />
@@ -63,6 +67,13 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
           content="Search for the latest and greatest horror."
         />
         <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://splatterandscream.com/search" />
+        <meta name="twitter:title" content="Search Archives - Splatter & Scream" />
+        <meta name="twitter:description" content="Search for the latest and greatest horror." />
+        <meta name="twitter:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+        <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Box className={styles['wrapper']}>
         <Container maxWidth="lg" className={styles['container']}>

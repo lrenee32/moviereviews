@@ -16,6 +16,10 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>Horror Reviews - Splatter & Scream</title>
+        <meta name="description" content="Reviews on the latest and greatest horror." />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+        <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:url" content="https://splatterandscream.com/reviews" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="Horror Reviews - Splatter & Scream" />
@@ -24,6 +28,13 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
           content="Reviews on the latest and greatest horror."
         />
         <meta property="og:image" content={entries[0].Details!.FeaturedImage as unknown as string} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://splatterandscream.com/reviews" />
+        <meta name="twitter:title" content="Horror Reviews - Splatter & Scream" />
+        <meta name="twitter:description" content="Reviews on the latest and greatest horror." />
+        <meta name="twitter:image" content={entries[0].Details!.FeaturedImage as unknown as string} />
+        <meta name="twitter:site" content="@splatternscream" />
       </Head>
       {entries && entries.length > 0 && (
         <ContentSection entries={entries} sectionName="reviews" />

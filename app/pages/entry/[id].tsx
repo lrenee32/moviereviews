@@ -39,6 +39,15 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>{`${entry.Title} - Splatter & Scream`}</title>
+        <meta name="description" content={serializeToText(entry.Content)} />
+        <meta name="author" content="Splatter & Scream" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+        <meta property="article:publisher" content="https://www.facebook.com/splatterandscream" />
+        <meta property="article:author" content="https://www.facebook.com/splatterandscream" />
+        <meta property="article:published_time" content={new Date(entry.Created).toISOString()} />
+
+        <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:url" content={`https://splatterandscream.com/entry/${entry.EntryId}`} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={entry.Title} />
@@ -47,6 +56,14 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
           content={serializeToText(entry.Content)}
         />
         <meta property="og:image" content={entry.Details!.FeaturedImage as unknown as string} />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={`https://splatterandscream.com/entry/${entry.EntryId}`} />
+        <meta name="twitter:title" content={entry.Title} />
+        <meta name="twitter:description" content={serializeToText(entry.Content)} />
+        <meta name="twitter:image" content={entry.Details!.FeaturedImage as unknown as string} />
+        <meta name="twitter:creator" content="@https://twitter.com/splatternscream" />
+        <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Box className={styles['wrapper']}>
         <Container maxWidth="lg" className={styles['container']}>
