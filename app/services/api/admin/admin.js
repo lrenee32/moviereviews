@@ -23,6 +23,7 @@ const presignAndPutObject = async (userId, entryId, file) => {
       'Content-Type': 'binary/octet-stream',
     },
     body: file,
+    redirect: 'follow',
   });
 
   const imageURL = presignedURL.split('?')[0];

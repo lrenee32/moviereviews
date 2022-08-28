@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import NextLink from 'next/link';
+import Head from 'next/head';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -15,7 +16,7 @@ import { Footer } from 'components/shared/nav/footer';
 import { DisqusComments } from 'components/index/comment-section';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
-import { toTitleCase } from 'utils/utils';
+import { serializeToText, toTitleCase } from 'utils/utils';
 import { GetServerSideProps } from 'next/types';
 import { VARIABLES } from 'assets/themes/themes';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -35,74 +36,87 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return (
-    <Box className={styles['wrapper']}>
-      <Container maxWidth="lg" className={styles['container']}>
-        <Nav style="large" />
-        <Typography
-          id="back-to-top-anchor"
-          className={styles['entry-type']}
-        >
-          {toTitleCase(entry.Type)}
-        </Typography>
-        <Typography variant="h2" className={styles['entry-title']}>
-          {entry.Title}
-        </Typography>
-        <NoSsr>
-          <Typography className={styles['entry-subtitle']}>
-          {`Published ${formatDistanceToNowStrict(entry.Created) } ago on ${format(new Date(entry.Created), 'PP')}`}
-        </Typography>
-        </NoSsr>
-        <Box className={styles['inner-wrapper']}>
-          <Box className={styles['inner-container']}>
-            <Box
-              component="img"
-              alt={`${entry.EntryId}-featured-image`}
-              src={entry.Details!.FeaturedImage as unknown as string}
-              className={styles['entry-featured-image']}
-            />
-            <Box className={styles['content-container']}>
-              <ReadOnly value={entry.Content} />
-              {entry.Type === 'review' && (
-                <Rating
-                  readOnly
-                  value={entry.Details?.UserRating}
-                  precision={0.5}
-                  max={10}
-                  className={styles['entry-rating']}
-                  icon={
-                    <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" sx={{ color: VARIABLES.primaryColor }} />
-                  }
-                  emptyIcon={
-                    <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" />
-                  }
-                />
-              )}
-              <Box className={styles['entry-tags']}>
-                <Typography className={styles['title']}>Related Topics:</Typography>
-                {entry.Tags.map(i => (
-                  <NextLink key={i} href={{ pathname: '/search', query: { s: i } }} passHref>
-                    <Link>
-                      <Typography className={styles['tags']}>{`#${i}`}</Typography>
-                    </Link>
-                  </NextLink>
-                ))}
-              </Box>
-              <DisqusComments
-                url={`${process.env.NEXT_PUBLIC_HOSTNAME}/entry/${entry.EntryId}`}
-                identifier={entry.EntryId}
-                title={entry.Title}
+    <>
+      <Head>
+        <title>{`${entry.Title} - Splatter & Scream`}</title>
+        <meta property="og:url" content={`https://splatterandscream.com/entry/${entry.EntryId}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={entry.Title} />
+        <meta
+          property="og:description"
+          content={serializeToText(entry.Content)}
+        />
+        <meta property="og:image" content={entry.Details!.FeaturedImage as unknown as string} />
+      </Head>
+      <Box className={styles['wrapper']}>
+        <Container maxWidth="lg" className={styles['container']}>
+          <Nav style="large" />
+          <Typography
+            id="back-to-top-anchor"
+            className={styles['entry-type']}
+          >
+            {toTitleCase(entry.Type)}
+          </Typography>
+          <Typography variant="h2" className={styles['entry-title']}>
+            {entry.Title}
+          </Typography>
+          <NoSsr>
+            <Typography className={styles['entry-subtitle']}>
+            {`Published ${formatDistanceToNowStrict(entry.Created) } ago on ${format(new Date(entry.Created), 'PP')}`}
+          </Typography>
+          </NoSsr>
+          <Box className={styles['inner-wrapper']}>
+            <Box className={styles['inner-container']}>
+              <Box
+                component="img"
+                alt={`${entry.EntryId}-featured-image`}
+                src={entry.Details!.FeaturedImage as unknown as string}
+                className={styles['entry-featured-image']}
               />
+              <Box className={styles['content-container']}>
+                <ReadOnly value={entry.Content} />
+                {entry.Type === 'review' && (
+                  <Rating
+                    readOnly
+                    value={entry.Details?.UserRating}
+                    precision={0.5}
+                    max={10}
+                    className={styles['entry-rating']}
+                    icon={
+                      <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" sx={{ color: VARIABLES.primaryColor }} />
+                    }
+                    emptyIcon={
+                      <SvgIcon component={SplatterIcon} inheritViewBox fontSize="inherit" />
+                    }
+                  />
+                )}
+                <Box className={styles['entry-tags']}>
+                  <Typography className={styles['title']}>Related Topics:</Typography>
+                  {entry.Tags.map(i => (
+                    <NextLink key={i} href={{ pathname: '/search', query: { s: i } }} passHref>
+                      <Link>
+                        <Typography className={styles['tags']}>{`#${i}`}</Typography>
+                      </Link>
+                    </NextLink>
+                  ))}
+                </Box>
+                <DisqusComments
+                  url={`${process.env.NEXT_PUBLIC_HOSTNAME}/entry/${entry.EntryId}`}
+                  identifier={entry.EntryId}
+                  title={entry.Title}
+                />
+              </Box>
             </Box>
+            {isLg && (
+              <Box className={styles['side-container']}>
+                <LatestReviews entries={entries.All} />
+              </Box>
+            )}
           </Box>
-          {isLg && (
-            <Box className={styles['side-container']}>
-              <LatestReviews entries={entries.All} />
-            </Box>
-          )}
-        </Box>
-        <Footer />
-      </Container>
-    </Box>
+          <Footer />
+        </Container>
+      </Box>
+    </>
   );
 };
 

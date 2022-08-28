@@ -38,13 +38,13 @@ export const serializeToJSX = (node: Node, index: number) => {
   switch (node.type) {
     case 'paragraph':
       return <p key={`item-${index}`}>{children}</p>;
-    case 'h1':
+    case 'heading-one':
       return <h1 key={`item-${index}`}>{children}</h1>;
-    case 'h2':
+    case 'heading-two':
       return <h2 key={`item-${index}`}>{children}</h2>;
-    case 'h3':
+    case 'heading-three':
       return <h3 key={`item-${index}`}>{children}</h3>;
-    case 'h4':
+    case 'heading-four':
       return <h4 key={`item-${index}`}>{children}</h4>;
     case 'bulleted-list':
       return <ul key={`item-${index}`}>{children}</ul>;

@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import Head from 'next/head';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Review } from 'utils/types';
 import { GetStaticProps } from 'next/types';
@@ -13,6 +14,9 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <>
+      <Head>
+        <title>Horror Articles - Splatter & Scream</title>
+      </Head>
       {entries && entries.length > 0 && (
         <ContentSection entries={entries} sectionName="articles" />
       )}

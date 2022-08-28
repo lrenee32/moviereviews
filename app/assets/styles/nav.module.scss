@@ -135,6 +135,6 @@
 
 @media (min-width: 1200px) {
   .main-nav-, .main-nav-small, .main-nav-sticky {
-    width: 1200px !important;
+    max-width: 1200px !important;
   }
 }

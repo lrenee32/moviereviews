@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react';
+import Head from 'next/head';
 import Fuse from 'fuse.js';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -51,37 +52,42 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
   }, [entries.All, s]);  
 
   return (
-    <Box className={styles['wrapper']}>
-      <Container maxWidth="lg" className={styles['container']}>
-        <Nav style="large" />
-        <Typography pt="20px" variant="h4" textAlign="center" id="back-to-top-anchor">
-          {`Search results for "${s}"`}
-        </Typography>
-        <Box display="flex">
-          <Box width={isLg ? '70%' : '100%' } sx={{ mr: isLg ? '20px' : '0px' }}>
-            {loading ? (
-              <>
-                {[...Array(3)].map((_i, index) => (
-                  <Skeleton key={`skeleton-${index}`} className={cardStyles['card']} height={202.98} variant="rectangular" />
-                ))}
-              </>
-            ) : (
-              <>
-                {searchResults.map(entry => (
-                  <ContentCard key={`${entry.EntryId}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
-                ))}
-              </>
+    <>
+      <Head>
+        <title>{`Search for ${s} - Splatter & Scream`}</title>
+      </Head>
+      <Box className={styles['wrapper']}>
+        <Container maxWidth="lg" className={styles['container']}>
+          <Nav style="large" />
+          <Typography pt="20px" variant="h4" textAlign="center" id="back-to-top-anchor">
+            {`Search results for "${s}"`}
+          </Typography>
+          <Box display="flex">
+            <Box width={isLg ? '70%' : '100%' } sx={{ mr: isLg ? '20px' : '0px' }}>
+              {loading ? (
+                <>
+                  {[...Array(3)].map((_i, index) => (
+                    <Skeleton key={`skeleton-${index}`} className={cardStyles['card']} height={202.98} variant="rectangular" />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {searchResults.map(entry => (
+                    <ContentCard key={`${entry.EntryId}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
+                  ))}
+                </>
+              )}
+            </Box>
+            {isLg && (
+              <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
+                <LatestReviews entries={entries.All} />
+              </Box>
             )}
           </Box>
-          {isLg && (
-            <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
-              <LatestReviews entries={entries.All} />
-            </Box>
-          )}
-        </Box>
-        <Footer />
-      </Container>
-    </Box>
+          <Footer />
+        </Container>
+      </Box>
+    </>
   );
 };
 

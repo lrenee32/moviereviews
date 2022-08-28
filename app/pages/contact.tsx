@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react';
+import Head from 'next/head';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -54,57 +55,62 @@ const Contact: FunctionComponent = () => {
   };
 
   return (
-    <Box className={containerStyles['wrapper']}>
-      <Container maxWidth="lg" className={containerStyles['container']}>
-        <Nav style="large" />
-        <Typography variant="h2" className={contactStyles['header']} id="back-to-top-anchor">Contact Us</Typography>
-        
-        {submitted ? (
-          <Typography className={contactStyles['subheader']}>Thank you for reaching out to us!  Your message has been successfully received.</Typography>
-        ) : (
-          <>
-            <Typography className={contactStyles['subheader']}>For all inquiries please use the form below:</Typography>
-            <Box component="form" className={contactStyles['form-container']}>
-              <TextField
-                label="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                error={errors.includes('name')}
-                helperText={errors.includes('name') && 'Name is a required field'}
-                disabled={submitting}
-              />
-              <TextField
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                error={errors.includes('email')}
-                helperText={errors.includes('email') && 'Email is a required field'}
-                disabled={submitting}
-              />
-              <TextField
-                label="Message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                rows={8}
-                required
-                multiline
-                error={errors.includes('message')}
-                helperText={errors.includes('message') && 'Message is a required field'}
-                disabled={submitting}
-              />
-              {submitting ? (
-                <LoadingButton loading variant="contained" sx={{ minHeight: '36.5px' }} />
-              ) : (
-                <Button variant="contained" onClick={submit}>Submit</Button>
-              )}
-            </Box>
-          </>
-        )}
-        <Footer />
-      </Container>
-    </Box>
+    <>
+      <Head>
+        <title>Splatter & Scream - Contact Us</title>
+      </Head>
+      <Box className={containerStyles['wrapper']}>
+        <Container maxWidth="lg" className={containerStyles['container']}>
+          <Nav style="large" />
+          <Typography variant="h2" className={contactStyles['header']} id="back-to-top-anchor">Contact Us</Typography>
+          
+          {submitted ? (
+            <Typography className={contactStyles['subheader']}>Thank you for reaching out to us!  Your message has been successfully received.</Typography>
+          ) : (
+            <>
+              <Typography className={contactStyles['subheader']}>For all inquiries please use the form below:</Typography>
+              <Box component="form" className={contactStyles['form-container']}>
+                <TextField
+                  label="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  error={errors.includes('name')}
+                  helperText={errors.includes('name') && 'Name is a required field'}
+                  disabled={submitting}
+                />
+                <TextField
+                  label="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  error={errors.includes('email')}
+                  helperText={errors.includes('email') && 'Email is a required field'}
+                  disabled={submitting}
+                />
+                <TextField
+                  label="Message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows={8}
+                  required
+                  multiline
+                  error={errors.includes('message')}
+                  helperText={errors.includes('message') && 'Message is a required field'}
+                  disabled={submitting}
+                />
+                {submitting ? (
+                  <LoadingButton loading variant="contained" sx={{ minHeight: '36.5px' }} />
+                ) : (
+                  <Button variant="contained" onClick={submit}>Submit</Button>
+                )}
+              </Box>
+            </>
+          )}
+          <Footer />
+        </Container>
+      </Box>
+    </>
   );
 };
 

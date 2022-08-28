@@ -2,6 +2,7 @@ import { FunctionComponent } from 'react';
 import { Hero, Content, Nav } from 'components';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Review } from 'utils/types';
+import Head from 'next/head';
 import { GetStaticProps } from 'next/types';
 
 interface Props {
@@ -13,6 +14,9 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <>
+      <Head>
+        <title>Splatter & Scream - Horror Media by Horror Fans</title>
+      </Head>
       <Nav style="hero" />
       {entries && entries.All && entries.All.length > 0 && (
         <Hero entries={entries} />

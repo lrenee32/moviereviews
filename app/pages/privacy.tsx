@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import Head from 'next/head';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -12,14 +13,19 @@ import { Descendant } from 'slate';
 
 const Privacy: FunctionComponent = () => {
   return (
-    <Box className={containerStyles['wrapper']}>
-      <Container maxWidth="lg" className={containerStyles['container']}>
-        <Nav style="large" />
-        <Typography variant="h2" className={privacyStyles['header']} id="back-to-top-anchor">Privacy Policy</Typography>
-        <ReadOnly value={body as Descendant[]} />
-        <Footer />
-      </Container>
-    </Box>
+    <>
+      <Head>
+        <title>Splatter & Scream - Privacy Policy</title>
+      </Head>
+      <Box className={containerStyles['wrapper']}>
+        <Container maxWidth="lg" className={containerStyles['container']}>
+          <Nav style="large" />
+          <Typography variant="h2" className={privacyStyles['header']} id="back-to-top-anchor">Privacy Policy</Typography>
+          <ReadOnly value={body as Descendant[]} />
+          <Footer />
+        </Container>
+      </Box>
+    </>
   );
 };
 
