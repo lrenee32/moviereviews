@@ -16,6 +16,14 @@ const Terms: FunctionComponent = () => {
     <>
       <Head>
         <title>Splatter & Scream - Terms of Use</title>
+        <meta property="og:url" content="https://splatterandscream.com/terms" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Splatter & Scream - Terms of Use" />
+        <meta
+          property="og:description"
+          content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans."
+        />
+        <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
       </Head>
       <Box className={containerStyles['wrapper']}>
         <Container maxWidth="lg" className={containerStyles['container']}>

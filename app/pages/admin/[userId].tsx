@@ -3,6 +3,7 @@
 import { FunctionComponent, useState, useRef } from 'react';
 import { GetServerSideProps } from 'next/types';
 import NextLink from 'next/link';
+import Head from 'next/head';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -221,6 +222,9 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   
   return (
     <>
+      <Head>
+        <title>Admin - Splatter & Scream</title>
+      </Head>
       <AppBar id="back-to-top-anchor" position="sticky" className={navStyles['small-nav']}>
         <Box display="flex" justifyContent="space-between" width="100%">
           <NextLink href="/" passHref>

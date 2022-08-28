@@ -55,6 +55,14 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>{`Search for ${s} - Splatter & Scream`}</title>
+        <meta property="og:url" content="https://splatterandscream.com/search" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Search Archives - Splatter & Scream" />
+        <meta
+          property="og:description"
+          content="Search for the latest and greatest horror."
+        />
+        <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
       </Head>
       <Box className={styles['wrapper']}>
         <Container maxWidth="lg" className={styles['container']}>

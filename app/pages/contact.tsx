@@ -58,6 +58,14 @@ const Contact: FunctionComponent = () => {
     <>
       <Head>
         <title>Splatter & Scream - Contact Us</title>
+        <meta property="og:url" content="https://splatterandscream.com/contact" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Splatter & Scream - Contact Us" />
+        <meta
+          property="og:description"
+          content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans."
+        />
+        <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
       </Head>
       <Box className={containerStyles['wrapper']}>
         <Container maxWidth="lg" className={containerStyles['container']}>

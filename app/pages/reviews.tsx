@@ -16,6 +16,14 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>Horror Reviews - Splatter & Scream</title>
+        <meta property="og:url" content="https://splatterandscream.com/reviews" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Horror Reviews - Splatter & Scream" />
+        <meta
+          property="og:description"
+          content="Reviews on the latest and greatest horror."
+        />
+        <meta property="og:image" content={entries[0].Details!.FeaturedImage as unknown as string} />
       </Head>
       {entries && entries.length > 0 && (
         <ContentSection entries={entries} sectionName="reviews" />
