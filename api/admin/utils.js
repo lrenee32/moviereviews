@@ -4,7 +4,7 @@ const db = new Database();
 const S3 = require('../shared/s3');
 const s3 = new S3();
 
-function sortEntries(arr) {
+const sortEntries = (arr) => {
   return arr.sort((a, b) => {
     const dateA = new Date(a.Created);
     const dateB = new Date(b.Created);
@@ -12,20 +12,59 @@ function sortEntries(arr) {
   });
 };
 
+const setFeatureType = async (entryId, index, type) => {
+  try {
+    const i = index - 1;
+    const params = {
+      TableName: process.env.DynamoDBTable2,
+      Item: {
+        FeatureType: type,
+        FeatureIndex: type === 'sitepick' ? i + 4 : i,
+        EntryId: entryId,
+        Index: i,
+      },
+    };
+
+    return await db.put(params);
+  } catch (err) {
+    return err || err.message;
+  };
+};
+
 class AdminEntryUtils {
   async search(UserId, SearchTerm) {
     try {
-      const params = {
-        TableName: process.env.DynamoDBTable,
+      const reviews = await db.query({
+        TableName: process.env.DynamoDBTable1,
         KeyConditionExpression: 'UserId = :UserId',
         FilterExpression: 'contains(Title, :Title)',
         ExpressionAttributeValues: { 
           ':UserId': UserId,
           ':Title': SearchTerm,
         },
+      });
+
+      const featured = await db.query({
+        TableName: process.env.DynamoDBTable2,
+        KeyConditionExpression: 'FeatureType = :FeatureType',
+        ExpressionAttributeValues: { 
+          ':FeatureType': 'feature',
+        },
+      });
+
+      const sitePicks = await db.query({
+        TableName: process.env.DynamoDBTable2,
+        KeyConditionExpression: 'FeatureType = :FeatureType',
+        ExpressionAttributeValues: { 
+          ':FeatureType': 'sitepick',
+        },
+      });
+
+      return {
+        Reviews: sortEntries(reviews.Items),
+        Featured: featured.Items,
+        SitePicks: sitePicks.Items,
       };
-      const res = await db.query(params);
-      return sortEntries(res.Items);
     } catch (err) {
       return err || err.message;
     };
@@ -34,7 +73,7 @@ class AdminEntryUtils {
   async searchById(EntryId) {
     try {
       const params = {
-        TableName: process.env.DynamoDBTable,
+        TableName: process.env.DynamoDBTable1,
         KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
         ExpressionAttributeValues: { 
           ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
@@ -51,20 +90,26 @@ class AdminEntryUtils {
   async create(UserId, EntryId, Item) {
     try {
       const params = {
-        TableName: process.env.DynamoDBTable,
+        TableName: process.env.DynamoDBTable1,
         Item: {
           EntryId: EntryId,
           UserId: UserId,
           Title: Item.Title,
           Type: Item.Type,
-          Featured: Item.Featured,
-          SitePick: Item.SitePick,
           Content: Item.Content,
           Details: Item.Details,
           Created: Date.now(),
           Tags: Item.Tags,
         },
       };
+
+      if (Item.Featured > 0) {
+        await setFeatureType(EntryId, Item.Featured, 'feature');
+      }
+
+      if (Item.SitePick > 0) {
+        await setFeatureType(EntryId, Item.SitePick, 'sitepick');
+      }
 
       await db.put(params);
       return params.Item;
@@ -91,20 +136,26 @@ class AdminEntryUtils {
   async editById(UserId, EntryId, Item) {
     try {
       const params = {
-        TableName: process.env.DynamoDBTable,
+        TableName: process.env.DynamoDBTable1,
         Item: {
           EntryId: EntryId,
           UserId: UserId,
           Title: Item.Title,
           Type: Item.Type,
-          Featured: Item.Featured,
-          SitePick: Item.SitePick,
           Content: Item.Content,
           Details: Item.Details,
           Created: Item.Created,
           Tags: Item.Tags,
         },
       };
+
+      if (Item.Featured > 0) {
+        await setFeatureType(EntryId, Item.Featured, 'feature');
+      }
+
+      if (Item.SitePick > 0) {
+        await setFeatureType(EntryId, Item.SitePick, 'sitepick');
+      }
 
       await db.put(params);
       return params.Item;
@@ -129,7 +180,7 @@ class AdminEntryUtils {
       }
 
       const params = {
-        TableName: process.env.DynamoDBTable,
+        TableName: process.env.DynamoDBTable1,
         Key: { "UserId": UserId, "EntryId": EntryId },
       };
       await db.delete(params);

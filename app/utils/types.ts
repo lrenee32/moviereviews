@@ -10,13 +10,14 @@ export interface Entry<T> {
   Details: T | null,
   Created: number,
   Tags: string[],
-  Featured: boolean,
-  SitePick: boolean,
+  Featured: number,
+  SitePick: number,
   Type: EntryTypes,
 };
 
 export interface Entries<T> {
   Featured: Entry<T>[],
+  SitePicks: Entry<T>[],
   All: Entry<T>[],
 }
 

@@ -6,9 +6,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -50,21 +47,10 @@ interface Props {
 };
 
 export const ModalContent: FunctionComponent<Props> = (props: Props) => {
-  const { action, entries, entryId, title, type, featuredImage, featured, sitePick, userRating, content, tags } = props;
+  const { action, title, type, featuredImage, featured, sitePick, userRating, content, tags } = props;
   const { setTitle, setType, setFeaturedImage, setFeatured, setSitePick, setDetails, setUserRating, setContent, setTags } = props.actions;
   const uploadImage = useRef(null);
 
-  type CheckBoxTypes = 'featured' | 'pick';
-  const checkBoxDisabled = (selected: CheckBoxTypes) => {
-    const features = entries && entries.length > 0 && entries.filter(i => i.Featured);
-    const picks = entries && entries.length > 0 && entries.filter(i => i.SitePick);
-    const isFeatured = features && features.length > 0 ? features.find(i => i.EntryId === entryId) : false;
-    const isSitePick = picks && picks.length > 0 ? picks.find(i => i.EntryId === entryId) : false;
-    if (selected === 'featured') {
-      return features && features.length > 3 ? !isFeatured : false;
-    }
-    return picks && picks.length > 3 ? !isSitePick : false;
-  };
   const loadLocalImage = (e) => {
     const files = e.target.files;
     if (files.length === 0) {
@@ -118,24 +104,38 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
                 <input ref={uploadImage} type="file" hidden onChange={loadLocalImage} />
               </Button>
             )}
-            <Box>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={featured} onChange={(e) => setFeatured(e.target.checked)} disabled={checkBoxDisabled('featured')} sx={{ p: '2.5px 9px' }} />
-                  }
+            <Box display="flex" flexDirection="column" sx={{ minWidth: 150 }}>
+              <FormControl>
+                <InputLabel>Featured</InputLabel>
+                <Select
+                  value={featured}
                   label="Featured"
-                />
-              </FormGroup>
+                  onChange={(e) => setFeatured(e.target.value)}
+                >
+                  <MenuItem value={0}>
+                    <em>None</em>
+                  </MenuItem>
+                  {[...Array(4)].map((_i, index) => (
+                    <MenuItem value={index + 1}>{index + 1}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               {type === 'review' &&
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={sitePick} onChange={(e) => setSitePick(e.target.checked)} disabled={checkBoxDisabled('pick')} sx={{ p: '2.5px 9px' }} />
-                    }
+                <FormControl sx={{ mt: '20px'}}>
+                  <InputLabel>Site Pick</InputLabel>
+                  <Select
+                    value={sitePick}
                     label="Site Pick"
-                  />
-                </FormGroup>
+                    onChange={(e) => setSitePick(e.target.value)}
+                  >
+                    <MenuItem value={0}>
+                      <em>None</em>
+                    </MenuItem>
+                    {[...Array(4)].map((_i, index) => (
+                      <MenuItem value={index + 1}>{index + 1}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               }
             </Box>
           </Box>

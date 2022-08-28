@@ -54,8 +54,8 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     entryId: '',
     title: '',
     type: 'article',
-    featured: false,
-    sitePick: false,
+    featured: 0,
+    sitePick: 0,
     featuredImage: { url: '', file: null },
     content: [{type: 'paragraph', children: [{text: ''}]}],
     details: null,
@@ -236,7 +236,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       </AppBar>
       <Container sx={{ marginY: '100px' }}>
         <Typography variant="h3" marginBottom={'30px'}>Manage Entries</Typography>
-        <Button onClick={() => actionEvent(null, 'create')} variant="outlined">Create Entry</Button>
+        <Button onClick={() => actionEvent(null, 'create')} variant="outlined" sx={{ mb: '20px' }}>Create Entry</Button>
         {(entries && entries.length > 0) && (
           <MaterialTable
             columns={tableData.columns}
@@ -298,7 +298,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   
-  const entries: Entries<Review> = await getEntries(context, userId, '');
+  const data = await getEntries(context, userId, '');
+  const entries = data.Reviews.map(i => {
+    const featured = data.Featured.find(j => j.EntryId === i.EntryId);
+    const sitePick = data.SitePicks.find(j => j.EntryId === i.EntryId);
+    return {
+      ...i,
+      Featured: featured ? featured.Index + 1 : 0,
+      SitePick: sitePick ? sitePick.Index + 1 : 0,
+    };
+  });
 
   return { props: { userId, entries, userInfo } };
 };

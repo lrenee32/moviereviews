@@ -7,7 +7,8 @@
     "build": "next build",
     "build:prod": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy:prod": "serverless"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",

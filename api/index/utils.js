@@ -2,7 +2,20 @@
 const Database = require('../shared/db');
 const db = new Database();
 
-function sortEntries(arr) {
+const setFeatureType = async (arr, type) => {
+  const feature = await db.query({
+    TableName: process.env.DynamoDBTable2,
+    KeyConditionExpression: 'FeatureType = :FeatureType',
+    ExpressionAttributeValues: { 
+      ':FeatureType': type,
+    },
+  });
+
+  return feature.Items
+    .map(i => arr.find(j => i.EntryId === j.EntryId));
+};
+
+const sortEntries = async (arr) => {
   const sorted = arr.sort((a, b) => {
     const dateA = new Date(a.Created);
     const dateB = new Date(b.Created);
@@ -10,7 +23,8 @@ function sortEntries(arr) {
   });
 
   return {
-    Featured: sorted.filter(i => i.Featured),
+    Featured: await setFeatureType(arr, 'feature'),
+    SitePicks: await setFeatureType(arr, 'sitepick'),
     All: sorted,
   }
 };
@@ -19,7 +33,7 @@ class EntryUtils {
   async search(SearchTerm) {
     try {
       const params = {
-        TableName: process.env.DynamoDBTable,
+        TableName: process.env.DynamoDBTable1,
         KeyConditionExpression: 'UserId = :UserId',
         FilterExpression: 'contains(Title, :Title)',
         ExpressionAttributeValues: { 
@@ -37,7 +51,7 @@ class EntryUtils {
   async searchById(EntryId) {
     try {
       const params = {
-        TableName: process.env.DynamoDBTable,
+        TableName: process.env.DynamoDBTable1,
         KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
         ExpressionAttributeValues: { 
           ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',

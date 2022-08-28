@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import NoSsr from '@mui/material/NoSsr';
+import Skeleton from '@mui/material/Skeleton';
 import { TypographyVariant } from '@mui/material';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 
@@ -19,45 +20,51 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
   const { entry, headingVariant, showDescription } = props;
 
   return (
-    <Card
-      id={`${entry.EntryId}-hero`}
-      variant="outlined"
-      sx={{
-        position: 'relative',
-        height: '100%',
-        borderColor: '#0e0e0e',
-        '&:hover .MuiCardMedia-img': {
-          transform: 'scale(1.1)',
-          opacity: '.5',
-        }
-      }}
-    >
-      <CardMedia
-        component="img"
-        height="100%"
-        image={entry.Details!.FeaturedImage as unknown as string}
-        alt={`${entry.Title}-${entry.EntryId}`}
-        sx={{
-          position: 'absolute',
-          height: '100%',
-          transition: '.3s ease-in-out',
-        }}
-      />
-      <CardContent
-        sx={{
-          position: 'absolute',
-          bottom: '0',
-          zIndex: '99',
-          maxWidth: '600px',
-        }}
-      >
-        <NoSsr>
-          <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
-        </NoSsr>
-        <Typography variant={headingVariant} marginBottom="10px">{ entry.Title }</Typography>
-        <Typography marginBottom="15px">{ showDescription && entry.Details!.FilmOverview }</Typography>
-        <Button href={`/entry/${entry.EntryId}`} variant="outlined">Read More</Button>
-      </CardContent>
-    </Card>
+    <>
+      {entry ? (
+        <Card
+          id={`${entry.EntryId}-hero`}
+          variant="outlined"
+          sx={{
+            position: 'relative',
+            height: '100%',
+            borderColor: '#0e0e0e',
+            '&:hover .MuiCardMedia-img': {
+              transform: 'scale(1.1)',
+              opacity: '.5',
+            }
+          }}
+        >
+          <CardMedia
+            component="img"
+            height="100%"
+            image={entry.Details!.FeaturedImage as unknown as string}
+            alt={`${entry.Title}-${entry.EntryId}`}
+            sx={{
+              position: 'absolute',
+              height: '100%',
+              transition: '.3s ease-in-out',
+            }}
+          />
+          <CardContent
+            sx={{
+              position: 'absolute',
+              bottom: '0',
+              zIndex: '99',
+              maxWidth: '600px',
+            }}
+          >
+            <NoSsr>
+              <Typography fontSize="12px" color="primary" sx={{ textTransform: 'uppercase' }}>| { formatDistanceToNowStrict(entry.Created) } ago</Typography>
+            </NoSsr>
+            <Typography variant={headingVariant} marginBottom="10px">{ entry.Title }</Typography>
+            <Typography marginBottom="15px">{ showDescription && entry.Details!.FilmOverview }</Typography>
+            <Button href={`/entry/${entry.EntryId}`} variant="outlined">Read More</Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <Skeleton variant="rectangular" height="100%" />
+      )}
+    </>
   );
 };
