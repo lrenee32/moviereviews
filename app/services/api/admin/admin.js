@@ -43,9 +43,7 @@ export const getEntries = ({ req, res}, userId, SearchTerm) => {
     headers: {
       'Authorization': `Bearer ${idToken}`,
     },
-  })
-    .then(res => res)
-    .catch(err => console.log(err));
+  });
 };
 
 export const getEntry = (userId, entryId) => {

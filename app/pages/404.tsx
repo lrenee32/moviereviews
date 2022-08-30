@@ -14,10 +14,10 @@ const Custom404: FunctionComponent = () => {
       <Head>
         <title>Page Not Found - Splatter & Scream</title>
         <meta name="description" content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans." />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="robots" content="noindex, follow" />
 
-        <meta property="og:url" content="https://splatterandscream.com" />
-        <meta property="og:type" content="article" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:title" content="Splatter & Scream - Page Not Found" />
         <meta
           property="og:description"
@@ -26,7 +26,6 @@ const Custom404: FunctionComponent = () => {
         <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://splatterandscream.com" />
         <meta name="twitter:title" content="Splatter & Scream - Page Not Found" />
         <meta name="twitter:description" content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans." />
         <meta name="twitter:image" content="https://splatterandscream.com/images/site-logo-main.png" />

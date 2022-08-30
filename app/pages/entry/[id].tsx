@@ -42,11 +42,13 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
         <meta name="description" content={serializeToText(entry.Content)} />
         <meta name="author" content="Splatter & Scream" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <link rel="canonical" href={`https://splatterandscream.com/entry/${entry.EntryId}`} />
 
         <meta property="article:publisher" content="https://www.facebook.com/splatterandscream" />
         <meta property="article:author" content="https://www.facebook.com/splatterandscream" />
         <meta property="article:published_time" content={new Date(entry.Created).toISOString()} />
 
+        <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:url" content={`https://splatterandscream.com/entry/${entry.EntryId}`} />
         <meta property="og:type" content="article" />

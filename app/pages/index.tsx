@@ -18,7 +18,9 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
         <title>Splatter & Scream - Horror Media by Horror Fans</title>
         <meta name="description" content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans." />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <link rel="canonical" href="https://splatterandscream.com" />
 
+        <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:url" content="https://splatterandscream.com" />
         <meta property="og:type" content="website" />

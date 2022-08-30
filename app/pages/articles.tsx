@@ -18,7 +18,9 @@ export const Articles: FunctionComponent<Props> = (props: Props) => {
         <title>Horror Articles - Splatter & Scream</title>
         <meta name="description" content="Articles on the latest and greatest horror." />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <link rel="canonical" href="https://splatterandscream.com/articles" />
 
+        <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Splatter & Scream" />
         <meta property="og:url" content="https://splatterandscream.com/articles" />
         <meta property="og:type" content="article" />
