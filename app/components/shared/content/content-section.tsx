@@ -26,14 +26,14 @@ export const ContentSection: FunctionComponent<Props> = (props: Props) => {
     <Box className={styles['wrapper']}>
       <Container maxWidth="lg" className={styles['container']}>
         <Nav style="large" />
-        <Card id="back-to-top-anchor" key={`${entries[0].Title}-${entries[0].EntryId}-${sectionName}-headline`} className={styles['featured-card']}>
-          <CardActionArea href={`/entry/${entries[0].EntryId}`} className={styles['action-area']}>
+        <Card id="back-to-top-anchor" key={`${entries[0].Title}-${entries[0].PK}-${sectionName}-headline`} className={styles['featured-card']}>
+          <CardActionArea href={`/entry/${entries[0].PK}`} className={styles['action-area']}>
             <Box className={styles['card-image-container']}>
               <Box className={styles['card-image-container-fill']} />
               <CardMedia
                 component="img"
                 image={entries[0].Details!.FeaturedImage as unknown as string}
-                alt={`${entries[0].Title}-${entries[0].EntryId}-${sectionName}-headline-image`}
+                alt={`${entries[0].Title}-${entries[0].PK}-${sectionName}-headline-image`}
                 className={styles['card-image']}
               />
               <Box className={styles['card-overlay']} />
@@ -52,7 +52,7 @@ export const ContentSection: FunctionComponent<Props> = (props: Props) => {
         </Card>
         <Box className={styles['inner-container']}>
           {entries.slice(1, entries.length).map(entry => (
-            <ContentCard key={`${entry.EntryId}-${sectionName}`} entry={entry} sectionName={sectionName} />
+            <ContentCard key={`${entry.PK}-${sectionName}`} entry={entry} sectionName={sectionName} />
           ))}
         </Box>
         <Footer />

@@ -14,7 +14,7 @@ import { LatestReviews } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
 import { Footer } from 'components/shared/nav/footer';
 import { DisqusComments } from 'components/index/comment-section';
-import { getEntries } from 'services/api/entries/entries';
+import { getEntry } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
 import { serializeToText, toTitleCase } from 'utils/utils';
 import { GetServerSideProps } from 'next/types';
@@ -42,7 +42,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
         <meta name="description" content={serializeToText(entry.Content)} />
         <meta name="author" content="Splatter & Scream" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <link rel="canonical" href={`https://splatterandscream.com/entry/${entry.EntryId}`} />
+        <link rel="canonical" href={`https://splatterandscream.com/entry/${entry.PK}`} />
 
         <meta property="article:publisher" content="https://www.facebook.com/splatterandscream" />
         <meta property="article:author" content="https://www.facebook.com/splatterandscream" />
@@ -50,7 +50,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Splatter & Scream" />
-        <meta property="og:url" content={`https://splatterandscream.com/entry/${entry.EntryId}`} />
+        <meta property="og:url" content={`https://splatterandscream.com/entry/${entry.PK}`} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={entry.Title} />
         <meta
@@ -60,7 +60,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
         <meta property="og:image" content={entry.Details!.FeaturedImage as unknown as string} />
         
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={`https://splatterandscream.com/entry/${entry.EntryId}`} />
+        <meta name="twitter:url" content={`https://splatterandscream.com/entry/${entry.PK}`} />
         <meta name="twitter:title" content={entry.Title} />
         <meta name="twitter:description" content={serializeToText(entry.Content)} />
         <meta name="twitter:image" content={entry.Details!.FeaturedImage as unknown as string} />
@@ -88,7 +88,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             <Box className={styles['inner-container']}>
               <Box
                 component="img"
-                alt={`${entry.EntryId}-featured-image`}
+                alt={`${entry.PK}-featured-image`}
                 src={entry.Details!.FeaturedImage as unknown as string}
                 className={styles['entry-featured-image']}
               />
@@ -120,8 +120,8 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
                   ))}
                 </Box>
                 <DisqusComments
-                  url={`${process.env.NEXT_PUBLIC_HOSTNAME}/entry/${entry.EntryId}`}
-                  identifier={entry.EntryId}
+                  url={`${process.env.NEXT_PUBLIC_HOSTNAME}/entry/${entry.PK}`}
+                  identifier={entry.PK}
                   title={entry.Title}
                 />
               </Box>
@@ -141,8 +141,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
-  const entries: Entries<Review> = await getEntries('');
-  const entry: Entry<Review> | undefined = entries.All!.find(i => i.EntryId === id);
+  const entries: Entries<Review> = await getEntry(id);
 
   return { props: { entry, entries } };
 };

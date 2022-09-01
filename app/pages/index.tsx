@@ -39,7 +39,7 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
         <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Nav style="hero" />
-      {entries && entries.All && entries.All.length > 0 && (
+      {entries && entries.Featured && entries.Featured.length > 0 && (
         <Hero entries={entries} />
       )}
       <Nav style="main" />
@@ -49,7 +49,7 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries('');
+  const entries: Entries<Review> = await getEntries('', '');
 
   return { props: { entries }, revalidate: 10 };
 };

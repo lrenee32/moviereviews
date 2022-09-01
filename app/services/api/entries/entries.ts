@@ -1,19 +1,20 @@
 import { API } from "../api-service";
 
-export const getEntries = (SearchTerm: string) => {
+export const getEntries = (SearchTerm: string, EntryType: string) => {
   return API({
     method: 'GET',
     path: '/entries',
     params: new URLSearchParams({
       SearchTerm,
+      EntryType,
     }),
   });
 };
 
-export const getEntry = (EntryId: string | string[] | undefined) => {
+export const getEntry = (PK: string | string[] | undefined) => {
   return API({
     method: 'GET',
-    path: `/entry/${EntryId}`,
+    path: `/entry/${PK}`,
   });
 };
 

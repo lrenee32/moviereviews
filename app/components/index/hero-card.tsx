@@ -20,7 +20,7 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <Card
-      id={`${entry.EntryId}-hero`}
+      id={`${entry.PK}-hero`}
       variant="outlined"
       sx={{
         position: 'relative',
@@ -36,7 +36,7 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
         component="img"
         height="100%"
         image={entry.Details!.FeaturedImage as unknown as string}
-        alt={`${entry.Title}-${entry.EntryId}`}
+        alt={`${entry.Title}-${entry.PK}`}
         sx={{
           position: 'absolute',
           height: '100%',
@@ -56,7 +56,7 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
         </NoSsr>
         <Typography variant={headingVariant} marginBottom="10px">{ entry.Title }</Typography>
         <Typography marginBottom="15px">{ showDescription && entry.Details!.FilmOverview }</Typography>
-        <Button href={`/entry/${entry.EntryId}`} variant="outlined">Read More</Button>
+        <Button href={`/entry/${entry.PK}`} variant="outlined">Read More</Button>
       </CardContent>
     </Card>
   );

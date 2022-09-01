@@ -104,7 +104,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const actionEvent = (entry: Entry<Review> | null, action: ActionTypes) => {
     setAction(action);
     if ((action === 'edit' || action === 'delete') && entry) {
-      setEntryId(entry.EntryId);
+      setEntryId(entry.PK);
       setTitle(entry.Title);
       setType(entry.Type);
       setFeatured(entry.Featured);
@@ -146,7 +146,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       case 'edit':
         const json: Partial<Entry<Partial<Review>>> = {...body, EntryId: entryId, Created: created};
         return editEntry(userId, entryId, json, previousImages).then((res: Entry<Review>) => {
-          const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
+          const arrIndex = entries.findIndex(i => i.PK === res.PK);
           entries[arrIndex] = res;
           cancelEvent();
         });
@@ -155,7 +155,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         const images = filtered.map(i => i.url);
         images.push(body.Details?.FeaturedImage.url);
         return deleteEntry(userId, entryId, images).then((res: Entry<Review>) => {
-          const arrIndex = entries.findIndex(i => i.EntryId === res.EntryId);
+          const arrIndex = entries.findIndex(i => i.PK === res.PK);
           entries.splice(arrIndex, 1);
           cancelEvent();
         });
@@ -169,7 +169,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         title: 'Title',
         field: 'Title',
         render: (rowData: Entry<Review>) => (
-          <NextLink href={`/entry/${rowData.EntryId}`} passHref>
+          <NextLink href={`/entry/${rowData.PK}`} passHref>
             <Link>{rowData.Title}</Link>
           </NextLink>
         ),

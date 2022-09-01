@@ -16,15 +16,16 @@ function sortEntries(arr) {
 };
 
 class EntryUtils {
-  async search(SearchTerm) {
+  async search(SearchTerm, EntryType) {
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
-        KeyConditionExpression: 'UserId = :UserId',
-        FilterExpression: 'contains(Title, :Title)',
+        KeyConditionExpression: 'SK = :SK',
+        FilterExpression: 'contains(Title, :Title) AND EntryType = :EntryType',
         ExpressionAttributeValues: { 
-          ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
+          ':SK': 'ENTRY',
           ':Title': SearchTerm,
+          ':EntryType': EntryType,
         },
       };
       const res = await db.query(params);
@@ -34,14 +35,14 @@ class EntryUtils {
     };
   };
 
-  async searchById(EntryId) {
+  async searchById(PK) {
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
-        KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
+        KeyConditionExpression: 'SK = :SK AND PK = :PK',
         ExpressionAttributeValues: { 
-          ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-          ':EntryId': EntryId,
+          ':SK': 'ENTRY',
+          ':EntryId': PK,
         },
       };
       const res = await db.query(params);

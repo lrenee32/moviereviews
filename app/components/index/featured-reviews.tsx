@@ -64,14 +64,14 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
       <Grid container spacing={2} mb="70px">
         {filtered.map((entry: Entry<Review>) => {
           return (
-            <Grid key={entry.EntryId} item xs={6} md={3}>
-              <Card id={`${entry.EntryId}-featured`} sx={{ backgroundImage: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
-                <CardActionArea href={`/entry/${entry.EntryId}`}>
+            <Grid key={entry.PK} item xs={6} md={3}>
+              <Card id={`${entry.PK}-featured`} sx={{ backgroundImage: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
+                <CardActionArea href={`/entry/${entry.PK}`}>
                   <CardMedia
                     component="img"
                     height="100%"
                     image={getPosterImage(entry.Details!.FilmPoster)}
-                    alt={`${entry.Title}-${entry.EntryId}`}
+                    alt={`${entry.Title}-${entry.PK}`}
                   />
                 </CardActionArea>
                 <CardContent sx={{ paddingX: '0' }}>

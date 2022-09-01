@@ -58,8 +58,8 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
   const checkBoxDisabled = (selected: CheckBoxTypes) => {
     const features = entries && entries.length > 0 && entries.filter(i => i.Featured);
     const picks = entries && entries.length > 0 && entries.filter(i => i.SitePick);
-    const isFeatured = features && features.length > 0 ? features.find(i => i.EntryId === entryId) : false;
-    const isSitePick = picks && picks.length > 0 ? picks.find(i => i.EntryId === entryId) : false;
+    const isFeatured = features && features.length > 0 ? features.find(i => i.PK === entryId) : false;
+    const isSitePick = picks && picks.length > 0 ? picks.find(i => i.PK === entryId) : false;
     if (selected === 'featured') {
       return features && features.length > 3 ? !isFeatured : false;
     }

@@ -5,10 +5,10 @@ const { search, searchById } = new EntryUtils();
 
 class EntryActions {
   async search(request) {
-    const { SearchTerm } = request.queryString;
+    const { SearchTerm, EntryType } = request.queryString;
 
     try {
-      const res = await search(SearchTerm);
+      const res = await search(SearchTerm, EntryType);
       return res;
     } catch (err) {
       console.warn(`Error getting entries: ${err}`);
@@ -17,10 +17,10 @@ class EntryActions {
   };
 
   async searchById(request) {
-    const { EntryId } = request.pathParams;
+    const { PK } = request.pathParams;
     
     try {
-      return await searchById(EntryId);
+      return await searchById(PK);
     } catch (err) {
       console.warn(`Error getting entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);

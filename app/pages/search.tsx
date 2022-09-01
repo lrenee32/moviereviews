@@ -94,7 +94,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
               ) : (
                 <>
                   {searchResults.map(entry => (
-                    <ContentCard key={`${entry.EntryId}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
+                    <ContentCard key={`${entry.PK}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
                   ))}
                 </>
               )}
@@ -113,7 +113,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries('');
+  const entries: Entries<Review> = await getEntries('', '');
 
   return { props: { entries }, revalidate: 10 };
 };

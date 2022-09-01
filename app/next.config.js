@@ -13,6 +13,9 @@ const nextConfig = {
     });
 
     return config;
+  },
+  images: {
+    domains: ['splatterandscream-dev.s3.amazonaws.com']
   }
 };
 

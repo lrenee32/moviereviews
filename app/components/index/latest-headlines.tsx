@@ -21,7 +21,7 @@ export const LatestHeadlines: FunctionComponent<Props> = (props: Props) => {
       <Box display="flex">
         <Box width={isLg ? '70%' : '100%' } sx={{ mr: isLg ? '20px' : '0px' }}>
           {entries && entries.length > 0 && entries.map(entry => (
-            <ContentCard key={`${entry.EntryId}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
+            <ContentCard key={`${entry.PK}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
           ))}
         </Box>
         {isLg && (
