@@ -3,7 +3,7 @@ import { Descendant } from 'slate';
 export type EntryTypes = 'review' | 'article';
 
 export interface Entry<T> {
-  EntryId: string,
+  PK: string,
   UserId: string | string[] | undefined,
   Title: string,
   Content: Descendant[],
@@ -12,7 +12,7 @@ export interface Entry<T> {
   Tags: string[],
   Featured: boolean,
   SitePick: boolean,
-  Type: EntryTypes,
+  EntryType: EntryTypes,
 };
 
 export interface Entries<T> {

@@ -21,7 +21,7 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       <SectionDivider text="Latest Reviews" />
-      {clonedArr.filter(i => i.Type === 'review').splice(0, 4).map(entry => {
+      {clonedArr.filter(i => i.EntryType === 'review').splice(0, 4).map(entry => {
         return (
           <Card id={`${entry.PK}-latest-reviews`} key={`${entry.Title}-${entry.PK}-headline`} sx={{ mt: '20px', mr: '20px'}}>
             <CardActionArea href={`/entry/${entry.PK}`} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
@@ -38,7 +38,7 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
                     color="primary"
                     sx={{ textTransform: 'uppercase', mb: '5px' }}
                   >
-                    {entry.Type} | { formatDistanceToNowStrict(entry.Created) } ago
+                    {entry.EntryType} | { formatDistanceToNowStrict(entry.Created) } ago
                   </Typography>
                 </NoSsr>
                 <Typography>

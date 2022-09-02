@@ -17,16 +17,20 @@ function sortEntries(arr) {
 
 class EntryUtils {
   async search(SearchTerm, EntryType) {
+    let fq = 'contains(Title, :Title)';
+    let ex = { ':SK': 'ENTRY', ':Title': SearchTerm };
+
+    if (EntryType !== '') {
+      fq += ' AND EntryType = :EntryType';
+      ex = { ...ex, ':EntryType': EntryType };
+    }
+
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
         KeyConditionExpression: 'SK = :SK',
-        FilterExpression: 'contains(Title, :Title) AND EntryType = :EntryType',
-        ExpressionAttributeValues: { 
-          ':SK': 'ENTRY',
-          ':Title': SearchTerm,
-          ':EntryType': EntryType,
-        },
+        FilterExpression: fq,
+        ExpressionAttributeValues: ex,
       };
       const res = await db.query(params);
       return sortEntries(res.Items);
@@ -35,14 +39,14 @@ class EntryUtils {
     };
   };
 
-  async searchById(PK) {
+  async searchById(EntryId) {
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
         KeyConditionExpression: 'SK = :SK AND PK = :PK',
         ExpressionAttributeValues: { 
           ':SK': 'ENTRY',
-          ':EntryId': PK,
+          ':PK': EntryId,
         },
       };
       const res = await db.query(params);

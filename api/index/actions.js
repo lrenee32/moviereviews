@@ -17,10 +17,10 @@ class EntryActions {
   };
 
   async searchById(request) {
-    const { PK } = request.pathParams;
+    const { EntryId } = request.pathParams;
     
     try {
-      return await searchById(PK);
+      return await searchById(EntryId);
     } catch (err) {
       console.warn(`Error getting entry: ${err}`);
       return new app.ApiResponse(err.message, {}, 500);

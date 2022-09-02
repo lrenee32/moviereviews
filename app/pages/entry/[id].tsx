@@ -14,7 +14,7 @@ import { LatestReviews } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
 import { Footer } from 'components/shared/nav/footer';
 import { DisqusComments } from 'components/index/comment-section';
-import { getEntry } from 'services/api/entries/entries';
+import { getEntry, getEntries } from 'services/api/entries/entries';
 import { Entries, Entry, Review } from 'utils/types';
 import { serializeToText, toTitleCase } from 'utils/utils';
 import { GetServerSideProps } from 'next/types';
@@ -74,7 +74,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             id="back-to-top-anchor"
             className={styles['entry-type']}
           >
-            {toTitleCase(entry.Type)}
+            {toTitleCase(entry.EntryType)}
           </Typography>
           <Typography variant="h2" className={styles['entry-title']}>
             {entry.Title}
@@ -94,7 +94,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
               />
               <Box className={styles['content-container']}>
                 <ReadOnly value={entry.Content} />
-                {entry.Type === 'review' && (
+                {entry.EntryType === 'review' && (
                   <Rating
                     readOnly
                     value={entry.Details?.UserRating}
@@ -141,7 +141,8 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
-  const entries: Entries<Review> = await getEntry(id);
+  const entries: Entries<Review> = await getEntries('', 'review');
+  const entry: Entry<Review> = await getEntry(id);
 
   return { props: { entry, entries } };
 };
