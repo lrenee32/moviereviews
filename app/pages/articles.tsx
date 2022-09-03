@@ -48,7 +48,7 @@ export const Articles: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries('', 'article');
+  const entries: Entries<Review> = await getEntries('', 'article', 'Created');
 
   return { props: { entries }, revalidate: 10 };
 };

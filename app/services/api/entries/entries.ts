@@ -1,12 +1,13 @@
 import { API } from "../api-service";
 
-export const getEntries = (SearchTerm: string, EntryType: string) => {
+export const getEntries = (SearchTerm: string, EntryType: string, Sort: string) => {
   return API({
     method: 'GET',
     path: '/entries',
     params: new URLSearchParams({
       SearchTerm,
       EntryType,
+      Sort,
     }),
   });
 };

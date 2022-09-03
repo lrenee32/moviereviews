@@ -5,10 +5,10 @@ const { search, searchById } = new EntryUtils();
 
 class EntryActions {
   async search(request) {
-    const { SearchTerm, EntryType } = request.queryString;
+    const { SearchTerm, EntryType, Sort } = request.queryString;
 
     try {
-      const res = await search(SearchTerm, EntryType);
+      const res = await search(SearchTerm, EntryType, Sort);
       return res;
     } catch (err) {
       console.warn(`Error getting entries: ${err}`);

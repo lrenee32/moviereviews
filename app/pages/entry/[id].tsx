@@ -141,7 +141,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
-  const entries: Entries<Review> = await getEntries('', 'review');
+  const entries: Entries<Review> = await getEntries('', 'review', '');
   const entry: Entry<Review> = await getEntry(id);
 
   return { props: { entry, entries } };

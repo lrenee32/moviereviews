@@ -16,24 +16,26 @@ function sortEntries(arr) {
 };
 
 class EntryUtils {
-  async search(SearchTerm, EntryType) {
-    let fq = 'contains(Title, :Title)';
-    let ex = { ':SK': 'ENTRY', ':Title': SearchTerm };
+  async search(SearchTerm, EntryType, Sort) {
+    let kce = 'SK = :SK';
+    let fe = 'contains(Title, :Title)';
+    let eav = { ':SK': 'ENTRY', ':Title': SearchTerm };
 
     if (EntryType !== '') {
-      fq += ' AND EntryType = :EntryType';
-      ex = { ...ex, ':EntryType': EntryType };
+      fe += ' AND EntryType = :EntryType';
+      eav = { ...eav, ':EntryType': EntryType };
     }
 
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
-        KeyConditionExpression: 'SK = :SK',
-        FilterExpression: fq,
-        ExpressionAttributeValues: ex,
+        IndexName: Sort ? Sort : 'Created',
+        KeyConditionExpression: kce,
+        FilterExpression: fe,
+        ExpressionAttributeValues: eav,
       };
       const res = await db.query(params);
-      return sortEntries(res.Items);
+      return { All: res.Items };
     } catch (err) {
       return err || err.message;
     };
