@@ -28,7 +28,7 @@ export const ContentCard: FunctionComponent<Props> = (props: Props) => {
         />
         <CardContent className={styles['card-content']}>
           <NoSsr>
-            <Typography className={styles['card-subtext']}>{entry.Type} | { formatDistanceToNowStrict(entry.Created) } ago</Typography>
+            <Typography className={styles['card-subtext']}>{entry.EntryType} | { formatDistanceToNowStrict(entry.Created) } ago</Typography>
           </NoSsr>
           <Typography variant="h5">
             {entry.Title}

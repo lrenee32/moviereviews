@@ -26,23 +26,6 @@ class AdminEntryUtils {
     };
   };
 
-  async searchById(EntryId) {
-    try {
-      const params = {
-        TableName: process.env.DynamoDBTable,
-        KeyConditionExpression: 'UserId = :UserId AND EntryId = :EntryId',
-        ExpressionAttributeValues: { 
-          ':UserId': 'a5c723d5-89ba-4554-a09d-ee3870be41a3',
-          ':EntryId': EntryId,
-        },
-      };
-      const res = await db.query(params);
-      return res.Items[0];
-    } catch (err) {
-      return err || err.message;
-    };
-  };
-
   async create(UserId, EntryId, Item) {
     try {
       const params = {

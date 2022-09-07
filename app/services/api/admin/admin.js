@@ -46,18 +46,6 @@ export const getEntries = ({ req, res}, userId, SearchTerm) => {
   });
 };
 
-export const getEntry = (userId, entryId) => {
-  const idToken = getCookie('CognitoIdentityServiceProvider.idToken');
-
-  return API({
-    method: 'GET',
-    path: `/admin/${userId}/entry/${entryId}`,
-    headers: {
-      'Authorization': `Bearer ${idToken}`,
-    },
-  });
-};
-
 export const createEntry = async (
   userId,
   body,

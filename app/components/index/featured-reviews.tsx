@@ -89,7 +89,7 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
                       sx={{ marginRight: '5px', mb: '5px' }}
                       />
                     <Chip
-                      label={ `Personal: ${entry.Details!.UserRating}` }
+                      label={ `Personal: ${entry.UserRating}` }
                       color="primary"
                       sx={{ marginRight: '5px', mb: '5px' }}
                     />
