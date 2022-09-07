@@ -125,7 +125,7 @@ export const editEntry = async (
     .concat([clone.Details.FeaturedImage]);
   
 
-  const imagesToDelete = previousImages.filter(x => !images.includes(x));
+  const imagesToDelete = previousImages && previousImages.length > 0 ? previousImages.filter(x => !images.includes(x)) : [];
 
   return Promise.all(promises)
     .then(() => {
@@ -139,15 +139,17 @@ export const editEntry = async (
         },
       })
         .then(async res => {
-          await API({
-            method: 'DELETE',
-            path: `/admin/${userId}/entry/delete/image/${entryId}`,
-            body: imagesToDelete,
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${idToken}`,
-            },
-          });
+          if (imagesToDelete && imagesToDelete.length > 0) {
+            await API({
+              method: 'DELETE',
+              path: `/admin/${userId}/entry/delete/image/${entryId}`,
+              body: imagesToDelete,
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${idToken}`,
+              },
+            });
+          }
           return res;
         });
     });

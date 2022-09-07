@@ -4,28 +4,23 @@ const db = new Database();
 const S3 = require('../shared/s3');
 const s3 = new S3();
 
-function sortEntries(arr) {
-  return arr.sort((a, b) => {
-    const dateA = new Date(a.Created);
-    const dateB = new Date(b.Created);
-    return dateA < dateB ? 1 : dateA > dateB ? -1 : 0;
-  });
-};
-
 class AdminEntryUtils {
   async search(UserId, SearchTerm) {
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
-        KeyConditionExpression: 'UserId = :UserId',
-        FilterExpression: 'contains(Title, :Title)',
+        IndexName: 'Created-Index',
+        ScanIndexForward: false,
+        KeyConditionExpression: 'SK = :SK',
+        FilterExpression: 'contains(Title, :Title) AND UserId = :UserId',
         ExpressionAttributeValues: { 
+          ':SK': 'ENTRY',
           ':UserId': UserId,
           ':Title': SearchTerm,
         },
       };
       const res = await db.query(params);
-      return sortEntries(res.Items);
+      return res.Items;
     } catch (err) {
       return err || err.message;
     };
@@ -53,16 +48,18 @@ class AdminEntryUtils {
       const params = {
         TableName: process.env.DynamoDBTable,
         Item: {
-          EntryId: EntryId,
+          SK: 'ENTRY',
+          PK: EntryId,
           UserId: UserId,
           Title: Item.Title,
-          Type: Item.Type,
+          EntryType: Item.EntryType,
           Featured: Item.Featured,
           SitePick: Item.SitePick,
           Content: Item.Content,
           Details: Item.Details,
           Created: Date.now(),
           Tags: Item.Tags,
+          UserRating: Item.UserRating,
         },
       };
 
@@ -93,16 +90,18 @@ class AdminEntryUtils {
       const params = {
         TableName: process.env.DynamoDBTable,
         Item: {
-          EntryId: EntryId,
+          SK: 'ENTRY',
+          PK: EntryId,
           UserId: UserId,
           Title: Item.Title,
-          Type: Item.Type,
+          EntryType: Item.EntryType,
           Featured: Item.Featured,
           SitePick: Item.SitePick,
           Content: Item.Content,
           Details: Item.Details,
           Created: Item.Created,
           Tags: Item.Tags,
+          UserRating: Item.UserRating,
         },
       };
 

@@ -5,11 +5,15 @@ import { HeroCard } from '../../components/index/hero-card';
 import { Theme, useMediaQuery } from '@mui/material';
 
 interface Props {
-  entries: Entries<Review>,
+  entries: Entries<Review>["Featured"],
 };
 
 export const Hero: FunctionComponent<Props> = (props: Props) => {
-  const { Featured } = props.entries;
+  const { entries } = props;
+  const clone: Entries<Review>["Featured"] = [];
+  entries.map(i => {
+    clone[Number(i.Featured)] = i;
+  });
   const isXL = useMediaQuery((theme: Theme) => theme.breakpoints.up('xl'));
   const isSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
@@ -21,9 +25,9 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
       minHeight="700px"
     >
       <Grid item xs={12} md={6} xl={8}>
-        {Featured[0] && 
+        {clone[0] && 
           <HeroCard
-            entry={Featured[0]}
+            entry={clone[0]}
             headingVariant="h2"
             showDescription
           />
@@ -32,9 +36,9 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
       {!isSM &&
         <Grid item xs={0} md={6} xl={4}>
           <Grid item xs={12} height={'60%'}>
-            {Featured[1] &&
+            {clone[1] &&
               <HeroCard
-                entry={Featured[1]} 
+                entry={clone[1]} 
                 headingVariant="h3"
                 showDescription={isXL}
               />
@@ -42,17 +46,17 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
           </Grid>
           <Grid container height={'40%'}>
             <Grid item xs={6}>
-              {Featured[2] &&
+              {clone[2] &&
                 <HeroCard
-                  entry={Featured[2]}
+                  entry={clone[2]}
                   headingVariant="h4"
                 />
               }
             </Grid>
             <Grid item xs={6}>
-              {Featured[3] &&
+              {clone[3] &&
                 <HeroCard
-                  entry={Featured[3]}
+                  entry={clone[3]}
                   headingVariant="h4"
                 />
               }

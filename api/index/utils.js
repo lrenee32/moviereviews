@@ -16,26 +16,36 @@ function sortEntries(arr) {
 };
 
 class EntryUtils {
-  async search(SearchTerm, EntryType, Sort) {
+  async search(Request) {
     let kce = 'SK = :SK';
     let fe = 'contains(Title, :Title)';
-    let eav = { ':SK': 'ENTRY', ':Title': SearchTerm };
+    let eav = { ':SK': 'ENTRY', ':Title': Request.SearchTerm };
 
-    if (EntryType !== '') {
-      fe += ' AND EntryType = :EntryType';
-      eav = { ...eav, ':EntryType': EntryType };
-    }
+    Object.keys(Request).map((i) => {
+      if (
+        (i !== 'SearchTerm' && i !== 'Sort' && i !== 'Limit') &&
+        Request[i] !== ''
+      ) {
+        if (i === 'Featured' || i === 'SitePick') {
+          return fe += ` AND attribute_exists(${i})`;
+        }
+        fe += ` AND ${i}  = :${i}`;
+        return eav = { ...eav, [`:${i}`]: Request[i] };
+      }
+    });
 
     try {
       const params = {
         TableName: process.env.DynamoDBTable,
-        IndexName: Sort ? Sort : 'Created',
+        IndexName: Request.Sort !== '' ? Request.Sort + '-Index' : 'Created-Index',
+        ScanIndexForward: false,
         KeyConditionExpression: kce,
         FilterExpression: fe,
         ExpressionAttributeValues: eav,
+        Limit: Number(Request.Limit),
       };
       const res = await db.query(params);
-      return { All: res.Items };
+      return res.Items;
     } catch (err) {
       return err || err.message;
     };

@@ -10,15 +10,19 @@ export interface Entry<T> {
   Details: T | null,
   Created: number,
   Tags: string[],
-  Featured: boolean,
-  SitePick: boolean,
+  Featured: number | '' | undefined,
+  SitePick: number | '' | undefined,
   EntryType: EntryTypes,
+  UserRating: number,
 };
 
 export interface Entries<T> {
   Featured: Entry<T>[],
   All: Entry<T>[],
-}
+  SitePicks: Entry<T>[],
+  TopRated: Entry<T>[],
+  LatestReviews: Entry<T>[],
+};
 
 export interface Review {
   TMDBId: number,
@@ -27,7 +31,6 @@ export interface Review {
   FilmYear: string,
   FilmOverview: string,
   FilmPoster: string,
-  UserRating: number,
   FeaturedImage: {
     file: string,
   },

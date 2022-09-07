@@ -12,13 +12,13 @@ interface Props {
 };
 
 export const Content: FunctionComponent<Props> = (props: Props) => {
-  const { All } = props.entries;
+  const { SitePicks, TopRated } = props.entries;
 
   return (
     <Box sx={{ background: `linear-gradient(to bottom, #0D090A 85%, ${VARIABLES.primaryColor} 185%)`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
       <Container maxWidth="lg" sx={{ pt: '70px', background: VARIABLES.bgColor, boxShadow: '0px 0px 25px 0px rgba(0,0,0,0.50);' }}>
-        <FeaturedReviews entries={All} />
-        <LatestHeadlines entries={All} />
+        <FeaturedReviews sitePicks={SitePicks} topRated={TopRated} />
+        <LatestHeadlines entries={props.entries} />
         <Footer />
       </Container>
     </Box>

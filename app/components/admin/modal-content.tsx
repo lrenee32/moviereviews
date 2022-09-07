@@ -1,14 +1,9 @@
-// @ts-nocheck
-
 import { Dispatch, FunctionComponent, SetStateAction, useRef } from 'react';
 import { Entry, Entries, Review } from 'utils/types';
 import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -27,44 +22,52 @@ type ActionTypes = 'create' | 'edit' | 'delete';
 interface Props {
   action: ActionTypes,
   entries: Entries<Review>["All"],
-  entryId: Entry<Review>["EntryId"],
+  entryId: Entry<Review>["PK"],
   title: Entry<Review>["Title"],
-  type: Entry<Review>["Type"],
+  entryType: Entry<Review>["EntryType"],
   featuredImage: Review["FeaturedImage"],
   featured: Entry<Review>["Featured"],
   sitePick: Entry<Review>["SitePick"],
-  userRating: Review["UserRating"],
+  userRating: Entry<Review>["UserRating"],
   content: Entry<Review>["Content"],
   tags: Entry<Review>["Tags"],
   actions: {
     setTitle: Dispatch<SetStateAction<Entry<Review>["Title"]>>,
-    setType: Dispatch<SetStateAction<Entry<Review>["Type"]>>,
+    setEntryType: Dispatch<SetStateAction<Entry<Review>["EntryType"]>>,
     setFeaturedImage: Dispatch<SetStateAction<Review["FeaturedImage"]>>,
     setFeatured: Dispatch<SetStateAction<Entry<Review>["Featured"]>>,
     setSitePick: Dispatch<SetStateAction<Entry<Review>["SitePick"]>>,
     setDetails: Dispatch<SetStateAction<Partial<Entry<Review>["Details"]>>>,
-    setUserRating: Dispatch<SetStateAction<Review["UserRating"]>>,
+    setUserRating: Dispatch<SetStateAction<Entry<Review>["UserRating"]>>,
     setContent: Dispatch<SetStateAction<Entry<Review>["Content"]>>,
     setTags: Dispatch<SetStateAction<Entry<Review>["Tags"]>>,
   },
 };
 
 export const ModalContent: FunctionComponent<Props> = (props: Props) => {
-  const { action, entries, entryId, title, type, featuredImage, featured, sitePick, userRating, content, tags } = props;
-  const { setTitle, setType, setFeaturedImage, setFeatured, setSitePick, setDetails, setUserRating, setContent, setTags } = props.actions;
+  const { action, title, entryType, featuredImage, featured, sitePick, userRating, content, tags } = props;
+  const { setTitle, setEntryType, setFeaturedImage, setFeatured, setSitePick, setDetails, setUserRating, setContent, setTags } = props.actions;
   const uploadImage = useRef(null);
 
-  type CheckBoxTypes = 'featured' | 'pick';
-  const checkBoxDisabled = (selected: CheckBoxTypes) => {
-    const features = entries && entries.length > 0 && entries.filter(i => i.Featured);
-    const picks = entries && entries.length > 0 && entries.filter(i => i.SitePick);
-    const isFeatured = features && features.length > 0 ? features.find(i => i.PK === entryId) : false;
-    const isSitePick = picks && picks.length > 0 ? picks.find(i => i.PK === entryId) : false;
-    if (selected === 'featured') {
-      return features && features.length > 3 ? !isFeatured : false;
-    }
-    return picks && picks.length > 3 ? !isSitePick : false;
-  };
+  const renderSelect = (label: string, value: string | number | null, action) => {
+    return (
+      <FormControl fullWidth>
+        <InputLabel>{label}</InputLabel>
+        <Select
+          value={value}
+          onChange={(e) => action(e.target.value)}
+        >
+          <MenuItem key={`${label}-none`} value={''}>
+            <em>None</em>
+          </MenuItem>
+          {[...Array(4)].map((_i, index) => (
+            <MenuItem key={`${label}-${index}`} value={index}>{index + 1}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    )
+  }
+
   const loadLocalImage = (e) => {
     const files = e.target.files;
     if (files.length === 0) {
@@ -97,9 +100,14 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
           <FormControl fullWidth sx={{ mb: '30px' }} disabled={action === 'edit'}>
             <InputLabel>Entry Type</InputLabel>
             <Select
-              value={type}
+              value={entryType}
               label="Entry Type"
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value === 'article') {
+                  setSitePick('');
+                }
+                setEntryType(e.target.value)
+              }}
             >
               <MenuItem value="review">Review</MenuItem>
               <MenuItem value="article">Article</MenuItem>
@@ -118,28 +126,12 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
                 <input ref={uploadImage} type="file" hidden onChange={loadLocalImage} />
               </Button>
             )}
-            <Box>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={featured} onChange={(e) => setFeatured(e.target.checked)} disabled={checkBoxDisabled('featured')} sx={{ p: '2.5px 9px' }} />
-                  }
-                  label="Featured"
-                />
-              </FormGroup>
-              {type === 'review' &&
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={sitePick} onChange={(e) => setSitePick(e.target.checked)} disabled={checkBoxDisabled('pick')} sx={{ p: '2.5px 9px' }} />
-                    }
-                    label="Site Pick"
-                  />
-                </FormGroup>
-              }
+            <Box display="flex" flexDirection="column" minWidth="25%" sx={{ '& > div:first-of-type': { mb: '10px' }}}>
+              {renderSelect('Featured', featured, setFeatured)}
+              {entryType === 'review' && renderSelect('Site Pick', sitePick, setSitePick)}
             </Box>
           </Box>
-          {(action === 'create' && type === 'review') &&
+          {(action === 'create' && entryType === 'review') &&
           <AutocompleteSearch
             optionsSearch={searchSuggestions}
             selectionEvent={(e) => setDetails({
@@ -151,7 +143,7 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
             })}
           />
           }
-          {type === 'review' &&
+          {entryType === 'review' &&
             <Box
               sx={{
                 position: 'relative',

@@ -18,26 +18,29 @@ import { Theme } from '@mui/material';
 type ActionTypes = 'pick' | 'top';
 
 interface Props {
-  entries: Entries<Review>["All"],
+  sitePicks: Entries<Review>["SitePicks"],
+  topRated: Entries<Review>["TopRated"],
 };
 
 export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
-  const { entries } = props;
-  const clonedArr = entries && entries.length > 0 ? [...entries] : [];
+  const { sitePicks, topRated } = props;
+  const sitePicksArr: Entries<Review>["SitePicks"] = [];
+  sitePicks.map(i => {
+    sitePicksArr[Number(i.SitePick)] = i;
+  });
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const [filterType, setFilterType] = useState<ActionTypes>('pick');
-  const [filtered, setFiltered] = useState<Entry<Review>[]>(clonedArr.filter(i => i.SitePick));
+  const [filtered, setFiltered] = useState<Entry<Review>[]>(sitePicksArr);
 
   const filterAction = (action: ActionTypes) => {
-    const arr = [...entries].filter(i => i.Type === 'review');
     setFilterType(action);
     switch (action) {
       case 'pick':
-        setFiltered(arr.filter(i => i.SitePick));
+        setFiltered(sitePicksArr);
         break;
       case 'top':
-        setFiltered(arr.sort((a, b) => (b.Details!.UserRating - a.Details!.UserRating)).splice(0, 4));
+        setFiltered(topRated);
         break;
     }
   };

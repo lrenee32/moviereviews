@@ -11,17 +11,16 @@ import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { getPosterImage } from 'services/api/entries/entries';
 
 interface Props {
-  entries: Entries<Review>["All"],
+  entries: Entries<Review>["LatestReviews"],
 };
 
 export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
-  const clonedArr = entries && entries.length > 0 ? [...entries] : [];
 
   return (
     <>
       <SectionDivider text="Latest Reviews" />
-      {clonedArr.filter(i => i.EntryType === 'review').splice(0, 4).map(entry => {
+      {entries.map(entry => {
         return (
           <Card id={`${entry.PK}-latest-reviews`} key={`${entry.Title}-${entry.PK}-headline`} sx={{ mt: '20px', mr: '20px'}}>
             <CardActionArea href={`/entry/${entry.PK}`} sx={{ display: 'flex', justifyContent: 'flex-start' }}>

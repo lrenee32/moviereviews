@@ -40,7 +40,7 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
       </Head>
       <Nav style="hero" />
       {entries && entries.Featured && entries.Featured.length > 0 && (
-        <Hero entries={entries} />
+        <Hero entries={entries.Featured} />
       )}
       <Nav style="main" />
       <Content entries={entries} />
@@ -49,9 +49,13 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries('', '', 'Created');
+  const All: Entries<Review> = await getEntries();
+  const Featured: Entries<Review> = await getEntries(null, null, null, [{ key: 'Featured', value: 'true' }]);
+  const SitePicks: Entries<Review> = await getEntries(null, null, null, [{ key: 'SitePick', value: 'true' }]);
+  const TopRated: Entries<Review> = await getEntries(null, 'review', 'UserRating', null, 4);
+  const LatestReviews: Entries<Review> = await getEntries(null, 'review', null, null, 4);
 
-  return { props: { entries }, revalidate: 10 };
+  return { props: { entries: { All, Featured, SitePicks, TopRated, LatestReviews } }, revalidate: 10 };
 };
 
 export default Index;

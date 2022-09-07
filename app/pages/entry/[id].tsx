@@ -10,7 +10,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import NoSsr from '@mui/material/NoSsr';
 import SplatterIcon from 'public/images/hand-splatter.svg';
 import { ReadOnly } from 'components/shared/wysiwyg/ReadOnly';
-import { LatestReviews } from 'components/index/latest-reviews';
+import { LatestReviews as LatestReviewsBox } from 'components/index/latest-reviews';
 import { Nav } from 'components/shared/nav/nav';
 import { Footer } from 'components/shared/nav/footer';
 import { DisqusComments } from 'components/index/comment-section';
@@ -28,11 +28,11 @@ import styles from 'assets/styles/entry.module.scss';
 
 interface Props {
   entry: Entry<Review>,
-  entries: Entries<Review>,
+  LatestReviews: Entries<Review>["LatestReviews"],
 };
 
 const EntryDetails: FunctionComponent<Props> = (props: Props) => {
-  const { entry, entries } = props;
+  const { entry, LatestReviews } = props;
   const isLg = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return (
@@ -97,7 +97,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
                 {entry.EntryType === 'review' && (
                   <Rating
                     readOnly
-                    value={entry.Details?.UserRating}
+                    value={entry?.UserRating}
                     precision={0.5}
                     max={10}
                     className={styles['entry-rating']}
@@ -128,7 +128,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             </Box>
             {isLg && (
               <Box className={styles['side-container']}>
-                <LatestReviews entries={entries.All} />
+                <LatestReviewsBox entries={LatestReviews} />
               </Box>
             )}
           </Box>
@@ -141,10 +141,10 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
-  const entries: Entries<Review> = await getEntries('', 'review', '');
   const entry: Entry<Review> = await getEntry(id);
+  const LatestReviews: Entries<Review> = await getEntries(null, 'review', null, null, 4);
 
-  return { props: { entry, entries } };
+  return { props: { entry, LatestReviews } };
 };
 
 export default EntryDetails;

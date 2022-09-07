@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { FunctionComponent, useState, useRef } from 'react';
 import { GetServerSideProps } from 'next/types';
 import NextLink from 'next/link';
@@ -38,15 +36,15 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
 
   const initialValues: {
     action: ActionTypes,
-    entryId: Entry<Review>["EntryId"],
+    entryId: Entry<Review>["PK"],
     title: Entry<Review>["Title"],
-    type: Entry<Review>["Type"],
+    entryType: Entry<Review>["EntryType"],
     featured: Entry<Review>["Featured"],
     sitePick: Entry<Review>["SitePick"],
     featuredImage: { url: string, file: null },
     content: Entry<Review>["Content"],
     details: Partial<Entry<Review>["Details"]>,
-    userRating: Review["UserRating"],
+    userRating: Entry<Review>["UserRating"],
     tags: Entry<Review>["Tags"],
     created: Entry<Review>["Created"],
     previousImages: string[],
@@ -54,9 +52,9 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     action: 'create',
     entryId: '',
     title: '',
-    type: 'article',
-    featured: false,
-    sitePick: false,
+    entryType: 'article',
+    featured: '',
+    sitePick: '',
     featuredImage: { url: '', file: null },
     content: [{type: 'paragraph', children: [{text: ''}]}],
     details: null,
@@ -67,15 +65,15 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   };
   
   const [action, setAction] = useState<ActionTypes>(initialValues.action);
-  const [entryId, setEntryId] = useState<Entry<Review>["EntryId"]>(initialValues.entryId);
+  const [entryId, setEntryId] = useState<Entry<Review>["PK"]>(initialValues.entryId);
   const [title, setTitle] = useState<Entry<Review>["Title"]>(initialValues.title);
-  const [type, setType] = useState<Entry<Review>["Type"]>(initialValues.type);
+  const [entryType, setEntryType] = useState<Entry<Review>["EntryType"]>(initialValues.entryType);
   const [featured, setFeatured] = useState<Entry<Review>["Featured"]>(initialValues.featured);
   const [sitePick, setSitePick] = useState<Entry<Review>["SitePick"]>(initialValues.sitePick);
   const [featuredImage, setFeaturedImage] = useState<{url: string, file: File | null}>(initialValues.featuredImage);
   const [content, setContent] = useState<Entry<Review>["Content"]>(initialValues.content);
   const [details, setDetails] = useState<Partial<Entry<Review>["Details"]>>(initialValues.details);
-  const [userRating, setUserRating] = useState<Review["UserRating"]>(initialValues.userRating)
+  const [userRating, setUserRating] = useState<Entry<Review>["UserRating"]>(initialValues.userRating)
   const [tags, setTags] = useState<Entry<Review>["Tags"]>(initialValues.tags);
   const [created, setCreated] = useState<Entry<Review>["Created"]>(initialValues.created);
   const [previousImages, setPreviousImages] = useState<string[]>(initialValues.previousImages);
@@ -90,7 +88,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const reset = () => {
     setAction(initialValues.action);
     setTitle(initialValues.title);
-    setType(initialValues.type);
+    setEntryType(initialValues.entryType);
     setFeatured(initialValues.featured);
     setSitePick(initialValues.sitePick);
     setFeaturedImage(initialValues.featuredImage);
@@ -106,13 +104,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     if ((action === 'edit' || action === 'delete') && entry) {
       setEntryId(entry.PK);
       setTitle(entry.Title);
-      setType(entry.Type);
-      setFeatured(entry.Featured);
-      setSitePick(entry.SitePick);
+      setEntryType(entry.EntryType);
+      setFeatured(entry.Featured !== undefined ? entry.Featured : '');
+      setSitePick(entry.SitePick !== undefined ? entry.SitePick : '');
       setFeaturedImage({ url: entry.Details!.FeaturedImage, file: null });
       setContent(entry.Content);
       setDetails(entry.Details);
-      setUserRating(entry.Details!.UserRating);
+      setUserRating(entry.UserRating);
       setTags(entry.Tags);
       setCreated(entry.Created);
       
@@ -130,12 +128,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
   const confirmEvent = () => {
     const body: Partial<Entry<Partial<Review>>> = {
       Title: title,
-      Type: type,
-      Featured: featured,
-      SitePick: sitePick,
+      EntryType: entryType,
+      Featured: featured !== '' ? featured : undefined,
+      SitePick: sitePick !== '' ? sitePick : undefined,
       Content: content,
-      Details: {...details, UserRating: userRating, FeaturedImage: featuredImage},
+      Details: {...details, FeaturedImage: featuredImage},
       Tags: tags,
+      UserRating: userRating,
     };
     switch(action) {
       case 'create':
@@ -144,9 +143,23 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
           cancelEvent();
         });
       case 'edit':
-        const json: Partial<Entry<Partial<Review>>> = {...body, EntryId: entryId, Created: created};
-        return editEntry(userId, entryId, json, previousImages).then((res: Entry<Review>) => {
+        const json: Partial<Entry<Partial<Review>>> = {...body, PK: entryId, Created: created};
+        return editEntry(userId, entryId, json, previousImages).then(async (res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.PK === res.PK);
+          if (body.Featured !== undefined && (entries[arrIndex].Featured !== body.Featured)) {
+            const replaceAt = entries.findIndex(i => i.Featured === body.Featured);
+            if (replaceAt > -1) {
+              delete entries[replaceAt].Featured;
+              await editEntry(userId, entries[replaceAt].PK, entries[replaceAt]);
+            }
+          }
+          if (body.SitePick !== undefined && (entries[arrIndex].SitePick !== body.SitePick)) {
+            const replaceAt = entries.findIndex(i => i.SitePick === body.SitePick);
+            if (replaceAt > -1) {
+              delete entries[replaceAt].SitePick;
+              await editEntry(userId, entries[replaceAt].PK, entries[replaceAt]);
+            }
+          }
           entries[arrIndex] = res;
           cancelEvent();
         });
@@ -178,7 +191,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         title: 'Featured',
         field: 'Featured',
         render: (rowData: Entry<Review>) => (
-          rowData.Featured
+          rowData.Featured !== undefined
           ? <Check color="success" />
           : <Close />
         ),
@@ -187,15 +200,15 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         title: 'Site Pick',
         field: 'SitePick',
         render: (rowData: Entry<Review>) => (
-          rowData.SitePick
+          rowData.SitePick !== undefined
           ? <Check color="success" />
           : <Close />
         ),
       },
       {
         title: 'Type',
-        field: 'Type',
-        render: (rowData: Entry<Review>) => toTitleCase(rowData.Type)
+        field: 'EntryType',
+        render: (rowData: Entry<Review>) => toTitleCase(rowData.EntryType)
       },
       {
         title: 'Content',
@@ -260,7 +273,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
             entries={entries}
             entryId={entryId}
             title={title}
-            type={type}
+            entryType={entryType}
             featuredImage={featuredImage}
             featured={featured}
             sitePick={sitePick}
@@ -269,7 +282,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
             tags={tags}
             actions={{
               setTitle,
-              setType,
+              setEntryType,
               setFeaturedImage,
               setFeatured,
               setSitePick,

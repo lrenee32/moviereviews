@@ -9,6 +9,9 @@ class Database {
   put(params) {
     return dynamodb.put(params).promise();
   };
+  update(params) {
+    return dynamodb.update(params).promise();
+  };
   delete(params) {
     return dynamodb.delete(params).promise();
   };

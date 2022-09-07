@@ -6,11 +6,11 @@ import { GetStaticProps } from 'next/types';
 import { ContentSection } from 'components/shared/content/content-section';
 
 interface Props {
-  entries: Entries<Review>,
+  entries: Entries<Review>["All"],
 };
 
 export const Articles: FunctionComponent<Props> = (props: Props) => {
-  const entries = props.entries.All;
+  const { entries } = props;
 
   return (
     <>
@@ -48,7 +48,7 @@ export const Articles: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries('', 'article', 'Created');
+  const entries: Entries<Review> = await getEntries(null, 'article', null, null, null);
 
   return { props: { entries }, revalidate: 10 };
 };
