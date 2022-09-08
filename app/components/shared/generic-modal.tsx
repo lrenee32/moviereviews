@@ -6,6 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { VARIABLES } from 'assets/themes/themes';
 
@@ -20,10 +21,11 @@ interface Props {
     text: string,
     action: () => void,
   },
+  submitting: boolean,
 }
 
 const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Props, ref: Ref) => {
-  const { header, content, cancel, confirmation } = props;
+  const { header, content, cancel, confirmation, submitting } = props;
   const [open, setOpen] = useState(false);
 
   const toggleModal = (state: boolean) => {
@@ -44,16 +46,30 @@ const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Pr
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {header}
-        <CloseIcon onClick={() => cancel.action()} sx={{ '&:hover': { color: VARIABLES.primaryColor, cursor: 'pointer' } }} />
+        <CloseIcon
+          onClick={() => {
+            if (!submitting) {
+              cancel.action();
+            }
+          }}
+          sx={{
+            '&:hover': {
+              color: VARIABLES.primaryColor,
+              cursor: 'pointer'
+            }
+          }}
+        />
       </DialogTitle>
       <DialogContent>
         {content}
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => cancel.action()}>{cancel.text}</Button>
-        <Button onClick={() => confirmation.action()} autoFocus>
-          {confirmation.text}
-        </Button>
+      <DialogActions sx={{ p: '16px 24px' }}>
+        <Button variant="contained" sx={{ backgroundColor: 'rgba(255, 255, 255, 0.16)' }} onClick={() => cancel.action()} disabled={submitting}>{cancel.text}</Button>
+        {submitting ? (
+          <LoadingButton variant="contained" loading sx={{ minHeight: '36.5px' }} />
+        ) : (
+          <Button variant="contained" onClick={() => confirmation.action()} autoFocus>{confirmation.text}</Button>
+        )}
       </DialogActions>
     </Dialog>
   );

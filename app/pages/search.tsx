@@ -101,7 +101,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
             </Box>
             {isLg && (
               <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
-                <LatestReviews entries={entries.All} />
+                <LatestReviews entries={entries.All.filter(i => i.EntryType === 'review').slice(0, 4)} />
               </Box>
             )}
           </Box>
@@ -113,9 +113,9 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries('', '', 'Created');
+  const All: Entries<Review> = await getEntries();
 
-  return { props: { entries }, revalidate: 10 };
+  return { props: { entries: { All } }, revalidate: 10 };
 };
 
 export default Search;

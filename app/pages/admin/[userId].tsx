@@ -64,6 +64,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     previousImages: [],
   };
   
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [action, setAction] = useState<ActionTypes>(initialValues.action);
   const [entryId, setEntryId] = useState<Entry<Review>["PK"]>(initialValues.entryId);
   const [title, setTitle] = useState<Entry<Review>["Title"]>(initialValues.title);
@@ -136,10 +137,26 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       Tags: tags,
       UserRating: userRating,
     };
+
+    const updateOtherIndexes = async (type: string) => {
+      const replaceAt = entries.findIndex(i => i[type] === body[type]);
+      if (replaceAt > -1) {
+        delete entries[replaceAt][type];
+        await editEntry(userId, entries[replaceAt].PK, entries[replaceAt]);
+      }
+    };
+
     switch(action) {
       case 'create':
         return createEntry(userId, body).then((res: Entry<Review>) => {
+          if (body.Featured !== undefined) {
+            updateOtherIndexes('Featured');
+          }
+          if (body.SitePick !== undefined) {
+            updateOtherIndexes('SitePick');
+          }
           entries.unshift(res);
+          setSubmitting(false);
           cancelEvent();
         });
       case 'edit':
@@ -147,20 +164,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         return editEntry(userId, entryId, json, previousImages).then(async (res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.PK === res.PK);
           if (body.Featured !== undefined && (entries[arrIndex].Featured !== body.Featured)) {
-            const replaceAt = entries.findIndex(i => i.Featured === body.Featured);
-            if (replaceAt > -1) {
-              delete entries[replaceAt].Featured;
-              await editEntry(userId, entries[replaceAt].PK, entries[replaceAt]);
-            }
+            updateOtherIndexes('Featured');
           }
           if (body.SitePick !== undefined && (entries[arrIndex].SitePick !== body.SitePick)) {
-            const replaceAt = entries.findIndex(i => i.SitePick === body.SitePick);
-            if (replaceAt > -1) {
-              delete entries[replaceAt].SitePick;
-              await editEntry(userId, entries[replaceAt].PK, entries[replaceAt]);
-            }
+            updateOtherIndexes('SitePick');
           }
           entries[arrIndex] = res;
+          setSubmitting(false);
           cancelEvent();
         });
       case 'delete':
@@ -170,6 +180,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         return deleteEntry(userId, entryId, images).then((res: Entry<Review>) => {
           const arrIndex = entries.findIndex(i => i.PK === res.PK);
           entries.splice(arrIndex, 1);
+          setSubmitting(false);
           cancelEvent();
         });
     }
@@ -295,6 +306,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         }
         cancel={{ text: 'Cancel', action: cancelEvent}}
         confirmation={{ text: 'Confirm', action: confirmEvent }}
+        submitting={submitting}
       />
     </>
   );
