@@ -3,6 +3,7 @@
 import { Text, Node } from 'slate';
 import { Entry, Review } from './types';
 import NextLink from 'next/link';
+import Image from 'next/future/image';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import { ReactNode } from 'react';
@@ -62,12 +63,11 @@ export const serializeToJSX = (node: Node, index: number) => {
       );
     case 'image':
       return (
-        <Box key={`item-${index}`}>
-          <Box
-            component="img"
-            alt={node.caption}
+        <Box key={`item-${index}`} sx={{ '& > img': { position: 'static !important' } }}>
+          <Image
             src={node.url}
-            sx={{ width: '100%' }}
+            alt={node.caption}
+            fill
           />
           <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }}>{node.caption}</Box>
         </Box>

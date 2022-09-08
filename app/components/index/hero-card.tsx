@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
+import Image from 'next/future/image';
 import { Entry, Review } from 'utils/types';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -26,22 +26,19 @@ export const HeroCard: FunctionComponent<Props> = (props: Props) => {
         position: 'relative',
         height: '100%',
         borderColor: '#0e0e0e',
-        '&:hover .MuiCardMedia-img': {
+        '&:hover > img': {
           transform: 'scale(1.1)',
           opacity: '.5',
         }
       }}
     >
-      <CardMedia
-        component="img"
-        height="100%"
-        image={entry.Details!.FeaturedImage as unknown as string}
-        alt={`${entry.Title}-${entry.PK}`}
-        sx={{
-          position: 'absolute',
-          height: '100%',
-          transition: '.3s ease-in-out',
-        }}
+      <Image
+        src={entry.Details!.FeaturedImage as unknown as string}
+        alt={`${entry.Title}-${entry.PK}-featured`}
+        fill
+        style={{ transition: '.3s ease-in-out', objectFit: 'cover' }}
+        priority
+        quality="100"
       />
       <CardContent
         sx={{

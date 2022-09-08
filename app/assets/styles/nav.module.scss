@@ -1,6 +1,8 @@
 .logo {
+  position: static !important;
+  width: auto !important;
   &:hover {
-    cursor: pointer;
+    cursor: pointer !important;
   }
 }
 
@@ -9,8 +11,8 @@
   background: transparent !important;
   box-shadow: none !important;
   .logo {
-    width: 150px;
-    margin: 16px;
+    width: 150px !important;
+    margin: 16px !important;
   }
 }
 
@@ -22,13 +24,13 @@
   background-color: #0D090A !important;
   margin: auto !important;
   .main-nav-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin: 0 7.5px;
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin: 0 7.5px !important;
     .logo {
-      height: 50px;
-      margin: 10px 0;
+      height: 50px !important;
+      margin: 10px 0 !important;
     }
   }
 }
@@ -40,59 +42,59 @@
   box-shadow: none !important;
   margin-bottom: 10px !important;
   .large-nav-logo-container {
-    display: flex;
-    align-items: center;
-    margin-left: -200px;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: -200px !important;
     .logo {
-      height: 200px;
-      margin: 16px 16px 16px 32px;
+      height: 200px !important;
+      margin: 16px 16px 16px 32px !important;
     }
   }
   .large-nav-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100% !important;
   }
 }
 
 .nav-drawer {
-  width: 100%;
+  width: 100% !important;
   .drawer-logo-container {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
+    display: flex !important;
+    justify-content: space-between !important;
+    margin: 10px !important;
     .logo {
-      height: 50px;
+      height: 50px !important;
     }
   }
   .drawer-social-container {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 20px;
-    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
   }
 }
 
 .site-search-backdrop {
-  z-index: 1999;
-  background-color: rgba(0,0,0,.9);
+  z-index: 1999 !important;
+  background-color: rgba(0,0,0,.9) !important;
 }
 .site-search-close-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 20px;
-  z-index: 2000;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  margin: 20px !important;
+  z-index: 2000 !important;
   &:hover {
-    cursor: pointer;
+    cursor: pointer !important;
   }
 }
 .site-search-input {
-  font-size: 32px;
+  font-size: 32px !important;
   & > div {
-    font-size: inherit;
+    font-size: inherit !important;
   }
 }
 

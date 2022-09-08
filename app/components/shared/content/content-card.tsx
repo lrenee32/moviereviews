@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
+import Image from 'next/future/image';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import NoSsr from '@mui/material/NoSsr';
@@ -20,10 +20,10 @@ export const ContentCard: FunctionComponent<Props> = (props: Props) => {
   return (
     <Card id={`${entry.PK}-content-card`} key={`${entry.Title}-${entry.PK}-${sectionName}`} className={styles['card']}>
       <CardActionArea href={`/entry/${entry.PK}`} className={styles['card-action-area']}>
-        <CardMedia
-          component="img"
-          image={entry.Details!.FeaturedImage as unknown as string}
+        <Image
+          src={entry.Details!.FeaturedImage as unknown as string}
           alt={`${entry.Title}-${entry.PK}-${sectionName}`}
+          fill
           className={styles['card-image']}
         />
         <CardContent className={styles['card-content']}>

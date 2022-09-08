@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import { FunctionComponent, useState, useCallback } from 'react';
+import NextImage from 'next/future/image';
 import { Editor, Transforms } from 'slate';
 import { RenderElementProps, useSlate } from 'slate-react';
 import isHotkey from 'is-hotkey';
@@ -71,12 +72,11 @@ export const Image: FunctionComponent<Props> = ({ attributes, children, element,
     <>
       {isEditing ? (
         <Box contentEditable={false} {...attributes}>
-          <Box>
-            <Box
-              component="img"
-              alt={caption}
+          <Box sx={{ '& > img': { position: 'static !important', height: 'auto !important' } }}>
+            <NextImage
               src={element.url}
-              sx={{ width: '100%' }}
+              alt={caption}
+              fill
             />
             {isEditingCaption ? (
               <TextField
@@ -94,12 +94,11 @@ export const Image: FunctionComponent<Props> = ({ attributes, children, element,
         </Box>
       ) : (
         <Box>
-          <Box>
-            <Box
-              component="img"
-              alt={caption}
+          <Box sx={{ '& > img': { position: 'static !important', height: 'auto !important' } }}>
+            <NextImage
               src={element.url}
-              sx={{ width: '100%' }}
+              alt={caption}
+              fill
             />
             <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }}>{element.caption}</Box>
           </Box>

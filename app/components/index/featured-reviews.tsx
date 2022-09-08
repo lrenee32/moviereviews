@@ -1,11 +1,11 @@
 import { FunctionComponent, useState } from 'react';
+import Image from 'next/future/image';
 import { Entries, Entry, Review } from 'utils/types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import NoSsr from '@mui/material/NoSsr';
@@ -70,12 +70,7 @@ export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
             <Grid key={entry.PK} item xs={6} md={3}>
               <Card id={`${entry.PK}-featured`} sx={{ backgroundImage: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
                 <CardActionArea href={`/entry/${entry.PK}`}>
-                  <CardMedia
-                    component="img"
-                    height="100%"
-                    image={getPosterImage(entry.Details!.FilmPoster)}
-                    alt={`${entry.Title}-${entry.PK}`}
-                  />
+                  <Image src={getPosterImage(entry.Details!.FilmPoster)} alt={`${entry.Title}-${entry.PK}-poster`} fill />
                 </CardActionArea>
                 <CardContent sx={{ paddingX: '0' }}>
                   <Typography lineHeight="1" mb="2.5px" variant="h6">{entry.Details!.FilmTitle}</Typography>

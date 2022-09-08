@@ -2,6 +2,7 @@ import { FunctionComponent, useState, useRef } from 'react';
 import { GetServerSideProps } from 'next/types';
 import NextLink from 'next/link';
 import Head from 'next/head';
+import Image from 'next/future/image';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -250,13 +251,12 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         <title>Admin - Splatter & Scream</title>
       </Head>
       <AppBar id="back-to-top-anchor" position="sticky" className={navStyles['small-nav']}>
-        <Box display="flex" justifyContent="space-between" width="100%">
+        <Box display="flex" justifyContent="space-between" width="100%" sx={{ '& > img': { position: 'static !important', height: '50px !important', width: 'auto !important', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' }} }}>
           <NextLink href="/" passHref>
-            <Box
-              component="img"
+            <Image
+              src="/images/site-logo-main.png"
               alt="site-logo-header"
-              src="../../../images/site-logo-main.png"
-              sx={{ height: '50px', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' } }}
+              fill
             />
           </NextLink>
           <Button color="inherit" onClick={adminLogout}>Logout</Button>

@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import NextLink from 'next/link';
+import Image from 'next/future/image';
 import Head from 'next/head';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -86,10 +87,10 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
           </NoSsr>
           <Box className={styles['inner-wrapper']}>
             <Box className={styles['inner-container']}>
-              <Box
-                component="img"
-                alt={`${entry.PK}-featured-image`}
+              <Image
                 src={entry.Details!.FeaturedImage as unknown as string}
+                alt={`${entry.PK}-featured-image`}
+                fill
                 className={styles['entry-featured-image']}
               />
               <Box className={styles['content-container']}>

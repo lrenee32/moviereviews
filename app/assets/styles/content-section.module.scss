@@ -29,6 +29,10 @@
             z-index: 999;
             top: 0;
           }
+          .card-image {
+            position: static !important;
+            object-fit: cover !important;
+          }
         }
         .card-content {
           position: absolute;
@@ -67,6 +71,7 @@
 @media only screen and (min-width: 768px) {
   .card-image-container {
     flex-direction: row !important;
+    height: 500px !important;
     width: 100% !important;
     .card-image-container-fill {
       width: 30% !important;

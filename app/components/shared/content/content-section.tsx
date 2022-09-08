@@ -1,9 +1,9 @@
 import { FunctionComponent } from 'react';
+import Image from 'next/future/image';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Nav } from 'components';
@@ -30,10 +30,10 @@ export const ContentSection: FunctionComponent<Props> = (props: Props) => {
           <CardActionArea href={`/entry/${entries[0].PK}`} className={styles['action-area']}>
             <Box className={styles['card-image-container']}>
               <Box className={styles['card-image-container-fill']} />
-              <CardMedia
-                component="img"
-                image={entries[0].Details!.FeaturedImage as unknown as string}
+              <Image
+                src={entries[0].Details!.FeaturedImage as unknown as string}
                 alt={`${entries[0].Title}-${entries[0].PK}-${sectionName}-headline-image`}
+                fill
                 className={styles['card-image']}
               />
               <Box className={styles['card-overlay']} />

@@ -1,4 +1,5 @@
 import { Dispatch, FunctionComponent, SetStateAction, useRef } from 'react';
+import Image from 'next/future/image';
 import { Entry, Entries, Review } from 'utils/types';
 import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
@@ -116,9 +117,13 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
           <Box display="flex" alignItems="center" sx={{ mb: '30px' }}>
             {featuredImage.url && featuredImage.url !== ''
             ? (
-              <ButtonBase onClick={() => setFeaturedImage('')} sx={{ position: 'relative', mr: '30px', '&:hover .MuiSvgIcon-root': { opacity: '1' }, '&:hover img': { opacity: '.5' } }}>
+              <ButtonBase onClick={() => setFeaturedImage('')} sx={{ position: 'relative', mr: '30px', '&:hover .MuiSvgIcon-root': { opacity: '1' }, '& > img': { position: 'static !important', height: '100px !important', width: 'auto !important', transition: '.2s' }, '&:hover img': { opacity: '.5' } }}>
                 <DeleteIcon fontSize="large" color="error" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', opacity: '0', zIndex: '1000', transition: '.2s' }} />
-                <Box component="img" src={featuredImage.url} maxHeight="100px" sx={{ transition: '.2s' }} />
+                <Image
+                  src={featuredImage.url}
+                  alt="featured-image-create-edit"
+                  fill
+                />
               </ButtonBase>
             ) : (
               <Button variant="contained" startIcon={<PhotoCamera />} sx={{ mr: '30px' }} onClick={() => uploadImage.current.click()}>

@@ -25,6 +25,8 @@
     .inner-wrapper {
       display: flex;
       .entry-featured-image {
+        position: static !important;
+        height: auto !important;
         width: 100%;
       }
       .entry-rating {

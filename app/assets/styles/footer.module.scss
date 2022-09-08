@@ -1,0 +1,18 @@
+.footer-container {
+  position: static;
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  margin-top: 120px;
+  .logo {
+    position: static;
+    margin-bottom: 30px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .copyright {
+    padding: 20px 0;
+  }
+}

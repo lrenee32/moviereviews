@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react';
+import Image from 'next/future/image';
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -80,10 +81,10 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
             <MenuIcon />
           </IconButton>
           <NextLink href="/" passHref>
-            <Box
-              component="img"
+            <Image
+              src="/images/site-logo-main.png"
               alt="site-logo-header"
-              src="../../images/site-logo-main.png"
+              fill
               className={styles['logo']}
             />
           </NextLink>
@@ -104,10 +105,10 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
       {style === 'hero' && (
         <AppBar className={styles['hero-nav']}>
           <NextLink href="/" passHref>
-            <Box
-              component="img"
+            <Image
+              src="/images/site-logo-main.png"
               alt="site-logo-header"
-              src="../../images/site-logo-main.png"
+              fill
               className={styles['logo']}
             />
           </NextLink>
@@ -120,12 +121,12 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
             <Box className={styles['large-nav-logo-container']}>
               <SocialLinks />
               <NextLink href="/" passHref>
-                <Box
-                  component="img"
-                  alt="site-logo-header"
-                  src="../../images/site-logo-main.png"
-                  className={styles['logo']}
-                />
+              <Image
+                src="/images/site-logo-main.png"
+                alt="site-logo-header"
+                fill
+                className={styles['logo']}
+              />
               </NextLink>
             </Box>
             <Box className={styles['large-nav-container']}>
@@ -152,7 +153,12 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
         <Box className={styles['drawer-logo-container']}>
           <Box></Box>
           <NextLink href="/" passHref>
-            <Box component="img" alt="site-logo-header" src="../../images/site-logo-main.png" className={styles['logo']} />
+            <Image
+              src="/images/site-logo-main.png"
+              alt="site-logo-header"
+              fill
+              className={styles['logo']}
+            />
           </NextLink>
           <IconButton onClick={toggleDrawer(false)}>
             <CloseIcon />

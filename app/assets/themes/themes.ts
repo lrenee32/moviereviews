@@ -101,6 +101,15 @@ export const global = (theme: Theme) => {
           }),
         },
       },
+      MuiCardActionArea: {
+        styleOverrides: {
+          root: {
+            '> img': {
+              position: 'static !important',
+            },
+          },
+        },
+      },
     },
   };
 };

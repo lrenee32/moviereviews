@@ -1,9 +1,9 @@
 import { FunctionComponent } from 'react';
+import Image from 'next/future/image';
 import { Entries, Review } from 'utils/types';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import NoSsr from '@mui/material/NoSsr';
 import { SectionDivider } from 'components/shared/section-divider';
@@ -23,12 +23,12 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
       {entries.map(entry => {
         return (
           <Card id={`${entry.PK}-latest-reviews`} key={`${entry.Title}-${entry.PK}-headline`} sx={{ mt: '20px', mr: '20px'}}>
-            <CardActionArea href={`/entry/${entry.PK}`} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-              <CardMedia
-                component="img"
-                image={getPosterImage(entry.Details!.FilmPoster)}
+            <CardActionArea href={`/entry/${entry.PK}`} sx={{ display: 'flex', justifyContent: 'flex-start', '& > img': { width: '30% !important' } }}>
+              <Image
+                src={getPosterImage(entry.Details!.FilmPoster)}
                 alt={`${entry.Title}-${entry.PK}-latest-reviews`}
-                sx={{ height: '100%', width: '30%'}}
+                fill
+                style={{ transition: '.3s ease-in-out', objectFit: 'cover' }}
               />
               <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
                 <NoSsr>
