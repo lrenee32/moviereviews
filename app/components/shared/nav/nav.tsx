@@ -77,18 +77,20 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
     return (
       <AppBar position={position} className={styles[`main-nav-${size}`]}>
         <Box className={styles['main-nav-container']}>
-          <IconButton onClick={toggleDrawer(!open)}>
+          <IconButton onClick={toggleDrawer(!open)} aria-label="hamburger-menu-toggle">
             <MenuIcon />
           </IconButton>
           <NextLink href="/" passHref>
-            <Image
-              src="/images/site-logo-main.png"
-              alt="site-logo-header"
-              fill
-              className={styles['logo']}
-            />
+            <a>
+              <Image
+                src="/images/site-logo-main.png"
+                alt="site-logo-header"
+                fill
+                className={styles['logo']}
+              />
+            </a>
           </NextLink>
-          <IconButton onClick={toggleSearch(!searchOpen)}>
+          <IconButton onClick={toggleSearch(!searchOpen)} aria-label="search-icon">
             {searchOpen ? (
               <CloseIcon />
             ) : (
@@ -105,12 +107,14 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
       {style === 'hero' && (
         <AppBar className={styles['hero-nav']}>
           <NextLink href="/" passHref>
-            <Image
-              src="/images/site-logo-main.png"
-              alt="site-logo-header"
-              fill
-              className={styles['logo']}
-            />
+            <a>
+              <Image
+                src="/images/site-logo-main.png"
+                alt="site-logo-header"
+                fill
+                className={styles['logo']}
+              />
+            </a>
           </NextLink>
         </AppBar>
       )}
@@ -121,20 +125,22 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
             <Box className={styles['large-nav-logo-container']}>
               <SocialLinks />
               <NextLink href="/" passHref>
-              <Image
-                src="/images/site-logo-main.png"
-                alt="site-logo-header"
-                fill
-                className={styles['logo']}
-              />
+                <a>
+                  <Image
+                    src="/images/site-logo-main.png"
+                    alt="site-logo-header"
+                    fill
+                    className={styles['logo']}
+                  />
+                </a>
               </NextLink>
             </Box>
             <Box className={styles['large-nav-container']}>
-              <IconButton onClick={toggleDrawer(!open)}>
+              <IconButton onClick={toggleDrawer(!open)} aria-label="hamburger-menu-toggle-large">
                 <MenuIcon />
               </IconButton>
               <NavLinks />
-              <IconButton onClick={toggleSearch(!searchOpen)}>
+              <IconButton onClick={toggleSearch(!searchOpen)} aria-label="search-icon-large">
                 {searchOpen ? (
                   <CloseIcon />
                 ) : (
@@ -153,14 +159,16 @@ export const Nav: FunctionComponent<Props> = (props: Props) => {
         <Box className={styles['drawer-logo-container']}>
           <Box></Box>
           <NextLink href="/" passHref>
-            <Image
-              src="/images/site-logo-main.png"
-              alt="site-logo-header"
-              fill
-              className={styles['logo']}
-            />
+            <a>
+              <Image
+                src="/images/site-logo-main.png"
+                alt="site-logo-header"
+                fill
+                className={styles['logo']}
+              />
+            </a>
           </NextLink>
-          <IconButton onClick={toggleDrawer(false)}>
+          <IconButton onClick={toggleDrawer(false)} aria-label="close-icon">
             <CloseIcon />
           </IconButton>
         </Box>

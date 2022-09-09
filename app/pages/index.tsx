@@ -39,8 +39,8 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
         <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Nav style="hero" />
-      {entries && entries.Featured && entries.Featured.length > 0 && (
-        <Hero entries={entries.Featured} />
+      {entries && entries.Featured && entries.Featured.data && entries.Featured.data.length > 0 && (
+        <Hero entries={entries.Featured.data} />
       )}
       <Nav style="main" />
       <Content entries={entries} />
@@ -49,11 +49,11 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const All: Entries<Review> = await getEntries();
-  const Featured: Entries<Review> = await getEntries(null, null, null, [{ key: 'Featured', value: 'true' }]);
-  const SitePicks: Entries<Review> = await getEntries(null, null, null, [{ key: 'SitePick', value: 'true' }]);
-  const TopRated: Entries<Review> = await getEntries(null, 'review', 'UserRating', null, 4);
-  const LatestReviews: Entries<Review> = await getEntries(null, 'review', null, null, 4);
+  const All: Entries<Review>["All"] = await getEntries(null, null, null, null, 2);
+  const Featured: Entries<Review>["Featured"] = await getEntries(null, null, null, [{ key: 'Featured', value: 'true' }]);
+  const SitePicks: Entries<Review>["SitePicks"] = await getEntries(null, null, null, [{ key: 'SitePick', value: 'true' }]);
+  const TopRated: Entries<Review>["TopRated"] = await getEntries(null, 'review', 'UserRating', null, 4);
+  const LatestReviews: Entries<Review>["LatestReviews"] = await getEntries(null, 'review', null, null, 4);
 
   return { props: { entries: { All, Featured, SitePicks, TopRated, LatestReviews } }, revalidate: 10 };
 };

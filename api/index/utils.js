@@ -45,7 +45,9 @@ class EntryUtils {
         Limit: Number(Request.Limit),
       };
       const res = await db.query(params);
-      return res.Items;
+      return res.LastEvaluatedKey ?
+        { data: res.Items, next: res.LastEvaluatedKey } :
+        { data: res.Items };
     } catch (err) {
       return err || err.message;
     };

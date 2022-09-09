@@ -41,7 +41,7 @@ export const SocialLinks: FunctionComponent<Props> = (props: Props) => {
     <Box sx={{ ...props.sx, '> a': { backgroundColor: 'rgba(255, 255, 255, 0.08)', '&:not(:last-of-type)': { mr: '10px' }, '&:hover': { backgroundColor: VARIABLES.primaryColor } } }}>
       {SocialAccounts.map(i => (
         <NextLink key={i.site} href={i.href} passHref>
-          <IconButton>
+          <IconButton aria-label={`${i.site}-icon`}>
             {i.icon}
           </IconButton>
         </NextLink>

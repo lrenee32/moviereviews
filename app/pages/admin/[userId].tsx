@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { FunctionComponent, useState, useRef } from 'react';
 import { GetServerSideProps } from 'next/types';
 import NextLink from 'next/link';
@@ -253,11 +255,13 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
       <AppBar id="back-to-top-anchor" position="sticky" className={navStyles['small-nav']}>
         <Box display="flex" justifyContent="space-between" width="100%" sx={{ '& > img': { position: 'static !important', height: '50px !important', width: 'auto !important', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' }} }}>
           <NextLink href="/" passHref>
-            <Image
-              src="/images/site-logo-main.png"
-              alt="site-logo-header"
-              fill
-            />
+            <a>
+              <Image
+                src="/images/site-logo-main.png"
+                alt="site-logo-header"
+                fill
+              />
+            </a>
           </NextLink>
           <Button color="inherit" onClick={adminLogout}>Logout</Button>
         </Box>

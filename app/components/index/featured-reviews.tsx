@@ -18,13 +18,13 @@ import { Theme } from '@mui/material';
 type ActionTypes = 'pick' | 'top';
 
 interface Props {
-  sitePicks: Entries<Review>["SitePicks"],
-  topRated: Entries<Review>["TopRated"],
+  sitePicks: Entries<Review>["SitePicks"]["data"],
+  topRated: Entries<Review>["TopRated"]["data"],
 };
 
 export const FeaturedReviews: FunctionComponent<Props> = (props: Props) => {
   const { sitePicks, topRated } = props;
-  const sitePicksArr: Entries<Review>["SitePicks"] = [];
+  const sitePicksArr: Entries<Review>["SitePicks"]["data"] = [];
   sitePicks.map(i => {
     sitePicksArr[Number(i.SitePick)] = i;
   });

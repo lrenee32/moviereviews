@@ -14,7 +14,7 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <>
-      {entries && entries.length > 0 &&
+      {entries && entries.data && entries.data.length > 0 &&
         <>
           <Head>
             <title>Horror Reviews - Splatter & Scream</title>
@@ -31,13 +31,13 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
               property="og:description"
               content="Reviews on the latest and greatest horror."
             />
-            <meta property="og:image" content={entries[0].Details!.FeaturedImage as unknown as string} />
+            <meta property="og:image" content={entries.data[0].Details!.FeaturedImage as unknown as string} />
 
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:url" content="https://splatterandscream.com/reviews" />
             <meta name="twitter:title" content="Horror Reviews - Splatter & Scream" />
             <meta name="twitter:description" content="Reviews on the latest and greatest horror." />
-            <meta name="twitter:image" content={entries[0].Details!.FeaturedImage as unknown as string} />
+            <meta name="twitter:image" content={entries.data[0].Details!.FeaturedImage as unknown as string} />
             <meta name="twitter:site" content="@splatternscream" />
           </Head>
           <ContentSection entries={entries} sectionName="reviews" />

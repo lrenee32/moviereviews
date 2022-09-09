@@ -5,12 +5,12 @@ import { HeroCard } from '../../components/index/hero-card';
 import { Theme, useMediaQuery } from '@mui/material';
 
 interface Props {
-  entries: Entries<Review>["Featured"],
+  entries: Entries<Review>["Featured"]["data"],
 };
 
 export const Hero: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
-  const clone: Entries<Review>["Featured"] = [];
+  const clone: Entries<Review>["Featured"]["data"] = [];
   entries.map(i => {
     clone[Number(i.Featured)] = i;
   });

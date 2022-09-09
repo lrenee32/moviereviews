@@ -12,13 +12,15 @@ export const Footer: FunctionComponent = () => {
   return (
     <AppBar className={styles['footer-container']}>
       <NextLink href="/" passHref>
-        <Image
-          src="/images/site-logo.png"
-          alt="site-logo-footer"
-          height="300"
-          width="300"
-          className={styles['logo']}
-        />
+        <a>
+          <Image
+            src="/images/site-logo.png"
+            alt="site-logo-footer"
+            height="300"
+            width="300"
+            className={styles['logo']}
+          />
+        </a>
       </NextLink>
       <SocialLinks sx={{ mb: '30px' }} />
       <FooterLinks />

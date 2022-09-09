@@ -11,7 +11,7 @@ import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { getPosterImage } from 'services/api/entries/entries';
 
 interface Props {
-  entries: Entries<Review>["LatestReviews"],
+  entries: Entries<Review>["LatestReviews"]["data"],
 };
 
 export const LatestReviews: FunctionComponent<Props> = (props: Props) => {

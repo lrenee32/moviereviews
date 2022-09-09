@@ -20,13 +20,13 @@ export const LatestHeadlines: FunctionComponent<Props> = (props: Props) => {
       <SectionDivider text="Latest Headlines" />
       <Box display="flex">
         <Box width={isLg ? '70%' : '100%' } sx={{ mr: isLg ? '20px' : '0px' }}>
-          {All && All.length > 0 && All.map(entry => (
+          {All && All.data && All.data.length > 0 && All.data.map(entry => (
             <ContentCard key={`${entry.PK}-latest-headlines`} entry={entry} sectionName="latest-headlines" />
           ))}
         </Box>
         {isLg && (
           <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
-            <LatestReviewsBox entries={LatestReviews} />
+            <LatestReviewsBox entries={LatestReviews.data} />
           </Box>
         )}
       </Box>
