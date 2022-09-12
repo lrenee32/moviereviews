@@ -32,7 +32,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    if (entries.All && entries.All.length > 0 && s !== undefined) {
+    if (entries.All && entries.All.data.length > 0 && s !== undefined) {
       const options = {
         includeScore: true,
         useExtendedSearch: true,
@@ -44,7 +44,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
           'Tags',
         ],
       };
-      const fuse = new Fuse(entries.All, options);
+      const fuse = new Fuse(entries.All.data, options);
       const results = fuse.search(`'${s ?? ''}`);
       setSearchResults(results.map(i => i.item));
       setLoading(false);
@@ -101,7 +101,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
             </Box>
             {isLg && (
               <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
-                <LatestReviews entries={entries.All.filter(i => i.EntryType === 'review').slice(0, 4)} />
+                <LatestReviews entries={entries.All.data.filter(i => i.EntryType === 'review').slice(0, 4)} />
               </Box>
             )}
           </Box>

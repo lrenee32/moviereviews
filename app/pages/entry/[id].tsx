@@ -129,7 +129,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             </Box>
             {isLg && (
               <Box className={styles['side-container']}>
-                <LatestReviewsBox entries={LatestReviews} />
+                <LatestReviewsBox entries={LatestReviews.data} />
               </Box>
             )}
           </Box>

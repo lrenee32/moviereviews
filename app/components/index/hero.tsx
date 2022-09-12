@@ -49,7 +49,7 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
               {clone[2] &&
                 <HeroCard
                   entry={clone[2]}
-                  headingVariant="h4"
+                  headingVariant="h5"
                 />
               }
             </Grid>
@@ -57,7 +57,7 @@ export const Hero: FunctionComponent<Props> = (props: Props) => {
               {clone[3] &&
                 <HeroCard
                   entry={clone[3]}
-                  headingVariant="h4"
+                  headingVariant="h5"
                 />
               }
             </Grid>

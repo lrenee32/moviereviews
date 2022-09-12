@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Review } from 'utils/types';
@@ -11,6 +11,26 @@ interface Props {
 
 export const Reviews: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
+  const [fetchMore, setFetchMore] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const useFetchMore = async () => {
+    setIsFetching(true);
+    const last = entries.data[entries.data.length - 1];
+    const newEntries: Entries<Review>["All"] = await getEntries(null, 'review', null, [{ key: 'LastEvaluatedKey', value: JSON.stringify({ PK: last.PK, Created: last.Created }) }]);
+    if (newEntries && newEntries.data && newEntries.data.length > 0) {
+      entries.data.push(...newEntries.data);
+      entries.next = newEntries.next;
+    }
+    setFetchMore(false);
+    setIsFetching(false);
+  };
+
+  useEffect(() => {
+    if (fetchMore) {
+      useFetchMore();
+    }
+  }, [fetchMore]);
 
   return (
     <>
@@ -40,7 +60,7 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
             <meta name="twitter:image" content={entries.data[0].Details!.FeaturedImage as unknown as string} />
             <meta name="twitter:site" content="@splatternscream" />
           </Head>
-          <ContentSection entries={entries} sectionName="reviews" />
+          <ContentSection entries={entries} sectionName="reviews" fetchMore={setFetchMore} fetching={isFetching} />
         </>
       }
     </>
@@ -48,7 +68,7 @@ export const Reviews: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const entries: Entries<Review> = await getEntries(null, 'review', null, null, null);
+  const entries: Entries<Review> = await getEntries(null, 'review');
 
   return { props: { entries }, revalidate: 10 };
 };

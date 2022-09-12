@@ -253,7 +253,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
         <title>Admin - Splatter & Scream</title>
       </Head>
       <AppBar id="back-to-top-anchor" position="sticky" className={navStyles['small-nav']}>
-        <Box display="flex" justifyContent="space-between" width="100%" sx={{ '& > img': { position: 'static !important', height: '50px !important', width: 'auto !important', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' }} }}>
+        <Box display="flex" justifyContent="space-between" width="100%" sx={{ '& > a img': { position: 'static !important', height: '50px !important', width: 'auto !important', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' }} }}>
           <NextLink href="/" passHref>
             <a>
               <Image
@@ -263,12 +263,12 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
               />
             </a>
           </NextLink>
-          <Button color="inherit" onClick={adminLogout}>Logout</Button>
+          <Button color="inherit" onClick={adminLogout} sx={{ m: '10px 16px 10px' }}>Logout</Button>
         </Box>
       </AppBar>
       <Container sx={{ marginY: '100px' }}>
         <Typography variant="h3" marginBottom={'30px'}>Manage Entries</Typography>
-        <Button onClick={() => actionEvent(null, 'create')} variant="outlined">Create Entry</Button>
+        <Button onClick={() => actionEvent(null, 'create')} variant="outlined" sx={{ mb: '30px' }}>Create Entry</Button>
         {(entries && entries.length > 0) && (
           <MaterialTable
             columns={tableData.columns}
