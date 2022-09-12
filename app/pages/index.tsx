@@ -69,11 +69,11 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const All: Entries<Review>["All"] = await getEntries(null, null, null, null, 2);
+  const All: Entries<Review>["All"] = await getEntries();
   const Featured: Entries<Review>["Featured"] = await getEntries(null, null, null, [{ key: 'Featured', value: 'true' }]);
   const SitePicks: Entries<Review>["SitePicks"] = await getEntries(null, null, null, [{ key: 'SitePick', value: 'true' }]);
   const TopRated: Entries<Review>["TopRated"] = await getEntries(null, 'review', 'UserRating', null, 4);
-  const LatestReviews: Entries<Review>["LatestReviews"] = await getEntries(null, 'review', null, null, 4);
+  const LatestReviews: Entries<Review>["LatestReviews"] = await getEntries(null, 'review');
 
   return { props: { entries: { All, Featured, SitePicks, TopRated, LatestReviews } }, revalidate: 10 };
 };

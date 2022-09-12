@@ -101,7 +101,7 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
             </Box>
             {isLg && (
               <Box width="30%" position="sticky" alignSelf="flex-start" top="70px">
-                <LatestReviews entries={entries.All.data.filter(i => i.EntryType === 'review').slice(0, 4)} />
+                <LatestReviews entries={entries.All.data.filter(i => i.EntryType === 'review')} />
               </Box>
             )}
           </Box>

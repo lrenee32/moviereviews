@@ -20,7 +20,7 @@ export const LatestReviews: FunctionComponent<Props> = (props: Props) => {
   return (
     <>
       <SectionDivider text="Latest Reviews" />
-      {entries.map(entry => {
+      {entries.slice(0, 4).map(entry => {
         return (
           <Card id={`${entry.PK}-latest-reviews`} key={`${entry.Title}-${entry.PK}-headline`} sx={{ mt: '20px', mr: '20px'}}>
             <CardActionArea href={`/entry/${entry.PK}`} sx={{ display: 'flex', justifyContent: 'flex-start', '& > img': { width: '30% !important' } }}>
