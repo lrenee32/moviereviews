@@ -1,18 +1,18 @@
 .footer-container {
-  position: static;
-  background: transparent;
-  box-shadow: none;
-  display: flex;
-  align-items: center;
-  margin-top: 120px;
+  position: static !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 120px !important;
   .logo {
-    position: static;
-    margin-bottom: 30px;
+    position: static !important;
+    margin-bottom: 30px !important;
     &:hover {
-      cursor: pointer;
+      cursor: pointer !important;
     }
   }
   .copyright {
-    padding: 20px 0;
+    padding: 20px 0 !important;
   }
 }

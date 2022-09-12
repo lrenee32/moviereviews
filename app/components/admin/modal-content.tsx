@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Dispatch, FunctionComponent, SetStateAction, useRef } from 'react';
 import Image from 'next/future/image';
 import { Entry, Entries, Review } from 'utils/types';

@@ -2,19 +2,6 @@
 const Database = require('../shared/db');
 const db = new Database();
 
-function sortEntries(arr) {
-  const sorted = arr.sort((a, b) => {
-    const dateA = new Date(a.Created);
-    const dateB = new Date(b.Created);
-    return dateA < dateB ? 1 : dateA > dateB ? -1 : 0;
-  });
-
-  return {
-    Featured: sorted.filter(i => i.Featured),
-    All: sorted,
-  }
-};
-
 class EntryUtils {
   async search(Request) {
     let kce = 'SK = :SK';
@@ -23,7 +10,7 @@ class EntryUtils {
 
     Object.keys(Request).map((i) => {
       if (
-        (i !== 'SearchTerm' && i !== 'Sort' && i !== 'Limit') &&
+        (i !== 'SearchTerm' && i !== 'Sort' && i !== 'Limit' && i !== 'LastEvaluatedKey') &&
         Request[i] !== ''
       ) {
         if (i === 'Featured' || i === 'SitePick') {
@@ -44,8 +31,14 @@ class EntryUtils {
         ExpressionAttributeValues: eav,
         Limit: Number(Request.Limit),
       };
+      if (Request.LastEvaluatedKey) {
+        const obj = JSON.parse(Request.LastEvaluatedKey);
+        params.ExclusiveStartKey = { SK: 'ENTRY', PK: obj.PK, Created: obj.Created };
+      }
       const res = await db.query(params);
-      return res.Items;
+      return res.LastEvaluatedKey ?
+        { data: res.Items, next: res.LastEvaluatedKey } :
+        { data: res.Items };
     } catch (err) {
       return err || err.message;
     };

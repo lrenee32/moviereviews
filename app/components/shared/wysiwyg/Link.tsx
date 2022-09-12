@@ -56,7 +56,7 @@ export const Link: FunctionComponent<Props> = ({ element, attributes, children, 
               <OpenInNewIcon sx={{ mr: '5px' }} />
               {element.url}
             </LinkMUI>
-            <IconButton onClick={() => removeLink(editor)} sx={{ borderRadius: '0', borderLeft: '1px solid rgba(255, 255, 255, 0.12)' }}>
+            <IconButton onClick={() => removeLink(editor)} sx={{ borderRadius: '0', borderLeft: '1px solid rgba(255, 255, 255, 0.12)' }} aria-label="remove-link-icon">
               <LinkOffIcon />
             </IconButton>
           </Popover>

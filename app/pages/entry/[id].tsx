@@ -129,7 +129,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
             </Box>
             {isLg && (
               <Box className={styles['side-container']}>
-                <LatestReviewsBox entries={LatestReviews} />
+                <LatestReviewsBox entries={LatestReviews.data} />
               </Box>
             )}
           </Box>
@@ -143,7 +143,7 @@ const EntryDetails: FunctionComponent<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
   const entry: Entry<Review> = await getEntry(id);
-  const LatestReviews: Entries<Review> = await getEntries(null, 'review', null, null, 4);
+  const LatestReviews: Entries<Review> = await getEntries(null, 'review');
 
   return { props: { entry, LatestReviews } };
 };

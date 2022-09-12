@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
 import { Hero, Content, Nav } from 'components';
 import { getEntries } from 'services/api/entries/entries';
 import { Entries, Review } from 'utils/types';
@@ -11,6 +11,26 @@ interface Props {
 
 export const Index: FunctionComponent<Props> = (props: Props) => {
   const { entries } = props;
+  const [fetchMore, setFetchMore] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const useFetchMore = async () => {
+    setIsFetching(true);
+    const last = entries.All.data[entries.All.data.length - 1];
+    const newEntries: Entries<Review>["All"] = await getEntries(null, null, null, [{ key: 'LastEvaluatedKey', value: JSON.stringify({ PK: last.PK, Created: last.Created }) }], 2);
+    if (newEntries && newEntries.data && newEntries.data.length > 0) {
+      entries.All.data.push(...newEntries.data);
+      entries.All.next = newEntries.next;
+    }
+    setFetchMore(false);
+    setIsFetching(false);
+  };
+
+  useEffect(() => {
+    if (fetchMore) {
+      useFetchMore();
+    }
+  }, [fetchMore]);
 
   return (
     <>
@@ -39,21 +59,21 @@ export const Index: FunctionComponent<Props> = (props: Props) => {
         <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Nav style="hero" />
-      {entries && entries.Featured && entries.Featured.length > 0 && (
-        <Hero entries={entries.Featured} />
+      {entries && entries.Featured && entries.Featured.data && entries.Featured.data.length > 0 && (
+        <Hero entries={entries.Featured.data} />
       )}
       <Nav style="main" />
-      <Content entries={entries} />
+      <Content entries={entries} loadMore={setFetchMore} loading={isFetching} />
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const All: Entries<Review> = await getEntries();
-  const Featured: Entries<Review> = await getEntries(null, null, null, [{ key: 'Featured', value: 'true' }]);
-  const SitePicks: Entries<Review> = await getEntries(null, null, null, [{ key: 'SitePick', value: 'true' }]);
-  const TopRated: Entries<Review> = await getEntries(null, 'review', 'UserRating', null, 4);
-  const LatestReviews: Entries<Review> = await getEntries(null, 'review', null, null, 4);
+  const All: Entries<Review>["All"] = await getEntries();
+  const Featured: Entries<Review>["Featured"] = await getEntries(null, null, null, [{ key: 'Featured', value: 'true' }]);
+  const SitePicks: Entries<Review>["SitePicks"] = await getEntries(null, null, null, [{ key: 'SitePick', value: 'true' }]);
+  const TopRated: Entries<Review>["TopRated"] = await getEntries(null, 'review', 'UserRating', null, 4);
+  const LatestReviews: Entries<Review>["LatestReviews"] = await getEntries(null, 'review');
 
   return { props: { entries: { All, Featured, SitePicks, TopRated, LatestReviews } }, revalidate: 10 };
 };

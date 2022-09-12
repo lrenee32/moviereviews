@@ -17,11 +17,11 @@ export interface Entry<T> {
 };
 
 export interface Entries<T> {
-  Featured: Entry<T>[],
-  All: Entry<T>[],
-  SitePicks: Entry<T>[],
-  TopRated: Entry<T>[],
-  LatestReviews: Entry<T>[],
+  Featured: { data: Entry<T>[] },
+  All: { data: Entry<T>[], next: { PK: string, Created: number } },
+  SitePicks: { data: Entry<T>[] },
+  TopRated: { data: Entry<T>[] },
+  LatestReviews: { data: Entry<T>[] },
 };
 
 export interface Review {
