@@ -8,6 +8,7 @@ import {
   hasActiveLinkAtSelection,
   insertImageFile,
   insertLink,
+  insertVideo,
   toggleBlockType,
   toggleStyle,
 } from './utils/EditorUtils';
@@ -26,6 +27,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import LinkIcon from '@mui/icons-material/Link';
 import ImageIcon from '@mui/icons-material/Image';
+import VideocamIcon from '@mui/icons-material/Videocam';
 
 import styles from './Toolbar.module.scss';
 
@@ -58,6 +60,8 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
         return <LinkIcon />;
       case 'image':
         return <ImageIcon key={style} />;
+      case 'video':
+        return <VideocamIcon key={style} />
       default:
         throw new Error(`Unhandled style in getIconForButton: ${style}`);
     }
@@ -167,6 +171,16 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
           onMouseDown={event => {
             event.preventDefault();
             imageInput?.current?.click();
+          }}
+        />
+        <ToolbarButton
+          icon={getIconForButton("video")}
+          type="video"
+          isActive={false}
+          onMouseDown={event => {
+            event.preventDefault();
+            const url = prompt('Enter a Youtube video ID');
+            insertVideo(editor, url);
           }}
         />
       </Box>

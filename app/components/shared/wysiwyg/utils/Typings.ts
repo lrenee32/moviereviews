@@ -6,13 +6,14 @@ export const ListType = ['bulleted-list', 'numbered-list'];
 
 export type ListType = 'bulleted-list' | 'numbered-list';
 
-export type BlockType = 'block-quote' | 'list-item' | 'h1' | 'h2' | 'h3' | 'h4' | 'paragraph' | 'link' | 'link-editor' | 'image' | ListType;
+export type BlockType = 'block-quote' | 'list-item' | 'h1' | 'h2' | 'h3' | 'h4' | 'paragraph' | 'link' | 'link-editor' | 'image' | 'video' | ListType;
 
 export type MarkType = 'bold' | 'italic' | 'underline' | 'code';
 
 interface CustomElement {
   type: BlockType,
   url?: string,
+  videoId?: string,
   file?: File,
   caption?: string,
   children: CustomText[],

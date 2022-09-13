@@ -42,7 +42,7 @@ export const getTextBlockStyle = (editor: Editor) => {
     nodeEntry = topLevelBlockNodesInSelection.next();
   }
 
-  return blockType !== "image" ? blockType : null;
+  return blockType !== "image" && blockType !== "video" ? blockType : null;
 }
 
 export const toggleBlockType = (editor: Editor, blockType: string) => {
@@ -161,3 +161,17 @@ export const isLinkNodeAtSelection = (editor, selection) => {
     }) != null
   );
 };
+
+export const insertVideo = (editor: Editor, videoId) => {
+  if (!videoId) return;
+
+  Transforms.insertNodes(
+    editor,
+    {
+      type: 'video',
+      videoId,
+      children: [{ text: '' }],
+    },
+    { select: true }
+  );
+}

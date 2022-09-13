@@ -6,6 +6,7 @@ import NextLink from 'next/link';
 import Image from 'next/future/image';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
+import CardMedia from '@mui/material/CardMedia';
 import { ReactNode } from 'react';
 
 export const toTitleCase = (str: string) => {
@@ -72,6 +73,19 @@ export const serializeToJSX = (node: Node, index: number) => {
           <Box sx={{ fontSize: '12px', mt: '5px', opacity: '0.5' }}>{node.caption}</Box>
         </Box>
       );
+    case 'video':
+      return (
+        <Box position="relative" pb="56.25%" height="0">
+          <CardMedia
+            component="iframe"
+            image={`https://www.youtube.com/embed/${node.videoId}`}
+            frameBorder="0"
+            sx={{ position: 'absolute', top: '0', left: '0' }}
+            height="100%"
+            width="100%"
+          />
+        </Box>
+      )
     default:
       break;
   }
