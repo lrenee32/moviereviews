@@ -2,6 +2,7 @@ import { Editor } from 'slate';
 import { DefaultElement, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { Link } from '../Link';
 import { Image } from '../Image';
+import { Video } from '../Video';
 import isHotkey, { HotKeyOptions } from 'is-hotkey';
 import { toggleStyle } from '../utils/EditorUtils';
 
@@ -9,7 +10,7 @@ export const useEditorConfig = (editor: Editor) => {
   const { isVoid, isInline } = editor;
 
   editor.isVoid = (element) => {
-    if (element.type === 'image') {
+    if (element.type === 'image' || element.type === 'video') {
       return true;
     }
     return isVoid(element);
@@ -50,6 +51,8 @@ const renderElement = (props: RenderElementProps, isEditing: boolean) => {
       return <Link {...props} isEditing={isEditing} />;
     case 'image':
       return <Image {...props} isEditing={isEditing} />;
+    case 'video':
+      return <Video {...props} />
     default:
       return <DefaultElement {...props} />;
   }
