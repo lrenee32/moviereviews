@@ -68,11 +68,11 @@ class AdminEntryActions {
   };
 
   async deleteById(request) {
-    const { UserId, EntryId } = request.pathParams;
+    const { EntryId } = request.pathParams;
     const Items = request.body;
 
     try {
-      const res = await deleteById(UserId, EntryId, Items);
+      const res = await deleteById(EntryId, Items);
       return res;
     } catch (err) {
       console.warn(`Error deleting entry: ${err}`);

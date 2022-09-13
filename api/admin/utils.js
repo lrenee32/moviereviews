@@ -95,7 +95,7 @@ class AdminEntryUtils {
     };
   };
 
-  async deleteById(UserId, EntryId, Items) {
+  async deleteById(EntryId, Items) {
     try {
       if (Items.length > 0) {
         const bucket = process.env.S3Bucket;
@@ -112,7 +112,7 @@ class AdminEntryUtils {
 
       const params = {
         TableName: process.env.DynamoDBTable,
-        Key: { "UserId": UserId, "EntryId": EntryId },
+        Key: { "SK": 'ENTRY', "PK": EntryId },
       };
       await db.delete(params);
       return params.Key;

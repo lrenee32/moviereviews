@@ -103,7 +103,8 @@ export const editEntry = async (
 
   if (body.Details?.FeaturedImage.file && !isUrl(body.Details.FeaturedImage.url)) {
     clone.Details.FeaturedImage = await presignAndPutObject(userId, entryId, body.Details?.FeaturedImage.file);
-  } else {
+  }
+  if (body.Details?.FeaturedImage.url) {
     clone.Details.FeaturedImage = body.Details?.FeaturedImage.url;
   }
 
