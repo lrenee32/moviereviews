@@ -144,6 +144,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
   const entry: Entry<Review> = await getEntry(id);
   const LatestReviews: Entries<Review> = await getEntries(null, 'review');
+  if (Object.keys(entry).length === 0) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
 
   return { props: { entry, LatestReviews } };
 };

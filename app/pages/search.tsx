@@ -55,25 +55,25 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>{`Search for ${s} - Splatter & Scream`}</title>
-        <meta name="description" content="Search for the latest and greatest horror." />
+        <meta name="description" content={`Search for ${s} - Search for the latest and greatest horror.`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <link rel="canonical" href="https://splatterandscream.com/search" />
+        <link rel="canonical" href={`https://splatterandscream.com/search?s=${s}`} />
 
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Splatter & Scream" />
-        <meta property="og:url" content="https://splatterandscream.com/search" />
+        <meta property="og:url" content={`https://splatterandscream.com/search?s=${s}`} />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="Search Archives - Splatter & Scream" />
+        <meta property="og:title" content={`Search for ${s} - Splatter & Scream`} />
         <meta
           property="og:description"
-          content="Search for the latest and greatest horror."
+          content={`Search for ${s} - Search for the latest and greatest horror.`}
         />
         <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://splatterandscream.com/search" />
-        <meta name="twitter:title" content="Search Archives - Splatter & Scream" />
-        <meta name="twitter:description" content="Search for the latest and greatest horror." />
+        <meta name="twitter:url" content={`https://splatterandscream.com/search?s=${s}`} />
+        <meta name="twitter:title" content={`Search for ${s} - Splatter & Scream`} />
+        <meta name="twitter:description" content={`Search for ${s} - Search for the latest and greatest horror.`} />
         <meta name="twitter:image" content="https://splatterandscream.com/images/site-logo-main.png" />
         <meta name="twitter:site" content="@splatternscream" />
       </Head>
