@@ -191,7 +191,7 @@ export const ModalContent: FunctionComponent<Props> = (props: Props) => {
             </Box>
           }
           <Editor value={content} setValue={setContent} />
-          <Tags selectionEvent={(e) => setTags(e)} tags={tags} max={5} />
+          <Tags selectionEvent={(e) => setTags(e)} tags={tags} max={20} />
         </>
       )}
       {action === 'delete' && (

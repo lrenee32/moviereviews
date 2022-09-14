@@ -1,13 +1,10 @@
 // @ts-nocheck
 
 import { FunctionComponent } from 'react';
-import { RenderElementProps } from 'slate-react';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
 
-interface Props extends RenderElementProps {
-  isEditing: boolean,
-}
+interface Props {};
 
 export const Video: FunctionComponent<Props> = ({ element, attributes, children }) => {
   return (

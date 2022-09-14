@@ -46,10 +46,16 @@ export const Tags: FunctionComponent<Props> = (props: Props) => {
       disabled={tags.length >= max}
       fullWidth
       variant="outlined"
+      multiline
       sx={{
         marginBottom: '30px',
+        '& .MuiOutlinedInput-root': {
+          display: 'flex',
+          flexWrap: 'wrap',
+        },
         '& .MuiOutlinedInput-root > .MuiButtonBase-root': {
           marginRight: '2.5px',
+          marginBottom: '2.5px',
           '&:last-of-type': {
             marginRight: '7.5px'
           }

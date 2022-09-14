@@ -42,7 +42,7 @@ const GenericModal: FunctionComponent<Props> = forwardRef<Props, Ref>((props: Pr
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth
-      maxWidth="md"
+      maxWidth="lg"
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {header}

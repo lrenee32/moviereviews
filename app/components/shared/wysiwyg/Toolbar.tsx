@@ -6,6 +6,7 @@ import {
   getActiveStyles,
   getTextBlockStyle,
   hasActiveLinkAtSelection,
+  insertHr,
   insertImageFile,
   insertLink,
   insertVideo,
@@ -25,6 +26,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import LinkIcon from '@mui/icons-material/Link';
 import ImageIcon from '@mui/icons-material/Image';
 import VideocamIcon from '@mui/icons-material/Videocam';
@@ -56,6 +58,8 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
         return <FormatListBulletedIcon />;
       case 'block-quote':
         return <FormatQuoteIcon />;
+      case 'hr':
+        return <HorizontalRuleIcon />
       case 'link':
         return <LinkIcon />;
       case 'image':
@@ -181,6 +185,15 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
             event.preventDefault();
             const url = prompt('Enter a Youtube video ID');
             insertVideo(editor, url);
+          }}
+        />
+        <ToolbarButton
+          icon={getIconForButton("hr")}
+          type="hr"
+          isActive={false}
+          onMouseDown={event => {
+            event.preventDefault();
+            insertHr(editor);
           }}
         />
       </Box>

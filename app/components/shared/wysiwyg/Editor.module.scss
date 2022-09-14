@@ -4,7 +4,7 @@
   margin-bottom: 30px;
   .editor-text-container {
     padding: 10px;
-    & > :first-of-type > :first-of-type {
+    & > :first-of-type > :first-of-type:not(hr) {
       margin-top: 0;
     }
     overflow-y: scroll;

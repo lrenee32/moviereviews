@@ -1,5 +1,6 @@
 import { Editor } from 'slate';
 import { DefaultElement, RenderElementProps, RenderLeafProps } from 'slate-react';
+import Divider from '@mui/material/Divider';
 import { Link } from '../Link';
 import { Image } from '../Image';
 import { Video } from '../Video';
@@ -10,7 +11,7 @@ export const useEditorConfig = (editor: Editor) => {
   const { isVoid, isInline } = editor;
 
   editor.isVoid = (element) => {
-    if (element.type === 'image' || element.type === 'video') {
+    if (element.type === 'image' || element.type === 'video' || element.type === 'hr') {
       return true;
     }
     return isVoid(element);
@@ -47,6 +48,8 @@ const renderElement = (props: RenderElementProps, isEditing: boolean) => {
       return <li {...attributes}>{children}</li>;
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>;
+    case 'hr':
+      return <><Divider sx={{ marginY: '30px' }} />{children}</>;
     case 'link':
       return <Link {...props} isEditing={isEditing} />;
     case 'image':

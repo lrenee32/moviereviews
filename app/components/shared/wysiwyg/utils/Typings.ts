@@ -6,7 +6,7 @@ export const ListType = ['bulleted-list', 'numbered-list'];
 
 export type ListType = 'bulleted-list' | 'numbered-list';
 
-export type BlockType = 'block-quote' | 'list-item' | 'h1' | 'h2' | 'h3' | 'h4' | 'paragraph' | 'link' | 'link-editor' | 'image' | 'video' | ListType;
+export type BlockType = 'block-quote' | 'list-item' | 'h1' | 'h2' | 'h3' | 'h4' | 'paragraph' | 'hr' | 'link' | 'link-editor' | 'image' | 'video' | ListType;
 
 export type MarkType = 'bold' | 'italic' | 'underline' | 'code';
 

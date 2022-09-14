@@ -2,6 +2,7 @@
 
 import { Text, Node } from 'slate';
 import { Entry, Review } from './types';
+import Divider from '@mui/material/Divider';
 import NextLink from 'next/link';
 import Image from 'next/future/image';
 import Link from '@mui/material/Link';
@@ -40,13 +41,13 @@ export const serializeToJSX = (node: Node, index: number) => {
   switch (node.type) {
     case 'paragraph':
       return <p key={`item-${index}`}>{children}</p>;
-    case 'heading-one':
+    case 'h1':
       return <h1 key={`item-${index}`}>{children}</h1>;
-    case 'heading-two':
+    case 'h2':
       return <h2 key={`item-${index}`}>{children}</h2>;
-    case 'heading-three':
+    case 'h3':
       return <h3 key={`item-${index}`}>{children}</h3>;
-    case 'heading-four':
+    case 'h4':
       return <h4 key={`item-${index}`}>{children}</h4>;
     case 'bulleted-list':
       return <ul key={`item-${index}`}>{children}</ul>;
@@ -56,6 +57,8 @@ export const serializeToJSX = (node: Node, index: number) => {
       return <li key={`item-${index}`}>{children}</li>;
     case 'block-quote':
       return <blockquote key={`item-${index}`}>{children}</blockquote>;
+    case 'hr':
+      return <Divider key={`item-${index}`} sx={{ marginY: '30px' }} />;
     case 'link':
       return (
         <NextLink key={`item-${index}`} href={node.url} passHref>
@@ -75,7 +78,7 @@ export const serializeToJSX = (node: Node, index: number) => {
       );
     case 'video':
       return (
-        <Box position="relative" pb="56.25%" height="0">
+        <Box key={`item-${index}`} position="relative" pb="56.25%" height="0">
           <CardMedia
             component="iframe"
             image={`https://www.youtube.com/embed/${node.videoId}`}
