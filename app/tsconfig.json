@@ -27,8 +27,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-  ],
+    "**/*.tsx",
+    "pages/sitemap.xml.js"  ],
   "exclude": [
     "node_modules",
     "services/api/admin/admin.js",
