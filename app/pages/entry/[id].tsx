@@ -146,10 +146,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const LatestReviews: Entries<Review> = await getEntries(null, 'review');
   if (Object.keys(entry).length === 0) {
     return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
+      notFound: true,
     };
   }
 

@@ -251,6 +251,7 @@ const AdminProfile: FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>Admin - Splatter & Scream</title>
+        <meta name="robots" content="none" />
       </Head>
       <AppBar id="back-to-top-anchor" position="sticky" className={navStyles['small-nav']}>
         <Box display="flex" justifyContent="space-between" width="100%" sx={{ '& > a img': { position: 'static !important', height: '50px !important', width: 'auto !important', m: '10px 32px 10px 16px', '&:hover': { cursor: 'pointer' }} }}>

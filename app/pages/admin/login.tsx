@@ -40,6 +40,7 @@ const Login: FunctionComponent = () => {
           content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans."
         />
         <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+        <meta name="robots" content="none" />
       </Head>
       <Box
         display="flex"

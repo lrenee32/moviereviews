@@ -1,0 +1,16 @@
+Sitemap: https://splatterandscream.com/sitemap.xml
+
+User-agent: *
+Allow: /*
+Allow: /entry/*
+
+Disallow: /admin/*
+
+User-agent: BingBot
+Crawl-delay: 10
+
+User-agent: AdIdxBot
+Crawl-delay: 10
+
+User-agent: BingPreview
+Crawl-delay: 10

@@ -6,6 +6,47 @@ const Sitemap = () => {};
 export const getServerSideProps = async ({ res }) => {
   const entries = await getEntries();
 
+  const getPriority = (page) => {
+    switch (page) {
+      case 'index.tsx':
+      case 'articles.tsx':
+      case 'reviews.tsx':
+      case 'search.tsx':
+        return '1.0';
+      default:
+        return '0.3';
+    }
+  };
+
+  const getFreq = (page) => {
+    switch (page) {
+      case 'index.tsx':
+      case 'articles.tsx':
+      case 'reviews.tsx':
+      case 'search.tsx':
+        return 'daily';
+      default:
+        return 'yearly';
+    }
+  };
+
+  const getLastUpdated = (page) => {
+    switch (page) {
+      case 'index.tsx':
+      case 'search.tsx':
+        return new Date(entries.data[0].LastUpdated).toISOString();
+      case 'articles.tsx':
+        const article = entries.data.find(i => i.EntryType === 'article');
+        return new Date(article.LastUpdated).toISOString();
+      case 'reviews.tsx':
+        const review = entries.data.find(i => i.EntryType === 'review');
+        return new Date(review.LastUpdated).toISOString();
+      default:
+        // Add manually for pages that are rarely updated
+        return '2022-09-15T02:40:27.046Z';
+    }
+  };
+
   const staticPaths = fs
     .readdirSync('pages')
     .filter((staticPage) => {
@@ -14,23 +55,24 @@ export const getServerSideProps = async ({ res }) => {
         '_document.tsx',
         'admin',
         'entry',
+        'sitemap.xml.js',
       ].includes(staticPage);
     })
     .map((staticPagePath) => {
       return {
         url: `${process.env.NEXT_PUBLIC_HOSTNAME}/${staticPagePath}`,
-        lastUpdated: ,
-        freq: ,
-        priority: ,
+        lastUpdated: getLastUpdated(staticPagePath),
+        freq: getFreq(staticPagePath),
+        priority: getPriority(staticPagePath),
       };
     });
 
-  const dynamicPaths = entries.map((entry) => {
+  const dynamicPaths = entries.data.map((entry) => {
     return {
       url: `${process.env.NEXT_PUBLIC_HOSTNAME}/entry/${entry.PK}`,
-      lastUpdated: entry.LastUpdated,
-      freq: ,
-      priority: '0.7',
+      lastUpdated: new Date(entry.LastUpdated).toISOString(),
+      freq: 'daily',
+      priority: '1.0',
     };
   });
 
