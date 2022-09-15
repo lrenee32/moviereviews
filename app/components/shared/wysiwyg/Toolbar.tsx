@@ -166,7 +166,7 @@ export const Toolbar: FunctionComponent = ({ previousSelection }) => {
               key="image-upload"
               type="file"
               id="image-upload"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/webp, image/gif"
               onChange={onImageSelected}
             />
           ]}

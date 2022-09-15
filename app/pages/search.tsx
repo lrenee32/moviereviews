@@ -68,13 +68,13 @@ export const Search: FunctionComponent<Props> = (props: Props) => {
           property="og:description"
           content={`Search for ${s} - Search for the latest and greatest horror.`}
         />
-        <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+        <meta property="og:image" content="https://splatterandscream.com/images/site-meta-main.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={`https://splatterandscream.com/search?s=${s}`} />
         <meta name="twitter:title" content={`Search for ${s} - Splatter & Scream`} />
         <meta name="twitter:description" content={`Search for ${s} - Search for the latest and greatest horror.`} />
-        <meta name="twitter:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+        <meta name="twitter:image" content="https://splatterandscream.com/images/site-meta-main.png" />
         <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Box className={styles['wrapper']}>

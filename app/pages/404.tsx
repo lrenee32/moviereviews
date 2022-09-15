@@ -23,12 +23,12 @@ const Custom404: FunctionComponent = () => {
           property="og:description"
           content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans."
         />
-        <meta property="og:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+        <meta property="og:image" content="https://splatterandscream.com/images/site-meta-main.png" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Splatter & Scream - Page Not Found" />
         <meta name="twitter:description" content="News, reviews and videos on the latest and greatest horror media. Horror media reviews by horror fans." />
-        <meta name="twitter:image" content="https://splatterandscream.com/images/site-logo-main.png" />
+        <meta name="twitter:image" content="https://splatterandscream.com/images/site-meta-main.png" />
         <meta name="twitter:site" content="@splatternscream" />
       </Head>
       <Box className={containerStyles['wrapper']}>
