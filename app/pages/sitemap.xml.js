@@ -6,12 +6,19 @@ const Sitemap = () => {};
 export const getServerSideProps = async ({ res }) => {
   const entries = await getEntries();
 
+  const getUrl = (page) => {
+    if (page === 'index') {
+      return process.env.NEXT_PUBLIC_HOSTNAME;
+    }
+    return `${process.env.NEXT_PUBLIC_HOSTNAME}/${page}`;
+  };
+
   const getPriority = (page) => {
     switch (page) {
-      case 'index.tsx':
-      case 'articles.tsx':
-      case 'reviews.tsx':
-      case 'search.tsx':
+      case 'index':
+      case 'articles':
+      case 'reviews':
+      case 'search':
         return '1.0';
       default:
         return '0.3';
@@ -20,10 +27,10 @@ export const getServerSideProps = async ({ res }) => {
 
   const getFreq = (page) => {
     switch (page) {
-      case 'index.tsx':
-      case 'articles.tsx':
-      case 'reviews.tsx':
-      case 'search.tsx':
+      case 'index':
+      case 'articles':
+      case 'reviews':
+      case 'search':
         return 'daily';
       default:
         return 'yearly';
@@ -32,13 +39,13 @@ export const getServerSideProps = async ({ res }) => {
 
   const getLastUpdated = (page) => {
     switch (page) {
-      case 'index.tsx':
-      case 'search.tsx':
+      case 'index':
+      case 'search':
         return new Date(entries.data[0].LastUpdated).toISOString();
-      case 'articles.tsx':
+      case 'articles':
         const article = entries.data.find(i => i.EntryType === 'article');
         return new Date(article.LastUpdated).toISOString();
-      case 'reviews.tsx':
+      case 'reviews':
         const review = entries.data.find(i => i.EntryType === 'review');
         return new Date(review.LastUpdated).toISOString();
       default:
@@ -49,18 +56,20 @@ export const getServerSideProps = async ({ res }) => {
 
   const staticPaths = fs
     .readdirSync('pages')
+    .map((staticPagePath) => staticPagePath.split('.')[0])
     .filter((staticPage) => {
       return ![
-        '_app.tsx',
-        '_document.tsx',
+        '_app',
+        '_document',
+        '_error',
         'admin',
         'entry',
-        'sitemap.xml.js',
+        'sitemap',
       ].includes(staticPage);
     })
     .map((staticPagePath) => {
       return {
-        url: `${process.env.NEXT_PUBLIC_HOSTNAME}/${staticPagePath}`,
+        url: getUrl(staticPagePath),
         lastUpdated: getLastUpdated(staticPagePath),
         freq: getFreq(staticPagePath),
         priority: getPriority(staticPagePath),
