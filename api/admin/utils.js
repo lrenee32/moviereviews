@@ -55,10 +55,12 @@ class AdminEntryUtils {
   };
 
   async presign(UserId, EntryId, FileName) {
+    const split = FileName.split('.');
+    const extension = split[split.length - 1];
     const params = {
       Bucket: process.env.S3Bucket,
       Key: `images/${UserId}/entry/${EntryId}/${FileName}`,
-      ContentType: 'binary/octet-stream',
+      ContentType: `image/${extension}`,
       Expires: 600,
     }
     try {

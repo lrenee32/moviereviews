@@ -17,10 +17,13 @@ const presignAndPutObject = async (userId, entryId, file) => {
     },
   });
 
+  const split = file.name.split('.');
+  const extension = split[split.length - 1];
+
   await fetch(presignedURL, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'binary/octet-stream',
+      'Content-Type': `image/${extension}`,
     },
     body: file,
     redirect: 'follow',
